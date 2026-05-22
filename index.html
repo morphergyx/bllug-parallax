@@ -298,7 +298,7 @@
                 <div>
                     <div class="flex justify-between items-start mb-2">
                         <h2 id="modal-title" class="font-headline-lg text-[28px] leading-8 tracking-tight text-primary uppercase">Skyburn Ombre T-Shirt</h2>
-                        <span class="material-symbols-outlined text-primary cursor-pointer mt-1">bookmark</span>
+                        
                     </div>
                     <p class="font-label-mono text-body-md text-on-surface mb-8">RS. <span id="modal-price">5,400</span></p>
 
@@ -316,38 +316,35 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col gap-3 mb-10">
-                        <button class="w-full bg-primary text-background font-label-mono text-label-limit py-4 hover:bg-on-surface-variant hover:text-primary transition-all uppercase tracking-widest font-bold">BUY NOW</button>
+                    <div class="grid grid-cols-2 gap-3 mb-10">
                         <button class="w-full bg-transparent border border-primary text-primary font-label-mono text-label-limit py-4 hover:bg-primary/10 transition-all uppercase tracking-widest">ADD TO BAG</button>
+                        <button class="w-full bg-primary text-background font-label-mono text-label-limit py-4 hover:bg-on-surface-variant hover:text-primary transition-all uppercase tracking-widest font-bold">BUY NOW</button>
                     </div>
                 </div>
 
                 <div class="border-t border-outline-variant/30 pt-6">
                     <div class="flex border-b border-outline-variant/20 mb-4 font-label-mono text-[12px] tracking-wider">
-                        <button onclick="switchTab('details-content', this)" class="tab-link pb-2 border-b-2 border-primary text-primary pr-4 font-bold">Details & Description</button>
-                        <button onclick="switchTab('washcare-content', this)" class="tab-link pb-2 border-b-2 border-transparent text-on-surface-variant px-4 hover:text-primary transition-colors">Washcare</button>
-                        <button onclick="switchTab('shipping-content', this)" class="tab-link pb-2 border-b-2 border-transparent text-on-surface-variant pl-4 hover:text-primary transition-colors">Shipping</button>
+                        <button onclick="switchTab('details-content', this)" class="tab-link pb-2 border-b-2 border-primary text-primary pr-4 font-bold">Details </button>
+                        <button onclick="switchTab('description-content', this)" class="tab-link pb-2 border-b-2 border-transparent text-on-surface-variant px-4 hover:text-primary transition-colors">Description</button>
                     </div>
 
                     <div id="tab-panels" class="font-body-md text-[14px] leading-relaxed text-on-surface-variant space-y-4">
                         <div id="details-content" class="tab-panel block">
-                            <p class="font-bold text-primary mb-2">Details</p>
+                            <p class="font-bold text-primary mb-2">General Details</p>
                             <ul class="list-disc list-inside space-y-1 mb-4 font-label-mono text-[12px]">
                                 <li>100% Cotton</li>
-                                <li>Weight - 260 gsm</li>
+                                <li>Weight - 240 gsm</li>
                                 <li>Puff print (front & back)</li>
                                 <li>Gradient dye & enzyme wash</li>
                                 <li>Oversized fit</li>
                             </ul>
+                        </div>
+                        <div id="description-content" class="tab-panel hidden font-sans">
                             <p class="font-bold text-primary mb-2">Description</p>
-                            <p class="text-justify font-sans">The skyburn ombre t-shirt by bluorng is made for easy, everyday style with a bold nature-inspired look. It comes in a soft green shade with a smooth gradient effect that feels fresh and unique. This green oversized t-shirt features a big leaf design with raised puff print on the front and back. The print feels slightly lifted, giving it a cool textured look, just like a standout green puff printed t-shirt. Made from 100% cotton, it feels soft on the skin and stays comfortable all day. The oversized fit makes it loose and relaxed, perfect for daily wear. You can pair this skyburn ombre t-shirt with baggy jeans, loose fit cargo pants, or a streetwear cap for an easy, stylish look.</p>
+                            <p class="text-justify font-sans">The humming bird t-shirt by bllug is made for easy, everyday style with a bold nature-inspired look. It comes in a soft green shade with a smooth gradient effect that feels fresh and unique. This green oversized t-shirt features a humming bird design with embroidery on the front and back. The print feels slightly lifted, giving it a cool textured look, just like a standout green puff printed t-shirt. Made from 100% cotton, it feels soft on the skin and stays comfortable all day. The oversized fit makes it loose and relaxed, perfect for daily wear. You can pair this skyburn ombre t-shirt with baggy jeans, loose fit cargo pants, or a streetwear cap for an easy, stylish look.</p>
                         </div>
-                        <div id="washcare-content" class="tab-panel hidden font-sans">
-                            <p>Machine wash cold inside out with similar colors. Do not iron directly on graphics or prints. Line dry in shade to maintain color gradient strength.</p>
                         </div>
-                        <div id="shipping-content" class="tab-panel hidden font-sans">
-                            <p>[SCARCITY_PROTOCOL] Ships within 3-5 business days. Limited numbered run product tracked with secure industrial courier systems.</p>
-                        </div>
+                        
                     </div>
                 </div>
 
