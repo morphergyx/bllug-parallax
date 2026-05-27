@@ -240,7 +240,11 @@
         <div class="absolute inset-0 flex items-end justify-center pb-12 z-20 bg-gradient-to-t from-black/50 via-transparent to-transparent">
             <div class="flex gap-12">
                 <button onclick="addImmediateToCart('Skyburn Ombre T-Shirt', 5400, 'M', '/images/series-section-1.png')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
-                <button onclick="openDetailsModal('Skyburn Ombre T-Shirt', '5,400', ['/images/series-section-1.png', '/images/hero.png', '/images/manifesto.png'])" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">VIEW DETAILS</button>
+                <button onclick="openDetailsModal('Skyburn Ombre T-Shirt', '5,400', [
+    'images/series-section-1.png',
+    'images/product-owl-1.png',
+    'images/product-owl-2.png'
+])" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">VIEW DETAILS</button>
             </div>
         </div>
     </div>
@@ -257,7 +261,11 @@
         <div class="absolute inset-0 flex items-end justify-center pb-12 z-20 bg-gradient-to-t from-black/50 via-transparent to-transparent">
             <div class="flex gap-12">
                 <button onclick="addImmediateToCart('Vandalized Patchwork Crew', 6200, 'L', '/images/series-section-2.png')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
-                <button onclick="openDetailsModal('Vandalized Patchwork Crew', '6,200', ['/images/series-section-2.png', '/images/hero.png', '/images/manifesto.png'])" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">VIEW DETAILS</button>
+                <button onclick="openDetailsModal('Vandalized Patchwork Crew', '6,200', [
+    'images/series-section-2.png',
+    'images/product-tiger-1.png',
+    'images/product-tiger-2.png'
+])" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">VIEW DETAILS</button>
             </div>
         </div>
     </div>
@@ -274,7 +282,11 @@
         <div class="absolute inset-0 flex items-end justify-center pb-12 z-20 bg-gradient-to-t from-black/50 via-transparent to-transparent">
             <div class="flex gap-12">
                 <button onclick="addImmediateToCart('Architectural Cargo Shell', 7800, 'XL', '/images/series-section-3.png')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
-                <button onclick="openDetailsModal('Architectural Cargo Shell', '7,800', ['/images/series-section-3.png', '/images/hero.png', '/images/manifesto.png'])" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">VIEW DETAILS</button>
+                <button onclick="openDetailsModal('Architectural Cargo Shell', '7,800', [
+    'images/series-section-3.png',
+    'images/product-humming-1.png',
+    'images/product-humming-2.png'
+])" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">VIEW DETAILS</button>
             </div>
         </div>
     </div>
@@ -465,26 +477,39 @@
                 <div id="checkout-step-2" class="step-container space-y-6 hidden">
                     <div>
                         <h4 class="font-headline-lg text-[26px] tracking-tight uppercase text-primary mb-1">02 / CRYPTO_VERIFICATION</h4>
-                        <p class="font-body-md text-on-surface-variant text-[13px]">Enter secondary authorization tokens deployed to endpoints.</p>
+                        <p class="font-body-md text-on-surface-variant text-[13px]">Enter the authorization token deployed to your email endpoint.</p>
                     </div>
-                    <div class="space-y-4 pt-2">
-                        <div class="bg-[#141414] border border-[#262626] p-5 rounded space-y-4">
-                            <div class="flex items-center justify-between border-b border-[#262626] pb-4">
-                                <div>
-                                    <p class="font-label-mono text-[12px] text-primary">EMAIL_TOKEN [OTP]</p>
-                                    <p id="badge-target-email" class="font-sans text-[12px] text-on-surface-variant">loading...</p>
-                                </div>
-                                <input type="text" maxlength="6" placeholder="000000" class="w-28 bg-[#0A0A0A] border border-[#262626] rounded py-2 px-3 text-center text-primary font-label-mono text-[14px] focus:border-primary focus:ring-0">
-                            </div>
-                            <div class="flex items-center justify-between pt-1">
-                                <div>
-                                    <p class="font-label-mono text-[12px] text-primary">MOBILE_TOKEN [OTP]</p>
-                                    <p id="badge-target-phone" class="font-sans text-[12px] text-on-surface-variant">loading...</p>
-                                </div>
-                                <input type="text" maxlength="6" placeholder="000000" class="w-28 bg-[#0A0A0A] border border-[#262626] rounded py-2 px-3 text-center text-primary font-label-mono text-[14px] focus:border-primary focus:ring-0">
+                    <div class="space-y-5 pt-2">
+
+                        <!-- Sent confirmation banner -->
+                        <div class="flex items-start gap-3 bg-primary/[0.04] border border-primary/20 rounded p-4">
+                            <span class="material-symbols-outlined text-primary text-[20px] mt-0.5 flex-shrink-0">mark_email_read</span>
+                            <div>
+                                <p class="font-label-mono text-[12px] text-primary tracking-wider uppercase mb-0.5">OTP_DISPATCHED</p>
+                                <p class="font-sans text-[13px] text-on-surface-variant">A 6-digit verification token was sent to <span id="badge-target-email" class="text-primary font-semibold">—</span>. Check your inbox or spam folder.</p>
                             </div>
                         </div>
-                        <p class="text-right font-label-mono text-[11px] text-on-surface-variant cursor-pointer hover:text-primary transition-colors uppercase tracking-wider">[RESEND_TOKENS_SECURELY]</p>
+
+                        <!-- OTP input block -->
+                        <div class="bg-[#141414] border border-[#262626] p-5 rounded space-y-5">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-label-mono text-[12px] text-primary tracking-wider">EMAIL_TOKEN [OTP]</p>
+                                    <p class="font-label-mono text-[11px] text-on-surface-variant mt-0.5 tracking-wide">6-DIGIT VERIFICATION CODE</p>
+                                </div>
+                                <input id="otp-email-input" type="text" inputmode="numeric" maxlength="6" placeholder="000000" class="w-32 bg-[#0A0A0A] border border-[#262626] rounded py-2.5 px-3 text-center text-primary font-label-mono text-[16px] tracking-[0.3em] focus:border-primary focus:ring-0 outline-none transition-colors">
+                            </div>
+                        </div>
+
+                        <!-- Timer + Resend row -->
+                        <div class="flex items-center justify-between pt-1">
+                            <div class="flex items-center gap-2 font-label-mono text-[11px] text-on-surface-variant">
+                                <span class="material-symbols-outlined text-[14px]">timer</span>
+                                <span>TOKEN_EXPIRES_IN: <span id="otp-timer-display" class="text-primary font-bold tabular-nums">00:60</span></span>
+                            </div>
+                            <button id="otp-resend-btn" onclick="resendOtpToken()" disabled class="font-label-mono text-[11px] uppercase tracking-wider text-[#4b4b4b] border-b border-[#4b4b4b]/40 transition-colors cursor-not-allowed" style="pointer-events:none;">[RESEND_TOKEN]</button>
+                        </div>
+
                     </div>
                 </div>
 
@@ -599,6 +624,9 @@
         let imagesArrayLength = 0;
         let activeSelectedSize = 'M';
         let currentWizardStepIndex = 1;
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwktm1rYq3Egh2QwpfLiGiLyHZ1ZnWZLiF5GAttC1s2B6gZCd64zefOEXhkreGVIpZK8A/exec";
+        let otpTimerInterval = null;
+        let otpSecondsRemaining = 60;
 
         // Navigation Scroll Behavior Control
         const nav = document.getElementById('main-nav');
@@ -926,16 +954,86 @@
             renderWizardStepUiState();
         }
 
-        function validateStepOneInputs() {
-            const mail = document.getElementById('input-email').value.trim();
+    
+    async function validateStepOneInputs() {
+            const mail  = document.getElementById('input-email').value.trim();
             const phone = document.getElementById('input-phone').value.trim();
             if (!mail || !phone) {
                 alert("[VALIDATION_ERROR] Provide necessary identification coordinates to proceed.");
                 return false;
             }
-            document.getElementById('badge-target-email').innerText = mail;
-            document.getElementById('badge-target-phone').innerText = phone;
-            return true;
+
+            const nextBtn = document.getElementById('btn-wizard-next');
+            nextBtn.innerText = "SENDING TOKEN...";
+            nextBtn.disabled  = true;
+
+            try {
+                const res  = await fetch(APPS_SCRIPT_URL, {
+                    method : "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body   : JSON.stringify({ action: "send", email: mail })
+                });
+                const data = await res.json();
+
+                if (!data.success) {
+                    alert("[OTP_ERROR] " + data.message);
+                    nextBtn.innerText = "PROCEED";
+                    nextBtn.disabled  = false;
+                    return false;
+                }
+
+                document.getElementById('badge-target-email').innerText = mail;
+                startOtpTimer();
+                return true;
+
+            } catch (err) {
+                alert("[NETWORK_ERROR] Could not reach verification gateway.");
+                nextBtn.innerText = "PROCEED";
+                nextBtn.disabled  = false;
+                return false;
+            } 
+}
+
+        function startOtpTimer() {
+            clearInterval(otpTimerInterval);
+            otpSecondsRemaining = 60;
+
+            const timerDisplay = document.getElementById('otp-timer-display');
+            const resendBtn   = document.getElementById('otp-resend-btn');
+
+            // Reset resend button to disabled state
+            resendBtn.disabled = true;
+            resendBtn.style.pointerEvents = 'none';
+            resendBtn.classList.remove('text-primary', 'border-primary', 'cursor-pointer');
+            resendBtn.classList.add('text-[#4b4b4b]', 'border-[#4b4b4b]/40', 'cursor-not-allowed');
+
+            function tick() {
+                const mins = String(Math.floor(otpSecondsRemaining / 60)).padStart(2, '0');
+                const secs = String(otpSecondsRemaining % 60).padStart(2, '0');
+                timerDisplay.innerText = `${mins}:${secs}`;
+
+                if (otpSecondsRemaining <= 0) {
+                    clearInterval(otpTimerInterval);
+                    timerDisplay.innerText = '00:00';
+                    // Enable resend button
+                    resendBtn.disabled = false;
+                    resendBtn.style.pointerEvents = 'auto';
+                    resendBtn.classList.add('text-primary', 'border-primary', 'cursor-pointer');
+                    resendBtn.classList.remove('text-[#4b4b4b]', 'border-[#4b4b4b]/40', 'cursor-not-allowed');
+                }
+                otpSecondsRemaining--;
+            }
+
+            tick();
+            otpTimerInterval = setInterval(tick, 1000);
+        }
+
+        function resendOtpToken() {
+            // Reset the OTP input field
+            const otpInput = document.getElementById('otp-email-input');
+            if (otpInput) otpInput.value = '';
+            // Restart timer
+            startOtpTimer();
         }
 
         function validateStepThreeInputs() {
@@ -958,24 +1056,105 @@
         }
 
         // CHANGES ADDED: Refactored navigation routing to sync summary data immediately before step 4 loads.
-        function navigateWizardSteps(direction) {
-            if (direction === 1) {
-                if (currentWizardStepIndex === 1 && !validateStepOneInputs()) return;
-                if (currentWizardStepIndex === 3 && !validateStepThreeInputs()) return;
+        async function navigateWizardSteps(direction) {
+                if (direction === 1) {
+                    if (currentWizardStepIndex === 1) {
+                        const ok = await validateStepOneInputs();
+                        if (!ok) return;
+                    }
+                    if (currentWizardStepIndex === 2) {
+                        const ok = await verifyOtpInput();
+                        if (!ok) return;
+                    }
+                    if (currentWizardStepIndex === 3 && !validateStepThreeInputs()) return;
+                    if (currentWizardStepIndex === 4) {
+                        executeGatewayPaymentRedirect();
+                        return;
+                    }
+                }
+
+                currentWizardStepIndex += direction;
+                renderWizardStepUiState();
+
                 if (currentWizardStepIndex === 4) {
-                    executeGatewayPaymentRedirect();
-                    return;
+                    mirrorDataToSummaryGrid();
                 }
             }
 
-            currentWizardStepIndex += direction;
-            renderWizardStepUiState();
-            
-            // Re-mirror cart storage if reaching Step 4 to ensure dynamic products show correctly
-            if (currentWizardStepIndex === 4) {
-                mirrorDataToSummaryGrid();
-            }
+        // Verifies what the user typed against the backend
+async function verifyOtpInput() {
+    console.log("STEP A - function called");
+    const email = document.getElementById('input-email').value.trim();
+    const otp   = document.getElementById('otp-email-input').value.trim();
+    console.log("STEP B - email:", email, "| otp:", otp);
+
+    if (!otp || otp.length !== 6) {
+        alert("[VALIDATION_ERROR] Enter the complete 6-digit token.");
+        return false;
+    }
+
+    const nextBtn = document.getElementById('btn-wizard-next');
+    nextBtn.innerText = "VERIFYING...";
+    nextBtn.disabled  = true;
+    console.log("STEP C - button disabled, about to fetch");
+
+    try {
+        const res  = await fetch(APPS_SCRIPT_URL, {
+            method : "POST",
+            headers: { "Content-Type": "text/plain" },
+            body   : JSON.stringify({ action: "verify", email, otp })
+        });
+        console.log("STEP D - fetch done, status:", res.status);
+        const data = await res.json();
+        console.log("STEP E - response data:", data);
+
+        if (!data.success) {
+            alert("[VERIFICATION_FAILED] " + data.message);
+            nextBtn.innerText = "VERIFY TOKENS";
+            nextBtn.disabled  = false;
+            document.getElementById('otp-email-input').style.borderColor = "#ff4444";
+            setTimeout(() => {
+                document.getElementById('otp-email-input').style.borderColor = "";
+            }, 2000);
+            return false;
         }
+
+        clearInterval(otpTimerInterval);
+        return true;
+
+    } catch (err) {
+        console.log("STEP F - caught error:", err);
+        alert("[NETWORK_ERROR] " + err.message);
+        nextBtn.innerText = "VERIFY TOKENS";
+        nextBtn.disabled  = false;
+        return false;
+    }
+}
+    // Resends OTP and restarts the timer
+    async function resendOtpToken() {
+        const email = document.getElementById('input-email').value.trim();
+        const otpInput = document.getElementById('otp-email-input');
+        if (otpInput) otpInput.value = '';
+
+        const resendBtn = document.getElementById('otp-resend-btn');
+        resendBtn.innerText = "[SENDING...]";
+        resendBtn.style.pointerEvents = 'none';
+
+        try {
+            const res  = await fetch(APPS_SCRIPT_URL, {
+                method : "POST",
+                headers: { "Content-Type": "text/plain" },
+                body   : JSON.stringify({ action: "send", email })
+            });
+            const data = await res.json();
+            if (!data.success) alert("[RESEND_ERROR] " + data.message);
+        } catch (err) {
+            alert("[NETWORK_ERROR] Could not reach verification gateway.");
+        }
+
+        resendBtn.innerText = "[RESEND_TOKEN]";
+        startOtpTimer();
+    }
 
         function renderWizardStepUiState() {
             document.querySelectorAll('.step-container').forEach((container, idx) => {
@@ -1013,6 +1192,7 @@
 
             const backBtn = document.getElementById('btn-wizard-back');
             const nextBtn = document.getElementById('btn-wizard-next');
+            nextBtn.disabled = false;
 
             if (currentWizardStepIndex === 1) {
                 backBtn.classList.add('invisible');
