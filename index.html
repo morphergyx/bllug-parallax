@@ -187,7 +187,9 @@
 <body class="text-on-background selection:bg-primary selection:text-background overflow-x-hidden">
 
     <nav class="flex justify-between items-center w-full px-4 md:px-margin-desktop py-8 fixed top-0 z-40 bg-transparent transition-all duration-500" id="main-nav">
-        <div class="text-headline-lg-mobile md:text-headline-lg font-headline-lg tracking-tighter text-primary">BLLUG</div>
+        <div class="text-headline-lg-mobile md:text-headline-lg font-headline-lg tracking-tighter text-primary">
+            <img src="/images/bllug-logo-white.png" alt="BLLUG Logo" class="h-8 md:h-10"/>
+        </div>
         <div class="hidden md:flex items-center gap-8">
             <a class="text-primary border-b-2 border-primary pb-1 font-label-limit text-label-limit transition-all duration-300 hover:tracking-[0.2em]" href="#series">SERIES_01</a>
             <a class="text-on-surface-variant hover:text-primary transition-all duration-300 font-label-limit text-label-limit hover:tracking-[0.2em]" href="#vault">VAULT</a>
@@ -206,7 +208,7 @@
     <section class="relative h-screen w-full flex items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat bg-fixed border-b border-outline-variant/30" id="hero" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgb(10, 10, 10)), url('/images/hero.png');">
         <div class="relative z-10 text-center px-4" id="hero-logo-container">
             <img alt="BLLUG Logo" class="mx-auto mb-6 w-full max-w-2xl px-4" id="hero-logo" src="/images/bllug-logo-white.png"/>
-            <p class="font-label-mono text-label-mono tracking-[0.4em] text-primary uppercase">WEAR YOUR EDGE</p>
+            <p class="font-label-mono text-label-mono tracking-[0.4em] text-primary uppercase">Exclusivity Redefined</p>
         </div>
         <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce cursor-pointer" onclick="window.scrollTo({top: window.innerHeight, behavior: 'smooth'})">
             <span class="material-symbols-outlined text-primary">expand_more</span>
@@ -234,13 +236,13 @@
         </div>
         <div class="absolute left-0 top-0 bottom-0 w-20 z-20 pointer-events-none hidden sm:flex items-center justify-center select-none">
             <div class="-rotate-90 origin-center whitespace-nowrap w-[100vh] text-center">
-                <span class="font-headline-lg text-[18px] md:text-[20px] tracking-[0.4em] text-primary/40 uppercase bg-background/10 backdrop-blur-sm px-6 py-2.5 rounded-md border border-outline-variant/10">SERIES_01 // SKYBURN</span>
+                <span class="font-headline-lg text-[18px] md:text-[20px] tracking-[0.4em] text-primary/40 uppercase bg-background/10 backdrop-blur-sm px-6 py-2.5 rounded-md border border-outline-variant/10">SERIES_01 // THE OWL SERIES</span>
             </div>
         </div>
         <div class="absolute inset-0 flex items-end justify-center pb-12 z-20 bg-gradient-to-t from-black/50 via-transparent to-transparent">
             <div class="flex gap-12">
-                <button onclick="addImmediateToCart('Skyburn Ombre T-Shirt', 5400, 'M', '/images/series-section-1.png')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
-                <button onclick="openDetailsModal('Skyburn Ombre T-Shirt', '5,400', [
+                <button onclick="buySeriesProductNow('The Owl Series', 5400, '/images/series-section-1.png')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
+                <button onclick="openDetailsModal('The Owl Series', '5,400', [
     'images/series-section-1.png',
     'images/product-owl-1.png',
     'images/product-owl-2.png'
@@ -255,13 +257,13 @@
         </div>
         <div class="absolute left-0 top-0 bottom-0 w-20 z-20 pointer-events-none hidden sm:flex items-center justify-center select-none">
             <div class="-rotate-90 origin-center whitespace-nowrap w-[100vh] text-center">
-                <span class="font-headline-lg text-[18px] md:text-[20px] tracking-[0.4em] text-primary/40 uppercase bg-background/10 backdrop-blur-sm px-6 py-2.5 rounded-md border border-outline-variant/10">SERIES_01 // VANDALIZED</span>
+                <span class="font-headline-lg text-[18px] md:text-[20px] tracking-[0.4em] text-primary/40 uppercase bg-background/10 backdrop-blur-sm px-6 py-2.5 rounded-md border border-outline-variant/10">SERIES_01 // THE TIGER SERIES</span>
             </div>
         </div>
         <div class="absolute inset-0 flex items-end justify-center pb-12 z-20 bg-gradient-to-t from-black/50 via-transparent to-transparent">
             <div class="flex gap-12">
-                <button onclick="addImmediateToCart('Vandalized Patchwork Crew', 6200, 'L', '/images/series-section-2.png')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
-                <button onclick="openDetailsModal('Vandalized Patchwork Crew', '6,200', [
+                <button onclick="buySeriesProductNow('The Tiger Series', 6200, '/images/series-section-2.png')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
+                <button onclick="openDetailsModal('The Tiger Series', '6,200', [
     'images/series-section-2.png',
     'images/product-tiger-1.png',
     'images/product-tiger-2.png'
@@ -276,13 +278,13 @@
         </div>
         <div class="absolute left-0 top-0 bottom-0 w-20 z-20 pointer-events-none hidden sm:flex items-center justify-center select-none">
             <div class="-rotate-90 origin-center whitespace-nowrap w-[100vh] text-center">
-                <span class="font-headline-lg text-[18px] md:text-[20px] tracking-[0.4em] text-primary/40 uppercase bg-background/10 backdrop-blur-sm px-6 py-2.5 rounded-md border border-outline-variant/10">SERIES_01 // ARCHITECTURAL</span>
+                <span class="font-headline-lg text-[18px] md:text-[20px] tracking-[0.4em] text-primary/40 uppercase bg-background/10 backdrop-blur-sm px-6 py-2.5 rounded-md border border-outline-variant/10">SERIES_01 // THE HUMMING SERIES</span>
             </div>
         </div>
         <div class="absolute inset-0 flex items-end justify-center pb-12 z-20 bg-gradient-to-t from-black/50 via-transparent to-transparent">
             <div class="flex gap-12">
-                <button onclick="addImmediateToCart('Architectural Cargo Shell', 7800, 'XL', '/images/series-section-3.png')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
-                <button onclick="openDetailsModal('Architectural Cargo Shell', '7,800', [
+                <button onclick="buySeriesProductNow('The Humming Series', 7800, '/images/series-section-3.png')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
+                <button onclick="openDetailsModal('The Humming Series', '7,800', [
     'images/series-section-3.png',
     'images/product-humming-1.png',
     'images/product-humming-2.png'
@@ -302,7 +304,9 @@
 
     <footer class="flex flex-col md:flex-row justify-between items-center w-full px-4 md:px-margin-desktop py-12 border-t border-outline-variant bg-surface-container-lowest relative z-30" id="archive">
         <div class="flex flex-col items-center md:items-start mb-8 md:mb-0 text-center md:text-left">
-            <div class="text-headline-lg font-headline-lg text-primary mb-4">BLLUG</div>
+            <div class="text-headline-lg font-headline-lg text-primary mb-4">
+                <img src="/images/bllug-logo-white.png" alt="BLLUG Logo" class="h-8 md:h-10 mx-auto md:mx-0"/>   
+            </div>
             <p class="font-label-mono text-label-mono text-on-surface-variant">© BLLUG_STUDIOS. ALL RIGHTS RESERVED. [LIMITED_RUN_100]</p>
         </div>
         <div class="flex flex-wrap justify-center gap-6 md:gap-8 items-center mb-8 md:mb-0">
@@ -802,21 +806,65 @@
             }
         }
 
+        function buySeriesProductNow(name, price, imageSrc) {
+            addImmediateToCart(name, price, 'M', imageSrc);
+            toggleCartDrawer(true);
+        }
+
+        function getCartItemKey(name, size) {
+            const normalizedName = String(name).trim().replace(/\s+/g, ' ').toUpperCase();
+            const normalizedSize = String(size).trim().toUpperCase();
+            return `${normalizedName}__${normalizedSize}`;
+        }
+
         function addImmediateToCart(name, price, size, imageSrc) {
-            const existingMatch = globalCartStorageArray.find(item => item.name === name && item.size === size);
+            const cleanName = String(name).trim().replace(/\s+/g, ' ');
+            const cleanSize = String(size).trim().toUpperCase();
+            const cartKey = getCartItemKey(cleanName, cleanSize);
+            const existingMatch = globalCartStorageArray.find(item => {
+                const itemKey = item.cartKey || getCartItemKey(item.name, item.size);
+                return itemKey === cartKey;
+            });
+
             if (existingMatch) {
                 existingMatch.quantity += 1;
+                existingMatch.cartKey = cartKey;
+                existingMatch.name = cleanName;
+                existingMatch.size = cleanSize;
             } else {
                 globalCartStorageArray.push({
                     id: 'artfct_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
-                    name: name,
+                    cartKey: cartKey,
+                    name: cleanName,
                     price: price,
-                    size: size,
+                    size: cleanSize,
                     image: imageSrc,
                     quantity: 1
                 });
             }
             refreshCartRenderingEngine();
+        }
+
+        function consolidateDuplicateCartItems() {
+            const cartItemsByKey = new Map();
+            globalCartStorageArray.forEach(item => {
+                const cleanName = String(item.name).trim().replace(/\s+/g, ' ');
+                const cleanSize = String(item.size).trim().toUpperCase();
+                const cartKey = item.cartKey || getCartItemKey(cleanName, cleanSize);
+                const existingItem = cartItemsByKey.get(cartKey);
+
+                if (existingItem) {
+                    existingItem.quantity += item.quantity;
+                } else {
+                    cartItemsByKey.set(cartKey, {
+                        ...item,
+                        cartKey: cartKey,
+                        name: cleanName,
+                        size: cleanSize
+                    });
+                }
+            });
+            globalCartStorageArray = Array.from(cartItemsByKey.values());
         }
 
         function updateItemQuantity(itemId, quantityDelta) {
@@ -831,6 +879,8 @@
         }
 
         function refreshCartRenderingEngine() {
+            consolidateDuplicateCartItems();
+
             const container = document.getElementById('cart-items-container');
             const totalNavCountBadge = document.getElementById('cart-nav-badge');
             const totalDrawerCountBadge = document.getElementById('cart-count-badge');
