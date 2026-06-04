@@ -241,7 +241,7 @@
         </div>
         <div class="absolute inset-0 flex items-end justify-center pb-12 z-20 bg-gradient-to-t from-black/50 via-transparent to-transparent">
             <div class="flex gap-12">
-                <button onclick="buySeriesProductNow('The Owl Series', 5400, '/images/series-section-1.png')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
+                <button onclick="openSizeChooserPopup(event, 'The Owl Series', 5400, '/images/series-section-1.png')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
                 <button onclick="openDetailsModal('The Owl Series', '5,400', [
     'images/series-section-1.png',
     'images/product-owl-1.png',
@@ -257,12 +257,12 @@
         </div>
         <div class="absolute left-0 top-0 bottom-0 w-20 z-20 pointer-events-none hidden sm:flex items-center justify-center select-none">
             <div class="-rotate-90 origin-center whitespace-nowrap w-[100vh] text-center">
-                <span class="font-headline-lg text-[18px] md:text-[20px] tracking-[0.4em] text-primary/40 uppercase bg-background/10 backdrop-blur-sm px-6 py-2.5 rounded-md border border-outline-variant/10">SERIES_01 // THE TIGER SERIES</span>
+                <span class="font-headline-lg text-[18px] md:text-[20px] tracking-[0.4em] text-primary/40 uppercase bg-background/10 backdrop-blur-sm px-6 py-2.5 rounded-md border border-outline-variant/10">SERIES_02 // THE TIGER SERIES</span>
             </div>
         </div>
         <div class="absolute inset-0 flex items-end justify-center pb-12 z-20 bg-gradient-to-t from-black/50 via-transparent to-transparent">
             <div class="flex gap-12">
-                <button onclick="buySeriesProductNow('The Tiger Series', 6200, '/images/series-section-2.png')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
+                <button onclick="openSizeChooserPopup(event, 'The Tiger Series', 6200, '/images/series-section-2.png')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
                 <button onclick="openDetailsModal('The Tiger Series', '6,200', [
     'images/series-section-2.png',
     'images/product-tiger-1.png',
@@ -278,12 +278,12 @@
         </div>
         <div class="absolute left-0 top-0 bottom-0 w-20 z-20 pointer-events-none hidden sm:flex items-center justify-center select-none">
             <div class="-rotate-90 origin-center whitespace-nowrap w-[100vh] text-center">
-                <span class="font-headline-lg text-[18px] md:text-[20px] tracking-[0.4em] text-primary/40 uppercase bg-background/10 backdrop-blur-sm px-6 py-2.5 rounded-md border border-outline-variant/10">SERIES_01 // THE HUMMING SERIES</span>
+                <span class="font-headline-lg text-[18px] md:text-[20px] tracking-[0.4em] text-primary/40 uppercase bg-background/10 backdrop-blur-sm px-6 py-2.5 rounded-md border border-outline-variant/10">SERIES_03 // THE HUMMING SERIES</span>
             </div>
         </div>
         <div class="absolute inset-0 flex items-end justify-center pb-12 z-20 bg-gradient-to-t from-black/50 via-transparent to-transparent">
             <div class="flex gap-12">
-                <button onclick="buySeriesProductNow('The Humming Series', 7800, '/images/series-section-3.png')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
+                <button onclick="openSizeChooserPopup(event, 'The Humming Series', 7800, '/images/series-section-3.png')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
                 <button onclick="openDetailsModal('The Humming Series', '7,800', [
     'images/series-section-3.png',
     'images/product-humming-1.png',
@@ -357,6 +357,7 @@
                             <button onclick="selectSize(this)" data-size="XL" class="size-btn py-3 border border-outline-variant/40 rounded bg-transparent font-label-mono text-label-mono text-primary hover:border-primary transition-all uppercase">XL</button>
                             <button onclick="selectSize(this)" data-size="XXL" class="size-btn py-3 border border-outline-variant/40 rounded bg-transparent font-label-mono text-label-mono text-primary hover:border-primary transition-all uppercase">XXL</button>
                         </div>
+                        <p id="modal-stock-note" class="mt-3 font-label-mono text-[12px] text-on-surface-variant uppercase tracking-[0.2em]">Only 100 pieces left out of 100</p>
                     </div>
                     <div class="grid grid-cols-2 gap-3 mb-10">
                         <button onclick="addSelectedToCart(true)" class="w-full bg-transparent border border-primary text-primary font-label-mono text-label-limit py-4 hover:bg-primary/10 transition-all uppercase tracking-widest">ADD TO BAG</button>
@@ -421,6 +422,16 @@
                 <span>SECURE_CHECKOUT</span>
                 <span class="material-symbols-outlined text-[18px]">lock</span>
             </button>
+        </div>
+    </div>
+
+    <div id="size-popup" class="fixed z-50 hidden">
+        <div id="size-popup-card" class="relative bg-[#0D0D0D] border border-outline-variant/30 shadow-2xl rounded-xl p-4 w-72 text-left text-primary">
+            <button onclick="closeSizePopup()" class="absolute top-3 right-3 text-on-surface-variant hover:text-primary transition-colors text-[18px]">×</button>
+            <p class="font-label-mono text-[11px] uppercase tracking-[0.3em] text-on-surface-variant mb-3">SELECT SIZE</p>
+            <div id="size-popup-buttons" class="grid grid-cols-5 gap-2 mb-4"></div>
+            <button onclick="confirmPopupSize()" class="w-full bg-primary text-background font-label-mono text-label-limit py-3 rounded uppercase tracking-widest transition-all hover:bg-on-surface-variant hover:text-primary">ADD TO BAG</button>
+            <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#0D0D0D] rotate-45"></div>
         </div>
     </div>
 
@@ -509,7 +520,7 @@
                         <div class="flex items-center justify-between pt-1">
                             <div class="flex items-center gap-2 font-label-mono text-[11px] text-on-surface-variant">
                                 <span class="material-symbols-outlined text-[14px]">timer</span>
-                                <span>TOKEN_EXPIRES_IN: <span id="otp-timer-display" class="text-primary font-bold tabular-nums">00:60</span></span>
+                                <span>RESEND_OTP_IN: <span id="otp-timer-display" class="text-primary font-bold tabular-nums">00:60</span></span>
                             </div>
                             <button id="otp-resend-btn" onclick="resendOtpToken()" disabled class="font-label-mono text-[11px] uppercase tracking-wider text-[#4b4b4b] border-b border-[#4b4b4b]/40 transition-colors cursor-not-allowed" style="pointer-events:none;">[RESEND_TOKEN]</button>
                         </div>
@@ -562,7 +573,7 @@
 
                 <div id="checkout-step-4" class="step-container space-y-8 hidden">
                     <div>
-                        <h4 class="font-headline-lg text-[26px] tracking-tight uppercase text-primary mb-1">04 / FINAL_MANIFEST_PREVIEW</h4>
+                        <h4 class="font-headline-lg text-[26px] tracking-tight uppercase text-primary mb-1">04 / CHECKOUT SUMMARY</h4>
                         <p class="font-body-md text-on-surface-variant text-[13px]">Verify delivery markers configuration parameters before closing ledger checks.</p>
                     </div>
                     
@@ -574,11 +585,11 @@
                                 <span id="summary-name" class="text-primary font-bold uppercase tracking-wide">...</span>
                             </div>
                             <div class="flex justify-between items-center border-b border-[#262626] pb-2">
-                                <span class="text-on-surface-variant">CONTACT_TUNNEL:</span>
+                                <span class="text-on-surface-variant">CONTACT NUMBER:</span>
                                 <span id="summary-contact" class="text-primary">...</span>
                             </div>
                             <div class="flex flex-col space-y-1.5 pt-1">
-                                <span class="text-on-surface-variant">DISPATCH_DESTINATION:</span>
+                                <span class="text-on-surface-variant">SHIPPING ADDRESS:</span>
                                 <span id="summary-address" class="text-primary font-sans normal-case leading-relaxed text-[14px]">...</span>
                             </div>
                         </div>
@@ -628,6 +639,10 @@
         let imagesArrayLength = 0;
         let activeSelectedSize = 'M';
         let currentWizardStepIndex = 1;
+        let sizePopupState = { name: '', price: 0, image: '', selectedSize: 'M', trigger: null };
+        let sizePopupScrollHandler = null;
+        let sizePopupResizeHandler = null;
+        let sizePopupDocClickHandler = null;
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwktm1rYq3Egh2QwpfLiGiLyHZ1ZnWZLiF5GAttC1s2B6gZCd64zefOEXhkreGVIpZK8A/exec";
         let otpTimerInterval = null;
         let otpSecondsRemaining = 60;
@@ -686,6 +701,8 @@
                     btn.className = "size-btn py-3 border border-outline-variant/40 rounded bg-transparent font-label-mono text-label-mono text-primary hover:border-primary transition-all uppercase";
                 }
             });
+
+            updateModalStockAvailability();
 
             imageCollection.forEach((imgUrl, idx) => {
                 const imgDiv = document.createElement('div');
@@ -762,6 +779,16 @@
             activeSelectedSize = selectedBtn.getAttribute('data-size');
         }
 
+        function updateModalStockAvailability() {
+            const totalPieces = 100;
+            const reservedPieces = globalCartStorageArray.reduce((sum, item) => sum + item.quantity, 0);
+            const piecesRemaining = Math.max(0, totalPieces - reservedPieces);
+            const stockNote = document.getElementById('modal-stock-note');
+            if (stockNote) {
+                stockNote.innerText = `Only ${piecesRemaining.toLocaleString()} pieces left out of ${totalPieces}`;
+            }
+        }
+
         function switchTab(panelId, activeTabElement) {
             document.querySelectorAll('.tab-panel').forEach(panel => {
                 panel.classList.remove('block');
@@ -808,6 +835,112 @@
 
         function buySeriesProductNow(name, price, imageSrc) {
             addImmediateToCart(name, price, 'M', imageSrc);
+            toggleCartDrawer(true);
+        }
+
+        function openSizeChooserPopup(event, name, price, imageSrc) {
+            const popup = document.getElementById('size-popup');
+            const buttonsContainer = document.getElementById('size-popup-buttons');
+            const trigger = event.currentTarget || event.target;
+
+            sizePopupState = {
+                name: name,
+                price: price,
+                image: imageSrc,
+                selectedSize: 'M',
+                trigger: trigger
+            };
+
+            buttonsContainer.innerHTML = '';
+            ['S', 'M', 'L', 'XL', 'XXL'].forEach(size => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.innerText = size;
+                btn.className = `py-3 rounded text-[12px] font-label-mono transition-all ${size === 'M' ? 'bg-primary text-background border border-primary' : 'bg-transparent text-primary border border-outline-variant/40 hover:border-primary hover:text-primary'}`;
+                btn.onclick = () => selectSizeInPopup(btn, size);
+                buttonsContainer.appendChild(btn);
+            });
+
+            const popupRectWidth = 288;
+            const triggerRect = trigger.getBoundingClientRect();
+            const leftPosition = Math.min(window.innerWidth - popupRectWidth - 12, Math.max(12, triggerRect.left + (triggerRect.width / 2) - (popupRectWidth / 2)));
+            const topPosition = Math.max(12, triggerRect.top - 170);
+
+            popup.style.left = `${leftPosition}px`;
+            popup.style.top = `${topPosition}px`;
+            popup.classList.remove('hidden');
+            // position and attach listeners so popup follows the trigger on scroll/resize
+            positionSizePopup();
+            addListenersForSizePopup();
+            event.stopPropagation();
+        }
+
+        function positionSizePopup() {
+            const popup = document.getElementById('size-popup');
+            const popupCard = document.getElementById('size-popup-card');
+            const trigger = sizePopupState.trigger;
+            if (!popup || !popupCard || !trigger) return;
+            const popupRectWidth = popupCard.offsetWidth || 288;
+            const popupRectHeight = popupCard.offsetHeight || 140;
+            const triggerRect = trigger.getBoundingClientRect();
+            const leftPosition = Math.min(window.innerWidth - popupRectWidth - 12, Math.max(12, triggerRect.left + (triggerRect.width / 2) - (popupRectWidth / 2)));
+            // place above the trigger; if not enough space, place below
+            let topPosition = triggerRect.top - popupRectHeight - 10;
+            if (topPosition < 8) {
+                topPosition = triggerRect.bottom + 10;
+            }
+            popup.style.left = `${leftPosition}px`;
+            popup.style.top = `${topPosition}px`;
+        }
+
+        function addListenersForSizePopup() {
+            if (sizePopupScrollHandler) return; // already added
+            sizePopupScrollHandler = () => requestAnimationFrame(positionSizePopup);
+            sizePopupResizeHandler = () => requestAnimationFrame(positionSizePopup);
+            sizePopupDocClickHandler = (e) => {
+                const popup = document.getElementById('size-popup');
+                if (!popup) return;
+                const trigger = sizePopupState.trigger;
+                if (popup.contains(e.target)) return;
+                if (trigger && (trigger === e.target || trigger.contains(e.target))) return;
+                closeSizePopup();
+            };
+
+            window.addEventListener('scroll', sizePopupScrollHandler, true);
+            window.addEventListener('resize', sizePopupResizeHandler);
+            document.addEventListener('click', sizePopupDocClickHandler);
+        }
+
+        function removeListenersForSizePopup() {
+            if (!sizePopupScrollHandler) return;
+            window.removeEventListener('scroll', sizePopupScrollHandler, true);
+            window.removeEventListener('resize', sizePopupResizeHandler);
+            document.removeEventListener('click', sizePopupDocClickHandler);
+            sizePopupScrollHandler = null;
+            sizePopupResizeHandler = null;
+            sizePopupDocClickHandler = null;
+        }
+
+        function selectSizeInPopup(button, size) {
+            sizePopupState.selectedSize = size;
+            document.querySelectorAll('#size-popup-buttons button').forEach(btn => {
+                btn.classList.remove('bg-primary', 'text-background', 'border-primary');
+                btn.classList.add('bg-transparent', 'text-primary', 'border-outline-variant/40');
+            });
+            button.classList.remove('bg-transparent', 'text-primary', 'border-outline-variant/40');
+            button.classList.add('bg-primary', 'text-background', 'border-primary');
+        }
+
+        function closeSizePopup() {
+            const popup = document.getElementById('size-popup');
+            if (popup) popup.classList.add('hidden');
+            sizePopupState.trigger = null;
+            removeListenersForSizePopup();
+        }
+
+        function confirmPopupSize() {
+            addImmediateToCart(sizePopupState.name, sizePopupState.price, sizePopupState.selectedSize, sizePopupState.image);
+            closeSizePopup();
             toggleCartDrawer(true);
         }
 
@@ -939,6 +1072,7 @@
             document.getElementById('cart-subtotal').innerText = subtotalPriceCounter.toLocaleString();
             document.getElementById('cart-shipping').innerText = shippingCalculatedFee === 0 ? 'FREE' : `RS. ${shippingCalculatedFee}`;
             document.getElementById('cart-total').innerText = netAggregateTotal.toLocaleString();
+            updateModalStockAvailability();
         }
 
         // 4-STEP WIZARD CHECKOUT REDESIGN IMPLEMENTATION HANDLERS
