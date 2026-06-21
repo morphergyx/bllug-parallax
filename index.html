@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>BLLUG | WEAR YOUR EDGE</title>
-    
+    <link rel="icon" href="images/favicon-white.png" type="image/png">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
@@ -163,6 +163,24 @@
             scrollbar-width: none;
         }
 
+        #tab-panels {
+            scrollbar-color: rgba(255,255,255,0.28) rgba(255,255,255,0.05);
+        }
+        #tab-panels::-webkit-scrollbar {
+            width: 5px;
+        }
+        #tab-panels::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.04);
+            border-radius: 999px;
+        }
+        #tab-panels::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.18);
+            border-radius: 999px;
+        }
+        #tab-panels::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.32);
+        }
+
         .checkout-input {
             background-color: #141414 !important;
             border: 1px solid #262626 !important;
@@ -181,6 +199,14 @@
         .checkout-input::placeholder {
             color: #4b4b4b;
         }
+
+        @media (max-width: 767px) {
+            #hero {
+                background-image: url('/images/hero.jpg') !important;
+                background-position: center top;
+                background-attachment: scroll;
+            }
+        }
     </style>
 </head>
 
@@ -193,7 +219,6 @@
         <div class="hidden md:flex items-center gap-8">
             <a class="text-primary border-b-2 border-primary pb-1 font-label-limit text-label-limit transition-all duration-300 hover:tracking-[0.2em]" href="#series">SERIES_01</a>
             <a class="text-on-surface-variant hover:text-primary transition-all duration-300 font-label-limit text-label-limit hover:tracking-[0.2em]" href="#vault">VAULT</a>
-            <a class="text-on-surface-variant hover:text-primary transition-all duration-300 font-label-limit text-label-limit hover:tracking-[0.2em]" href="#archive">ARCHIVE</a>
             <a class="text-on-surface-variant hover:text-primary transition-all duration-300 font-label-limit text-label-limit hover:tracking-[0.2em]" href="#manifesto">MANIFESTO</a>
         </div>
         <div class="flex items-center gap-6">
@@ -201,11 +226,13 @@
                 <span class="material-symbols-outlined text-primary cursor-pointer scale-95 active:scale-90 transition-transform duration-75">shopping_bag</span>
                 <span id="cart-nav-badge" class="absolute -top-1 -right-1 bg-primary text-background font-label-mono text-[9px] font-bold h-4 w-4 rounded-full flex items-center justify-center hidden">0</span>
             </button>
-            <span class="material-symbols-outlined text-primary cursor-pointer scale-95 active:scale-90 transition-transform duration-75">person</span>
+            <a href="contact.html" class="relative flex items-center justify-center p-1 group" aria-label="Help and Support">
+                <span class="material-symbols-outlined text-primary cursor-pointer scale-95 active:scale-90 transition-transform duration-75">help</span>
+            </a>
         </div>
     </nav>
 
-    <section class="relative h-screen w-full flex items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat bg-fixed border-b border-outline-variant/30" id="hero" style="background-image: url('/images/hero-editorial-industrial-alt.png');">
+    <section class="relative h-screen w-full flex items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat bg-fixed border-b border-outline-variant/30" id="hero" style="background-image: url('/images/hero.jpg');">
         <div class="relative z-10 text-center px-4" id="hero-logo-container">
             <img alt="BLLUG Logo" class="mx-auto mb-6 w-full max-w-2xl px-4" id="hero-logo" src="/images/bllug-logo-white.png"/>
             <p class="font-label-mono text-label-mono tracking-[0.4em] text-primary uppercase">Exclusivity Redefined</p>
@@ -215,7 +242,7 @@
         </div>
     </section>
 
-    <section class="px-margin-mobile md:px-margin-desktop py-32 bg-cover bg-center bg-no-repeat bg-fixed border-b border-outline-variant/30 z-30 relative" id="manifesto" style="background-image: linear-gradient(rgba(10, 10, 10, 0.85), rgba(10, 10, 10, 0.9)), url('/images/manifesto.png');">
+    <section class="px-margin-mobile md:px-margin-desktop py-32 bg-cover bg-center bg-no-repeat bg-fixed border-b border-outline-variant/30 z-30 relative" id="manifesto" style="background-image: linear-gradient(rgba(10, 10, 10, 0.85), rgba(10, 10, 10, 0.9)), url('/images/manifesto.jpg');">
         <div class="max-w-4xl mx-auto text-center">
             <h2 class="font-headline-lg-mobile md:font-headline-xl text-headline-lg-mobile md:text-headline-xl mb-12 tracking-tighter text-primary">WHAT IS BLLUG?</h2>
             <div class="grid md:grid-cols-2 gap-12 text-left items-center">
@@ -223,8 +250,9 @@
                     Bllug is built for those who refuse to blend in-dropping bold, story-driven T-shirts in ultra-limited runs of just 100 pieces, so every design isn’t just worn, it’s owned as a rare vibe that speaks your identity and stands out in a world full of copies.
                 </p>
                 <div class="border-l-2 border-primary pl-8">
-                    <p class="font-label-mono text-label-mono text-primary mb-2">[SCARCITY_PROTOCOL_01]</p>
-                    <p class="font-body-md text-body-md italic text-on-surface-variant">"100 Pieces. No Restocks. No Exceptions."</p>
+                    <p class="font-body-md text-body-md italic text-on-surface-variant">"100 Pieces."</p>
+                    <p class="font-body-md text-body-md italic text-on-surface-variant">"No Restocks."</p>
+                    <p class="font-body-md text-body-md italic text-on-surface-variant">"No Exceptions."</p>
                 </div>
             </div>
         </div>
@@ -232,63 +260,63 @@
 
     <div class="parallax-window border-b border-outline-variant/30" id="series">
         <div class="parallax-fixed-wrap">
-            <img class="parallax-img" src="/images/series-section-1.png" alt="Look 01">
+            <img class="parallax-img" src="/images/series-section-1.jpg" alt="Look 01">
         </div>
         <div class="absolute left-0 top-0 bottom-0 w-20 z-20 pointer-events-none hidden sm:flex items-center justify-center select-none">
-            <div class="-rotate-90 origin-center whitespace-nowrap w-[100vh] text-center">
-                <span class="font-headline-lg text-[18px] md:text-[20px] tracking-[0.4em] text-primary/40 uppercase bg-background/10 backdrop-blur-sm px-6 py-2.5 rounded-md border border-outline-variant/10">SERIES_01 // THE OWL SERIES</span>
+                <div class="-rotate-90 origin-center whitespace-nowrap w-[100vh] text-center">
+                <span class="font-headline-lg text-[18px] md:text-[20px] tracking-[0.4em] text-[#cc9674] uppercase bg-background/10 backdrop-blur-sm px-6 py-2.5 rounded-md border border-outline-variant/10">SERIES_01 // THE OWL SERIES</span>
             </div>
         </div>
         <div class="absolute inset-0 flex items-end justify-center pb-12 z-20 bg-gradient-to-t from-black/50 via-transparent to-transparent">
             <div class="flex gap-12">
-                <button onclick="openSizeChooserPopup(event, 'The Owl Series', 5400, '/images/series-section-1.png')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
+                <button onclick="openSizeChooserPopup(event, 'The Owl Series', 5400, '/images/series-section-1.jpg')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
                 <button onclick="openDetailsModal('The Owl Series', '5,400', [
-    'images/series-section-1.png',
+    'images/series-section-1.jpg',
     'images/product-owl-1.png',
     'images/product-owl-2.png'
-])" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">VIEW DETAILS</button>
+], 'This piece features a custom, in-house artwork created entirely by us to embody the untamed spirit of the night. Capturing the Eurasian Eagle-Owl’s legendary piercing gaze and commanding presence, the design is set against a rugged, vintage acid-washed fabric to contrast the raw elements of nature with modern street style.Every intricate feather and fiery orange hue is brought to life using an ultra-premium Direct-to-Film (DTF) technique, achieving a high-definition, high-fidelity finish with rich, seamless tonal depth. It is a wearable story of power, wisdom, and meticulous BLLUG craftsmanship.', 'Wash cold inside out with mild detergent. Avoid bleach and high heat. Hang dry recommended to preserve print texture.')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">VIEW DETAILS</button>
             </div>
         </div>
     </div>
 
     <div class="parallax-window border-b border-outline-variant/30">
         <div class="parallax-fixed-wrap">
-            <img class="parallax-img" src="/images/series-section-2.png" alt="Look 02">
+            <img class="parallax-img" src="/images/series-section-2.jpg" alt="Look 02">
         </div>
         <div class="absolute left-0 top-0 bottom-0 w-20 z-20 pointer-events-none hidden sm:flex items-center justify-center select-none">
-            <div class="-rotate-90 origin-center whitespace-nowrap w-[100vh] text-center">
-                <span class="font-headline-lg text-[18px] md:text-[20px] tracking-[0.4em] text-primary/40 uppercase bg-background/10 backdrop-blur-sm px-6 py-2.5 rounded-md border border-outline-variant/10">SERIES_02 // THE TIGER SERIES</span>
+                <div class="-rotate-90 origin-center whitespace-nowrap w-[100vh] text-center">
+                <span class="font-headline-lg text-[18px] md:text-[20px] tracking-[0.4em] text-[#c76536] uppercase bg-background/10 backdrop-blur-sm px-6 py-2.5 rounded-md border border-outline-variant/10">SERIES_02 // THE TIGER SERIES</span>
             </div>
         </div>
         <div class="absolute inset-0 flex items-end justify-center pb-12 z-20 bg-gradient-to-t from-black/50 via-transparent to-transparent">
             <div class="flex gap-12">
-                <button onclick="openSizeChooserPopup(event, 'The Tiger Series', 6200, '/images/series-section-2.png')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
+                <button onclick="openSizeChooserPopup(event, 'The Tiger Series', 6200, '/images/series-section-2.jpg')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
                 <button onclick="openDetailsModal('The Tiger Series', '6,200', [
-    'images/series-section-2.png',
+    'images/series-section-2.jpg',
     'images/product-tiger-1.png',
     'images/product-tiger-2.png'
-])" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">VIEW DETAILS</button>
+], 'This piece features a custom, in-house artwork created entirely by us to embody the raw, untamed power of the apex predator. Capturing a fierce tiger\'s piercing gaze over a dark, mysterious reflection, the graphic is set against a deep black premium fabric to anchor a striking, high-contrast look that defines streetwear dominance.Every intricate strand of fur and sharp detail is brought to life using an ultra-premium Direct-to-Film (DTF) technique, achieving a high-definition, high-fidelity finish with rich, seamless tonal depth. It is a wearable story of strength, dominance, and meticulous bllug craftsmanship.', 'Gentle wash cycle in cold water with dark colors only. Turn inside out before washing. Use minimal detergent. Never bleach or dry clean. Lay flat to air dry to maintain structural integrity. Iron on low heat (if needed) only on reverse side using a protective cloth.')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">VIEW DETAILS</button>
             </div>
         </div>
     </div>
 
     <div class="parallax-window border-b border-outline-variant/30">
         <div class="parallax-fixed-wrap">
-            <img class="parallax-img" src="/images/series-section-3.png" alt="Look 03">
+            <img class="parallax-img" src="/images/series-section-3.jpg" alt="Look 03">
         </div>
         <div class="absolute left-0 top-0 bottom-0 w-20 z-20 pointer-events-none hidden sm:flex items-center justify-center select-none">
             <div class="-rotate-90 origin-center whitespace-nowrap w-[100vh] text-center">
-                <span class="font-headline-lg text-[18px] md:text-[20px] tracking-[0.4em] text-primary/40 uppercase bg-background/10 backdrop-blur-sm px-6 py-2.5 rounded-md border border-outline-variant/10">SERIES_03 // THE HUMMING SERIES</span>
+                <span class="font-headline-lg text-[18px] md:text-[20px] tracking-[0.4em] text-yellow-800 uppercase bg-background/10 backdrop-blur-sm px-6 py-2.5 rounded-md border border-outline-variant/10">SERIES_03 // THE HUMMING SERIES</span>
             </div>
         </div>
         <div class="absolute inset-0 flex items-end justify-center pb-12 z-20 bg-gradient-to-t from-black/50 via-transparent to-transparent">
             <div class="flex gap-12">
-                <button onclick="openSizeChooserPopup(event, 'The Humming Series', 7800, '/images/series-section-3.png')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
+                <button onclick="openSizeChooserPopup(event, 'The Humming Series', 7800, '/images/series-section-3.jpg')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">BUY NOW</button>
                 <button onclick="openDetailsModal('The Humming Series', '7,800', [
-    'images/series-section-3.png',
+    'images/series-section-3.jpg',
     'images/product-humming-1.png',
     'images/product-humming-2.png'
-])" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">VIEW DETAILS</button>
+], 'This piece features a custom, in-house artwork created entirely by us to embody the vibrant, graceful energy of nature\'s most dynamic creature. Capturing a majestic hummingbird amidst an explosion of intricately layered, multi-toned feathers, the graphic is set against a rich, deep emerald green premium fabric to anchor a striking, high-contrast look that defines luxury streetwear.We utilized an elite Direct-to-Film (DTF) technique to capture the hyper-detailed textures and rich, fluid gradients with immaculate high-fidelity precision. The result is a bold, tactile narrative of grace and presence a true reflection of bllug\'s uncompromising craftsmanship.', 'Wash with similar vibrant colors in cold water only. Turn inside out before washing. Use eco-friendly detergent with minimal concentration. Avoid bleach, softeners, and high temperatures. Hang dry in shade to preserve gradient vibrancy. Do not tumble dry or expose to direct sunlight for extended periods.')" class="industrial-link font-label-mono text-label-mono text-primary uppercase tracking-[0.2em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">VIEW DETAILS</button>
             </div>
         </div>
     </div>
@@ -296,28 +324,29 @@
     <section class="py-32 px-margin-mobile flex flex-col items-center justify-center text-center bg-background border-t border-outline-variant/30 relative z-30" id="vault">
         <h2 class="font-headline-lg-mobile md:font-headline-xl text-headline-lg-mobile md:text-headline-xl mb-8 tracking-tighter">JOIN THE FEW</h2>
         <p class="font-body-md text-body-md text-on-surface-variant mb-12 max-w-xl">Enter your access code to receive notification of the next limited series drop.</p>
-        <div class="w-full max-w-md flex flex-col md:flex-row gap-4 px-4">
-            <input class="flex-grow bg-transparent border-b-2 border-outline focus:border-primary focus:ring-0 outline-none py-3 font-label-mono text-label-mono text-primary transition-colors placeholder:text-outline-variant" placeholder="EMAIL_ADDRESS" type="email"/>
-            <button class="bg-primary text-background font-label-mono text-label-limit px-8 py-4 hover:bg-on-surface-variant hover:text-primary transition-all uppercase active:scale-95 duration-75">SUBSCRIBE</button>
-        </div>
+        <form id="subscriber-form" onsubmit="handleSubscriberSubmit(event)" class="w-full max-w-md flex flex-col md:flex-row gap-4 px-4">
+            <input id="subscriber-email" name="email" class="flex-grow bg-transparent border-b-2 border-outline focus:border-primary focus:ring-0 outline-none py-3 font-label-mono text-label-mono text-primary transition-colors placeholder:text-outline-variant" placeholder="EMAIL_ADDRESS" type="email" required />
+            <button id="subscriber-button" type="submit" class="bg-primary text-background font-label-mono text-label-limit px-8 py-4 hover:bg-on-surface-variant hover:text-primary transition-all uppercase active:scale-95 duration-75">SUBSCRIBE</button>
+        </form>
+        <p id="subscriber-feedback" class="mt-4 text-sm text-primary opacity-0 transition-all duration-300"></p>
     </section>
-
     <footer class="flex flex-col md:flex-row justify-between items-center w-full px-4 md:px-margin-desktop py-12 border-t border-outline-variant bg-surface-container-lowest relative z-30" id="archive">
         <div class="flex flex-col items-center md:items-start mb-8 md:mb-0 text-center md:text-left">
             <div class="text-headline-lg font-headline-lg text-primary mb-4">
                 <img src="/images/bllug-logo-white.png" alt="BLLUG Logo" class="h-8 md:h-10 mx-auto md:mx-0"/>   
             </div>
-            <p class="font-label-mono text-label-mono text-on-surface-variant">© BLLUG_STUDIOS. ALL RIGHTS RESERVED. [LIMITED_RUN_100]</p>
+            <p class="font-label-mono text-label-mono text-on-surface-variant">© ALL RIGHTS RESERVED.</p>
         </div>
         <div class="flex flex-wrap justify-center gap-6 md:gap-8 items-center mb-8 md:mb-0">
-            <a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-opacity opacity-80 hover:opacity-100" href="#">PRIVACY</a>
-            <a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-opacity opacity-80 hover:opacity-100" href="#">TERMS</a>
-            <a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-opacity opacity-80 hover:opacity-100" href="#">WHOLESALE</a>
-            <a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-opacity opacity-80 hover:opacity-100" href="#">CONTACT</a>
+            <a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-opacity opacity-80 hover:opacity-100" href="privacy.html">PRIVACY POLICY</a>
+            <a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-opacity opacity-80 hover:opacity-100" href="policy.html">RETURN/EXCHANGE POLICY</a>
+            <a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-opacity opacity-80 hover:opacity-100" href="terms.html">TERMS OF SERVICE</a>
+            <a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary transition-opacity opacity-80 hover:opacity-100" href="contact.html">CONTACT US</a>
         </div>
         <div class="text-right">
             <p class="font-label-mono text-label-mono text-primary tracking-widest uppercase">ARCHIVED FOREVER</p>
             <div class="flex justify-end gap-4 mt-4">
+                <span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">camera_alt</span>
                 <span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">public</span>
                 <span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">share</span>
             </div>
@@ -338,8 +367,56 @@
                 </button>
                 <div id="carousel-track" class="w-full h-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth"></div>
                 <div id="carousel-dots" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 flex gap-2.5"></div>
+                <div id="size-chart-overlay" class="absolute inset-0 z-40 hidden bg-black/90 backdrop-blur-sm p-6 flex items-center justify-center">
+                    <div class="relative w-full max-w-3xl max-h-[90%] overflow-y-auto rounded-[32px] border border-outline-variant/40 bg-[#111111] p-6 shadow-2xl">
+                        <button onclick="closeSizeChart()" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors text-[22px]">×</button>
+                        <div class="text-center mb-6">
+                            <p class="font-label-mono text-[11px] uppercase tracking-[0.35em] text-on-surface-variant mb-2">SIZE GUIDE</p>
+                            <h3 class="font-headline-lg text-[22px] uppercase tracking-tight text-primary">FITTING CHART</h3>
+                            <p class="font-body-md text-[13px] text-on-surface-variant mt-2">All dimensions are in inches. +/-1 inch considered normal.</p>
+                        </div>
+                        <div class="overflow-x-auto rounded-3xl border border-outline-variant/20 bg-[#0D0D0D]">
+                            <table class="w-full min-w-[420px] border-collapse text-left">
+                                <thead class="bg-surface-container-high border-b border-outline-variant/30">
+                                    <tr>
+                                        <th class="px-4 py-3 font-label-mono text-[11px] uppercase tracking-[0.3em] text-on-surface-variant">SIZE</th>
+                                        <th class="px-4 py-3 font-label-mono text-[11px] uppercase tracking-[0.3em] text-on-surface-variant">CHEST</th>
+                                        <th class="px-4 py-3 font-label-mono text-[11px] uppercase tracking-[0.3em] text-on-surface-variant">LENGTH</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-outline-variant/20 even:bg-white/5">
+                                        <td class="px-4 py-4 font-label-mono text-[13px] text-primary">S</td>
+                                        <td class="px-4 py-4 font-label-mono text-[13px] text-on-surface">40-42</td>
+                                        <td class="px-4 py-4 font-label-mono text-[13px] text-on-surface">24</td>
+                                    </tr>
+                                    <tr class="border-b border-outline-variant/20 even:bg-white/5">
+                                        <td class="px-4 py-4 font-label-mono text-[13px] text-primary">M</td>
+                                        <td class="px-4 py-4 font-label-mono text-[13px] text-on-surface">42-44</td>
+                                        <td class="px-4 py-4 font-label-mono text-[13px] text-on-surface">25</td>
+                                    </tr>
+                                    <tr class="border-b border-outline-variant/20 even:bg-white/5">
+                                        <td class="px-4 py-4 font-label-mono text-[13px] text-primary">L</td>
+                                        <td class="px-4 py-4 font-label-mono text-[13px] text-on-surface">44-46</td>
+                                        <td class="px-4 py-4 font-label-mono text-[13px] text-on-surface">26</td>
+                                    </tr>
+                                    <tr class="border-b border-outline-variant/20 even:bg-white/5">
+                                        <td class="px-4 py-4 font-label-mono text-[13px] text-primary">XL</td>
+                                        <td class="px-4 py-4 font-label-mono text-[13px] text-on-surface">46-48</td>
+                                        <td class="px-4 py-4 font-label-mono text-[13px] text-on-surface">27</td>
+                                    </tr>
+                                    <tr class="even:bg-white/5">
+                                        <td class="px-4 py-4 font-label-mono text-[13px] text-primary">XXL</td>
+                                        <td class="px-4 py-4 font-label-mono text-[13px] text-on-surface">48-50</td>
+                                        <td class="px-4 py-4 font-label-mono text-[13px] text-on-surface">28</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-span-1 md:col-span-5 p-8 flex flex-col justify-between h-auto md:h-full overflow-y-auto no-scrollbar bg-[#0D0D0D]">
+            <div class="col-span-1 md:col-span-5 p-8 flex flex-col justify-between h-auto md:h-full overflow-hidden bg-[#0D0D0D]">
                 <div>
                     <div class="flex justify-between items-start mb-2">
                         <h2 id="modal-title" class="font-headline-lg text-[28px] leading-8 tracking-tight text-primary uppercase">Skyburn Ombre T-Shirt</h2>
@@ -348,7 +425,7 @@
                     <div class="mb-8">
                         <div class="flex justify-between items-center mb-4">
                             <span class="font-label-mono text-label-mono tracking-widest text-on-surface-variant uppercase">[SELECT_SIZE]</span>
-                            <button class="font-label-mono text-[11px] uppercase tracking-wider border-b border-outline-variant text-on-surface-variant hover:text-primary transition-colors">Size Guide</button>
+                            <button onclick="openSizeChart()" class="font-label-mono text-[11px] uppercase tracking-wider border-b border-outline-variant text-on-surface-variant hover:text-primary transition-colors">Size Guide</button>
                         </div>
                         <div class="grid grid-cols-5 gap-2">
                             <button onclick="selectSize(this)" data-size="S" class="size-btn py-3 border border-outline-variant/40 rounded bg-transparent font-label-mono text-label-mono text-primary hover:border-primary transition-all uppercase">S</button>
@@ -368,21 +445,35 @@
                     <div class="flex border-b border-outline-variant/20 mb-4 font-label-mono text-[12px] tracking-wider">
                         <button onclick="switchTab('details-content', this)" class="tab-link pb-2 border-b-2 border-primary text-primary pr-4 font-bold">Details </button>
                         <button onclick="switchTab('description-content', this)" class="tab-link pb-2 border-b-2 border-transparent text-on-surface-variant px-4 hover:text-primary transition-colors">Description</button>
+                        <button onclick="switchTab('washcare-content', this)" class="tab-link pb-2 border-b-2 border-transparent text-on-surface-variant px-4 hover:text-primary transition-colors">Washcare</button>
                     </div>
-                    <div id="tab-panels" class="font-body-md text-[14px] leading-relaxed text-on-surface-variant space-y-4">
-                        <div id="details-content" class="tab-panel block">
-                            <p class="font-bold text-primary mb-2">General Details</p>
-                            <ul class="list-disc list-inside space-y-1 mb-4 font-label-mono text-[12px]">
-                                <li>100% Cotton</li>
-                                <li>Weight - 240 gsm</li>
-                                <li>Puff print (front & back)</li>
-                                <li>Gradient dye & enzyme wash</li>
-                                <li>Oversized fit</li>
-                            </ul>
+                    <div id="tab-panels" class="font-body-md text-[14px] leading-relaxed text-on-surface-variant h-[220px] min-h-[220px] overflow-hidden pr-2 overscroll-contain">
+                        <div id="details-content" class="tab-panel block h-full overflow-y-auto pr-2 pb-2">
+                            <div class="space-y-4">
+                                <ul class="list-disc list-inside space-y-1 mb-4 font-label-mono text-[12px]">
+                                    <li>100% Cotton</li>
+                                    <li>Weight - 240 gsm</li>
+                                    <li>DTF print (front & back)</li>
+                                    <li>Gradient dye & acid wash</li>
+                                    <li>Oversized fit</li>
+                                </ul>
+                            </div>
                         </div>
-                        <div id="description-content" class="tab-panel hidden font-sans">
-                            <p class="font-bold text-primary mb-2">Description</p>
-                            <p class="text-justify font-sans">The humming bird t-shirt by bllug is made for easy, everyday style with a bold nature-inspired look. It comes in a soft green shade with a smooth gradient effect that feels fresh and unique. This green oversized t-shirt features a humming bird design with embroidery on the front and back. The print feels slightly lifted, giving it a cool textured look, just like a standout green puff printed t-shirt. Made from 100% cotton, it feels soft on the skin and stays comfortable all day. The oversized fit makes it loose and relaxed, perfect for daily wear. You can pair this skyburn ombre t-shirt with baggy jeans, loose fit cargo pants, or a streetwear cap for an easy, stylish look.</p>
+                        <div id="description-content" class="tab-panel hidden font-label-mono h-full overflow-y-auto pr-2 pb-2">
+                            <div class="space-y-4">
+                                <p id="modal-description" class="text-justify text-primary text-[12px]"></p>
+                            </div>
+                        </div>
+                        <div id="washcare-content" class="tab-panel hidden font-label-mono h-full overflow-y-auto pr-2 pb-2">
+                            <div class="space-y-4">
+                                <ul class="list-disc list-inside space-y-1 mb-4 font-label-mono text-[12px]">
+                                    <li>Machine wash cold water inside out</li>
+                                    <li>Never use bleach or fabric softener</li>
+                                    <li>Air dry flat or hang dry in shade</li>
+                                    <li>Do not iron DTF prints directly</li>
+                                    <li>For first wash, soak separately 15 min</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -646,6 +737,7 @@
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwktm1rYq3Egh2QwpfLiGiLyHZ1ZnWZLiF5GAttC1s2B6gZCd64zefOEXhkreGVIpZK8A/exec";
         let otpTimerInterval = null;
         let otpSecondsRemaining = 60;
+        let pageScrollPosition = 0;
 
         // Navigation Scroll Behavior Control
         const nav = document.getElementById('main-nav');
@@ -679,7 +771,7 @@
         });
 
         // Configurator Details Panel View Modals triggers
-        function openDetailsModal(title, price, imageCollection) {
+        function openDetailsModal(title, price, imageCollection, descriptionText, washcareText) {
             const modal = document.getElementById('product-modal');
             const container = document.getElementById('modal-container');
             const track = document.getElementById('carousel-track');
@@ -687,6 +779,7 @@
 
             document.getElementById('modal-title').innerText = title;
             document.getElementById('modal-price').innerText = price;
+            document.getElementById('modal-description').innerText = descriptionText || 'Discover premium fabric details, fit notes, and premium aesthetic cues for this series.';
 
             track.innerHTML = '';
             dots.innerHTML = '';
@@ -703,6 +796,11 @@
             });
 
             updateModalStockAvailability();
+
+            const defaultTabButton = document.querySelector('button[onclick*="details-content"]');
+            if (defaultTabButton) {
+                switchTab('details-content', defaultTabButton);
+            }
 
             imageCollection.forEach((imgUrl, idx) => {
                 const imgDiv = document.createElement('div');
@@ -722,7 +820,11 @@
             modal.classList.add('opacity-100');
             container.classList.remove('scale-95');
             container.classList.add('scale-100');
-            document.body.style.overflow = 'hidden'; 
+            pageScrollPosition = window.scrollY;
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${pageScrollPosition}px`;
+            document.body.style.width = '100%';
+            document.body.style.overflow = 'hidden';
         }
 
         function closeDetailsModal() {
@@ -734,7 +836,11 @@
             container.classList.add('scale-95');
             setTimeout(() => {
                 modal.classList.add('invisible');
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.width = '';
                 document.body.style.overflow = 'auto';
+                window.scrollTo(0, pageScrollPosition);
             }, 500);
         }
 
@@ -824,7 +930,7 @@
             const price = parseInt(document.getElementById('modal-price').innerText.replace(/,/g, ''));
             const track = document.getElementById('carousel-track');
             const firstImgElement = track.querySelector('img');
-            const imgSrc = firstImgElement ? firstImgElement.src : '/images/series-section-1.png';
+            const imgSrc = firstImgElement ? firstImgElement.src : '/images/series-section-1.jpg';
 
             addImmediateToCart(name, price, activeSelectedSize, imgSrc);
             closeDetailsModal();
@@ -936,6 +1042,110 @@
             if (popup) popup.classList.add('hidden');
             sizePopupState.trigger = null;
             removeListenersForSizePopup();
+        }
+
+        function openSizeChart() {
+            const overlay = document.getElementById('size-chart-overlay');
+            if (overlay) {
+                overlay.classList.remove('hidden');
+            }
+        }
+
+        function closeSizeChart() {
+            const overlay = document.getElementById('size-chart-overlay');
+            if (overlay) {
+                overlay.classList.add('hidden');
+            }
+        }
+
+        function handleSubscriberSubmit(event) {
+            event.preventDefault();
+
+            const emailInput = document.getElementById('subscriber-email');
+            if (!emailInput) return;
+
+            const email = emailInput.value.trim();
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            const googleScriptUrl = 'https://script.google.com/macros/s/AKfycbxrLCqjHageZKYq1-bAXxNaeyZmsQ2yiRndJ6ijAY3992W094aiXU9JOhtycgLlHTLeCQ/exec';
+
+            const button = document.getElementById('subscriber-button');
+            const feedback = document.getElementById('subscriber-feedback');
+
+            const payload = new URLSearchParams();
+            payload.append('email', email);
+
+            const showStatus = (message, success = true) => {
+                if (feedback) {
+                    feedback.innerText = message;
+                    feedback.classList.remove('text-red-400', 'text-on-surface-variant');
+                    feedback.classList.add(success ? 'text-primary' : 'text-red-400');
+                    feedback.classList.add('opacity-100');
+                }
+            };
+
+            const resetButton = () => {
+                if (button) {
+                    button.disabled = false;
+                    button.classList.remove('opacity-60', 'cursor-not-allowed', 'scale-105');
+                    button.innerText = 'SUBSCRIBE';
+                }
+            };
+
+            if (button) {
+                button.disabled = true;
+                button.innerText = 'SENDING...';
+                button.classList.add('opacity-60', 'cursor-not-allowed');
+            }
+
+            const submitToScript = () => fetch(googleScriptUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: payload.toString()
+            });
+
+            submitToScript().catch(() => {
+                // If the script does not support CORS, submit via an invisible form as fallback.
+                const fallbackForm = document.createElement('form');
+                fallbackForm.action = googleScriptUrl;
+                fallbackForm.method = 'POST';
+                fallbackForm.target = 'subscriber-hidden-frame';
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'email';
+                hiddenInput.value = email;
+                fallbackForm.appendChild(hiddenInput);
+                document.body.appendChild(fallbackForm);
+                fallbackForm.submit();
+                document.body.removeChild(fallbackForm);
+            }).then(() => {
+                if (button) {
+                    button.classList.add('scale-105', 'animate-pulse', 'shadow-[0_0_0_12px_rgba(255,255,255,0.18)]');
+                    button.innerText = 'SUBSCRIBED';
+                    setTimeout(() => {
+                        if (button) {
+                            button.classList.remove('animate-pulse', 'shadow-[0_0_0_12px_rgba(255,255,255,0.18)]');
+                        }
+                    }, 700);
+                }
+                showStatus('Email submitted successfully.', true);
+            }).catch(() => {
+                showStatus('Submission failed. Please try again.', false);
+            }).finally(() => {
+                emailInput.value = '';
+                setTimeout(() => {
+                    if (button) resetButton();
+                    if (feedback) {
+                        feedback.classList.remove('opacity-100');
+                        feedback.classList.add('opacity-0');
+                    }
+                }, 3500);
+            });
         }
 
         function confirmPopupSize() {
