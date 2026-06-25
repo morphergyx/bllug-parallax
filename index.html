@@ -112,8 +112,204 @@
         }
 
         nav {
+            top: 0;
             padding-left: calc(1rem + env(safe-area-inset-left));
             padding-right: calc(1rem + env(safe-area-inset-right));
+        }
+
+        .launch-countdown-bar {
+            position: fixed;
+            inset: 0;
+            z-index: 70;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: rgba(0,0,0,0.66);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.32s ease, visibility 0.32s ease;
+            overflow: hidden;
+        }
+
+        .launch-countdown-bar.is-visible {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .launch-countdown-bar::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent);
+            transform: translateX(-100%);
+            animation: launchSweep 3.2s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .launch-countdown-inner {
+            position: relative;
+            z-index: 1;
+            width: min(560px, 100%);
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 1.25rem;
+            border: 1px solid rgba(255,255,255,0.22);
+            border-radius: 1rem;
+            background:
+                radial-gradient(circle at top left, rgba(255,255,255,0.18), transparent 34%),
+                linear-gradient(135deg, rgba(255,255,255,0.1), transparent 44%, rgba(255,255,255,0.08)),
+                rgba(8, 8, 8, 0.9);
+            box-shadow: 0 28px 80px rgba(0,0,0,0.62), 0 0 36px rgba(255,255,255,0.1);
+            transform: translateY(14px) scale(0.96);
+            transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+
+        .launch-countdown-bar.is-visible .launch-countdown-inner {
+            transform: translateY(0) scale(1);
+        }
+
+        .launch-close-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            width: 2.25rem;
+            height: 2.25rem;
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 999px;
+            color: #ffffff;
+            background: rgba(255,255,255,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+        }
+
+        .launch-close-btn:hover {
+            background: #ffffff;
+            color: #0A0A0A;
+            transform: rotate(90deg);
+        }
+
+        .launch-status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            border: 1px solid rgba(255,255,255,0.22);
+            background: rgba(255,255,255,0.07);
+            color: #ffffff;
+            padding: 0.35rem 0.55rem;
+            border-radius: 999px;
+            box-shadow: 0 0 18px rgba(255,255,255,0.1);
+            white-space: nowrap;
+        }
+
+        .launch-status-dot {
+            width: 0.45rem;
+            height: 0.45rem;
+            border-radius: 999px;
+            background: #ffffff;
+            box-shadow: 0 0 12px rgba(255,255,255,0.95);
+            animation: livePulse 1.1s ease-in-out infinite;
+        }
+
+        .launch-timer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(48px, 1fr));
+            gap: 0.5rem;
+            min-width: 0;
+            grid-column: 1 / -1;
+        }
+
+        .launch-time-cell {
+            border: 1px solid rgba(255,255,255,0.16);
+            background: rgba(255,255,255,0.055);
+            padding: 0.35rem 0.45rem;
+            text-align: center;
+            border-radius: 0.25rem;
+        }
+
+        .launch-time-cell strong {
+            display: block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.05rem;
+            line-height: 1;
+            color: #ffffff;
+        }
+
+        .launch-time-cell span {
+            display: block;
+            margin-top: 0.15rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.52rem;
+            letter-spacing: 0.18em;
+            color: rgba(229,226,225,0.7);
+        }
+
+        .launch-shop-btn {
+            border: 1px solid #ffffff;
+            background: #ffffff;
+            color: #0A0A0A;
+            padding: 0.75rem 0.95rem;
+            border-radius: 0.25rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+            white-space: nowrap;
+            align-self: start;
+            margin-right: 2.45rem;
+        }
+
+        .launch-shop-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 0 24px rgba(255,255,255,0.24);
+        }
+
+        .launch-mini-copy {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.16em;
+            color: rgba(229,226,225,0.72);
+            text-transform: uppercase;
+        }
+
+        .launch-modal-title {
+            margin-top: 0.85rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 7vw, 4.25rem);
+            line-height: 0.92;
+            letter-spacing: 0;
+            text-transform: uppercase;
+            color: #ffffff;
+        }
+
+        @keyframes launchSweep {
+            0%, 40% {
+                transform: translateX(-100%);
+            }
+            75%, 100% {
+                transform: translateX(100%);
+            }
+        }
+
+        @keyframes livePulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.45;
+                transform: scale(1.45);
+            }
         }
 
         /* Industrial Link Interactions */
@@ -185,6 +381,66 @@
         }
 
         @media (max-width: 767px) {
+            .launch-countdown-bar {
+                padding: 0.85rem;
+            }
+
+            .launch-countdown-inner {
+                display: grid;
+                grid-template-columns: 1fr auto;
+                gap: 0.65rem;
+                padding: 1rem;
+                border-radius: 0.9rem;
+            }
+
+            .launch-countdown-copy {
+                min-width: 0;
+            }
+
+            .launch-status-pill {
+                font-size: 0.56rem;
+                letter-spacing: 0.1em;
+                padding: 0.28rem 0.45rem;
+            }
+
+            .launch-mini-copy {
+                font-size: 0.52rem;
+                letter-spacing: 0.1em;
+                margin-top: 0.25rem;
+            }
+
+            .launch-timer-grid {
+                grid-column: 1 / -1;
+                width: 100%;
+                min-width: 0;
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .launch-time-cell {
+                padding: 0.32rem 0.25rem;
+            }
+
+            .launch-time-cell strong {
+                font-size: 0.92rem;
+            }
+
+            .launch-time-cell span {
+                font-size: 0.46rem;
+                letter-spacing: 0.12em;
+            }
+
+            .launch-shop-btn {
+                padding: 0.52rem 0.62rem;
+                font-size: 0.56rem;
+                letter-spacing: 0.12em;
+                margin-right: 2.35rem;
+            }
+
+            .launch-modal-title {
+                margin-top: 0.65rem;
+                font-size: clamp(2rem, 12vw, 3.4rem);
+            }
+
             #hero {
                 background-image: url('/images/hero-portrait.jpg') !important;
                 background-position: center top;
@@ -470,7 +726,42 @@
 
 <body class="text-on-background selection:bg-primary selection:text-background overflow-x-hidden">
 
-    <nav class="flex justify-between items-center w-full px-4 md:px-margin-desktop py-8 fixed top-0 z-40 bg-transparent transition-all duration-500" id="main-nav">
+    <div id="launch-countdown-bar" class="launch-countdown-bar" aria-live="polite">
+        <div class="launch-countdown-inner">
+            <button type="button" class="launch-close-btn" aria-label="Close launch popup" onclick="closeLaunchPopup()">
+                <span class="material-symbols-outlined text-[18px]">close</span>
+            </button>
+            <div class="launch-countdown-copy">
+                <div class="launch-status-pill font-label-mono text-[10px] uppercase tracking-[0.16em]">
+                    <span class="launch-status-dot" aria-hidden="true"></span>
+                    <span id="launch-status-text">Drop 1 unlocks Jun 26, 12 PM IST</span>
+                </div>
+                <h2 class="launch-modal-title">Drop 1 Is Loading</h2>
+                <p id="launch-subtext" class="launch-mini-copy mt-1">100 pieces. No restocks. Cart opens at launch.</p>
+            </div>
+            <div class="launch-timer-grid" id="launch-timer-grid" aria-label="Launch countdown">
+                <div class="launch-time-cell">
+                    <strong id="launch-days">00</strong>
+                    <span>DAYS</span>
+                </div>
+                <div class="launch-time-cell">
+                    <strong id="launch-hours">00</strong>
+                    <span>HRS</span>
+                </div>
+                <div class="launch-time-cell">
+                    <strong id="launch-minutes">00</strong>
+                    <span>MIN</span>
+                </div>
+                <div class="launch-time-cell">
+                    <strong id="launch-seconds">00</strong>
+                    <span>SEC</span>
+                </div>
+            </div>
+            <button type="button" id="launch-shop-button" class="launch-shop-btn" onclick="handleLaunchCta()">Notify Me</button>
+        </div>
+    </div>
+
+    <nav class="flex justify-between items-center w-full px-4 md:px-margin-desktop py-8 fixed z-40 bg-transparent transition-all duration-500" id="main-nav">
         <div class="text-headline-lg-mobile md:text-headline-lg font-headline-lg tracking-tighter text-primary">
             <img src="/images/bllug-logo-white.png" alt="BLLUG Logo" class="h-8 md:h-10"/>
         </div>
@@ -1022,9 +1313,84 @@
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyeun-1Yt9v3fVuGRKO7PHRR3ohqSP-RT7QTcCF25VQSmUCcdaKGG4WezT6yu3gBPjhWg/exec";
         const PRODUCT_STOCK_LIMIT = 100;
         const CONFIRMED_SOLD_STORAGE_KEY = 'bllug_confirmed_sold_count';
+        const DROP_ONE_LAUNCH_TIME = new Date('2026-06-26T06:30:00Z').getTime();
+        let launchCountdownInterval = null;
         let otpTimerInterval = null;
         let otpSecondsRemaining = 60;
         let pageScrollPosition = 0;
+
+        function padLaunchUnit(value) {
+            return String(Math.max(0, value)).padStart(2, '0');
+        }
+
+        function scrollToDropOne() {
+            const targetId = Date.now() >= DROP_ONE_LAUNCH_TIME ? 'series' : 'vault';
+            const target = document.getElementById(targetId);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function openLaunchPopup() {
+            const popup = document.getElementById('launch-countdown-bar');
+            if (popup) {
+                setTimeout(() => popup.classList.add('is-visible'), 550);
+            }
+        }
+
+        function closeLaunchPopup() {
+            const popup = document.getElementById('launch-countdown-bar');
+            if (popup) {
+                popup.classList.remove('is-visible');
+            }
+        }
+
+        function handleLaunchCta() {
+            closeLaunchPopup();
+            scrollToDropOne();
+            if (Date.now() < DROP_ONE_LAUNCH_TIME) {
+                setTimeout(() => {
+                    const emailInput = document.getElementById('subscriber-email');
+                    if (emailInput) emailInput.focus({ preventScroll: true });
+                }, 750);
+            }
+        }
+
+        function renderLaunchCountdown() {
+            const remainingMs = DROP_ONE_LAUNCH_TIME - Date.now();
+            const isLive = remainingMs <= 0;
+            const statusText = document.getElementById('launch-status-text');
+            const subText = document.getElementById('launch-subtext');
+            const shopButton = document.getElementById('launch-shop-button');
+
+            if (isLive) {
+                document.getElementById('launch-days').innerText = '00';
+                document.getElementById('launch-hours').innerText = '00';
+                document.getElementById('launch-minutes').innerText = '00';
+                document.getElementById('launch-seconds').innerText = '00';
+                if (statusText) statusText.innerText = 'We are live: Drop 1 is open';
+                if (subText) subText.innerText = 'Shop now before the first 100 pieces disappear.';
+                if (shopButton) shopButton.innerText = 'Shop Now';
+                if (launchCountdownInterval) clearInterval(launchCountdownInterval);
+                return;
+            }
+
+            const totalSeconds = Math.floor(remainingMs / 1000);
+            const days = Math.floor(totalSeconds / 86400);
+            const hours = Math.floor((totalSeconds % 86400) / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            document.getElementById('launch-days').innerText = padLaunchUnit(days);
+            document.getElementById('launch-hours').innerText = padLaunchUnit(hours);
+            document.getElementById('launch-minutes').innerText = padLaunchUnit(minutes);
+            document.getElementById('launch-seconds').innerText = padLaunchUnit(seconds);
+        }
+
+        renderLaunchCountdown();
+        openLaunchPopup();
+        syncConfirmedStockFromBackend();
+        launchCountdownInterval = setInterval(renderLaunchCountdown, 1000);
 
         // Navigation Scroll Behavior Control
         const nav = document.getElementById('main-nav');
@@ -1083,6 +1449,7 @@
             });
 
             updateModalStockAvailability();
+            syncConfirmedStockFromBackend();
 
             const defaultTabButton = document.querySelector('button[onclick*="details-content"]');
             if (defaultTabButton) {
@@ -1179,7 +1546,8 @@
         }
 
         function writeConfirmedSoldCount(nextValue) {
-            const cleanValue = Math.min(PRODUCT_STOCK_LIMIT, Math.max(0, Number(nextValue) || 0));
+            const currentValue = readConfirmedSoldCount();
+            const cleanValue = Math.min(PRODUCT_STOCK_LIMIT, Math.max(currentValue, Number(nextValue) || 0));
             localStorage.setItem(CONFIRMED_SOLD_STORAGE_KEY, String(cleanValue));
         }
 
@@ -1199,20 +1567,49 @@
                 payload.stockRemaining,
                 payload.stock_remaining,
                 payload.piecesRemaining,
-                payload.pieces_remaining
+                payload.pieces_remaining,
+                payload.stock && payload.stock.remaining,
+                payload.stock && payload.stock.remainingStock,
+                payload.inventory && payload.inventory.remaining,
+                payload.inventory && payload.inventory.remainingStock
             ];
             const cleanValue = possibleValues.find(value => Number.isFinite(Number(value)));
             if (cleanValue === undefined) return null;
             return Math.min(PRODUCT_STOCK_LIMIT, Math.max(0, Number(cleanValue)));
         }
 
+        function getPurchasedQuantityFromItems(items) {
+            if (!Array.isArray(items)) return 0;
+            return items.reduce((sum, item) => sum + Math.max(0, Number(item.quantity) || 0), 0);
+        }
+
         function recordSuccessfulPurchase(purchasedQuantity, stockPayload) {
             const verifiedRemainingStock = extractVerifiedRemainingStock(stockPayload);
             if (verifiedRemainingStock !== null) {
                 writeConfirmedSoldCount(PRODUCT_STOCK_LIMIT - verifiedRemainingStock);
+                updateModalStockAvailability();
                 return;
             }
-            writeConfirmedSoldCount(readConfirmedSoldCount() + purchasedQuantity);
+            writeConfirmedSoldCount(readConfirmedSoldCount() + Math.max(0, Number(purchasedQuantity) || 0));
+            updateModalStockAvailability();
+        }
+
+        async function syncConfirmedStockFromBackend() {
+            try {
+                const stockRes = await fetch(APPS_SCRIPT_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: JSON.stringify({ action: "get_stock" })
+                });
+                const stockData = await stockRes.json();
+                const verifiedRemainingStock = extractVerifiedRemainingStock(stockData);
+                if (stockData && stockData.success && verifiedRemainingStock !== null) {
+                    writeConfirmedSoldCount(PRODUCT_STOCK_LIMIT - verifiedRemainingStock);
+                    updateModalStockAvailability();
+                }
+            } catch (err) {
+                // Stock sync is best-effort; checkout still records local successful purchases.
+            }
         }
 
         function updateModalStockAvailability() {
@@ -2031,8 +2428,9 @@ async function verifyOtpInput() {
                             const verifyData = await verifyRes.json();
 
                             if (verifyData.success) {
-                                const confirmedPurchaseQuantity = getCartReservedPieces();
+                                const confirmedPurchaseQuantity = getPurchasedQuantityFromItems(cartItemsForOrder);
                                 recordSuccessfulPurchase(confirmedPurchaseQuantity, verifyData);
+                                syncConfirmedStockFromBackend();
                                 showPaymentSuccessState();
                             } else {
                                 alert("[VERIFICATION_FAILED] " + verifyData.message + "\nIf an amount was deducted, contact support with your payment ID: " + response.razorpay_payment_id);
