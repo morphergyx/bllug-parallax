@@ -12,6 +12,7 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
     <script id="tailwind-config">
         tailwind.config = {
@@ -551,9 +552,14 @@
         <div class="text-right">
             <p class="font-label-mono text-label-mono text-primary tracking-widest uppercase">ARCHIVED FOREVER</p>
             <div class="flex justify-end gap-4 mt-4">
-                <span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">camera_alt</span>
-                <span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">public</span>
-                <span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">share</span>
+                <a class="text-on-surface-variant hover:text-primary cursor-pointer" href="https://www.instagram.com/bllug.co.in?igsh=MWNvcGU3dnRleTlnag==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5 fill-current" aria-hidden="true">
+                    <path d="M7.8 2h8.4c3.2 0 5.8 2.6 5.8 5.8v8.4c0 3.2-2.6 5.8-5.8 5.8H7.8c-3.2 0-5.8-2.6-5.8-5.8V7.8C2 4.6 4.6 2 7.8 2Zm.1 2C5 4 3.5 5.4 3.5 7.8v8.4c0 2.4 1.5 3.8 4.4 3.8h8.4c2.9 0 4.4-1.4 4.4-3.8V7.8c0-2.4-1.5-3.8-4.4-3.8H7.9ZM12 7.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Zm0 2A2.5 2.5 0 1 0 12 14a2.5 2.5 0 0 0 0-4.999ZM17.4 6.1a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2Z"/>
+                </svg>
+            </a>
+                <a class="text-on-surface-variant hover:text-primary cursor-pointer" href="#" onclick="shareWebsite(event)" aria-label="Share BLLUG" role="button">
+                    <span class="material-symbols-outlined text-[20px]">share</span>
+                </a>
             </div>
         </div>
     </footer>
@@ -939,7 +945,7 @@
         let sizePopupScrollHandler = null;
         let sizePopupResizeHandler = null;
         let sizePopupDocClickHandler = null;
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwktm1rYq3Egh2QwpfLiGiLyHZ1ZnWZLiF5GAttC1s2B6gZCd64zefOEXhkreGVIpZK8A/exec";
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyeun-1Yt9v3fVuGRKO7PHRR3ohqSP-RT7QTcCF25VQSmUCcdaKGG4WezT6yu3gBPjhWg/exec";
         let otpTimerInterval = null;
         let otpSecondsRemaining = 60;
         let pageScrollPosition = 0;
@@ -1309,7 +1315,7 @@
             const submitToScript = () => fetch(googleScriptUrl, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    'Content-Type': 'text/plain;charset=utf-8'
                 },
                 body: payload.toString()
             });
@@ -1811,8 +1817,180 @@ async function verifyOtpInput() {
             }
         }
 
-        function executeGatewayPaymentRedirect() {
-            alert("[REDIRECTING_TO_PAYMENT_GATEWAY] Loading dynamic token transactions encryption tunnels. Do not close or refresh this consignment instance pipeline container...");
+        async function executeGatewayPaymentRedirect() {
+            const nextBtn = document.getElementById('btn-wizard-next');
+            const originalBtnText = nextBtn.innerText;
+            nextBtn.disabled = true;
+            nextBtn.innerText = "INITIALIZING PAYMENT...";
+
+            const email = document.getElementById('input-email').value.trim();
+            const phone = document.getElementById('input-phone').value.trim();
+            const first = document.getElementById('ship-first').value.trim();
+            const last = document.getElementById('ship-last').value.trim();
+            const street = document.getElementById('ship-street').value.trim();
+            const city = document.getElementById('ship-city').value.trim();
+            const state = document.getElementById('ship-state').value.trim();
+            const pin = document.getElementById('ship-pin').value.trim();
+            const fullAddress = `${street}, ${city}, ${state} - ${pin}, India`;
+
+            const cartItemsForOrder = globalCartStorageArray.map(item => ({
+                name: item.name,
+                size: item.size,
+                quantity: item.quantity
+            }));
+
+            try {
+                // Step 1: ask the backend to create a Razorpay order.
+                // The backend recalculates the total itself from the product
+                // catalog — it does NOT trust any price sent from this browser.
+                const orderRes = await fetch(APPS_SCRIPT_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: JSON.stringify({
+                        action: "create_order",
+                        items: cartItemsForOrder,
+                        email: email,
+                        phone: phone
+                    })
+                });
+                const orderData = await orderRes.json();
+
+                if (!orderData.success) {
+                    alert("[ORDER_ERROR] " + orderData.message);
+                    nextBtn.disabled = false;
+                    nextBtn.innerText = originalBtnText;
+                    return;
+                }
+
+                // Step 2: open Razorpay's hosted Checkout popup.
+                const rzpOptions = {
+                    key: orderData.key_id,
+                    amount: orderData.amount,
+                    currency: orderData.currency,
+                    name: "BLLUG",
+                    description: "Order payment",
+                    order_id: orderData.order_id,
+                    prefill: {
+                        name: `${first} ${last}`,
+                        email: email,
+                        contact: phone
+                    },
+                    theme: { color: "#ffffff" },
+                    handler: async function (response) {
+                        // Step 3: verify the payment signature server-side
+                        // before treating the order as confirmed.
+                        nextBtn.innerText = "VERIFYING PAYMENT...";
+                        try {
+                            const verifyRes = await fetch(APPS_SCRIPT_URL, {
+                                method: "POST",
+                                headers: { "Content-Type": "text/plain" },
+                                body: JSON.stringify({
+                                    action: "verify_payment",
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_signature: response.razorpay_signature,
+                                    customer: {
+                                        name: `${first} ${last}`,
+                                        email: email,
+                                        phone: phone,
+                                        address: fullAddress
+                                    },
+                                    items: cartItemsForOrder,
+                                    amount: orderData.amount / 100
+                                })
+                            });
+                            const verifyData = await verifyRes.json();
+
+                            if (verifyData.success) {
+                                showPaymentSuccessState();
+                            } else {
+                                alert("[VERIFICATION_FAILED] " + verifyData.message + "\nIf an amount was deducted, contact support with your payment ID: " + response.razorpay_payment_id);
+                                nextBtn.disabled = false;
+                                nextBtn.innerText = originalBtnText;
+                            }
+                        } catch (err) {
+                            alert("[NETWORK_ERROR] Payment may have succeeded but verification failed. Contact support with payment ID: " + response.razorpay_payment_id);
+                            nextBtn.disabled = false;
+                            nextBtn.innerText = originalBtnText;
+                        }
+                    },
+                    modal: {
+                        ondismiss: function () {
+                            nextBtn.disabled = false;
+                            nextBtn.innerText = originalBtnText;
+                        }
+                    }
+                };
+
+                const rzp = new Razorpay(rzpOptions);
+                rzp.on('payment.failed', function (response) {
+                    alert("[PAYMENT_FAILED] " + (response.error && response.error.description ? response.error.description : "The payment could not be completed. Please try again."));
+                    nextBtn.disabled = false;
+                    nextBtn.innerText = originalBtnText;
+                });
+                rzp.open();
+                nextBtn.disabled = false;
+                nextBtn.innerText = originalBtnText;
+
+            } catch (err) {
+                alert("[NETWORK_ERROR] Could not reach payment gateway. Please try again.");
+                nextBtn.disabled = false;
+                nextBtn.innerText = originalBtnText;
+            }
+        }
+
+        function showPaymentSuccessState() {
+            const container = document.querySelector('#checkout-view > div');
+            container.innerHTML = `
+                <div class="flex-1 flex flex-col items-center justify-center text-center px-6">
+                    <span class="material-symbols-outlined text-primary text-[64px] mb-6">check_circle</span>
+                    <h2 class="font-headline-lg text-[28px] uppercase tracking-tight text-primary mb-3">ORDER CONFIRMED</h2>
+                    <p class="font-body-md text-on-surface-variant text-[14px] max-w-sm mb-8">Your payment was verified successfully. A confirmation has been recorded — we'll be in touch with shipping updates.</p>
+                    <button onclick="window.location.reload()" class="bg-primary text-background font-label-mono text-label-limit px-8 py-4 uppercase tracking-widest font-bold rounded">RETURN TO BLLUG</button>
+                </div>`;
+            globalCartStorageArray = [];
+        }
+
+        function shareWebsite(event) {
+            event.preventDefault();
+            const shareUrl = 'https://www.bllug.co.in';
+            const shareData = {
+                title: 'BLLUG',
+                text: 'Check out BLLUG — premium limited-run streetwear.',
+                url: shareUrl
+            };
+
+            if (navigator.share) {
+                navigator.share(shareData).catch(() => {
+                    copyShareLink(shareUrl);
+                });
+                return;
+            }
+
+            const encodedUrl = encodeURIComponent(shareUrl);
+            const encodedText = encodeURIComponent('Check out BLLUG — premium limited-run streetwear.');
+            const fallbackLinks = [
+                `https://twitter.com/intent/tweet?text=${encodedText}%20${encodedUrl}`,
+                `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+                `https://wa.me/?text=${encodedText}%20${encodedUrl}`
+            ];
+
+            const fallbackWindow = window.open(fallbackLinks[0], '_blank', 'noopener,noreferrer');
+            if (!fallbackWindow) {
+                copyShareLink(shareUrl);
+            }
+        }
+
+        function copyShareLink(url) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('Link copied to clipboard: ' + url);
+                }).catch(() => {
+                    window.prompt('Copy this link:', url);
+                });
+                return;
+            }
+            window.prompt('Copy this link:', url);
         }
     </script>
 </body>

@@ -8,124 +8,188 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    fontFamily: {
+                        "headline-lg-mobile": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"],
+                        "headline-xl": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "label-mono": ["JetBrains Mono"]
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         body { background-color: #0A0A0A; color: #E5E2E1; font-family: 'Inter', sans-serif; }
-        .checkout-input { background-color: #141414 !important; border: 1px solid #262626 !important; color: #ffffff !important; font-family: 'Inter', sans-serif; font-size: 14px; padding: 14px 16px; border-radius: 4px; transition: all 0.2s ease-in-out; }
-        .checkout-input:focus { border-color: #ffffff !important; outline: none !important; box-shadow: none !important; }
-        .checkout-input::placeholder { color: #5f5f5f; }
-        .faq-summary { list-style: none; }
-        .faq-summary summary { cursor: pointer; font-weight: 700; margin-bottom: 0.75rem; }
-        .faq-summary details:not([open]) p { display: none; }
-        .faq-summary details[open] p { margin-top: 0.75rem; color: #c7c6c6; }
+        .contact-input { background-color: #141414 !important; border: 1px solid #262626 !important; color: #ffffff !important; font-family: 'Inter', sans-serif; font-size: 14px; padding: 14px 16px; border-radius: 8px; transition: all 0.2s ease-in-out; }
+        .contact-input:focus { border-color: #ffffff !important; outline: none !important; box-shadow: none !important; }
+        .contact-input::placeholder { color: #5f5f5f; }
+        .contact-card { background: #111111; border: 1px solid rgba(255,255,255,0.08); }
+        .faq-item { list-style: none; }
+        .faq-item summary { cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: space-between; user-select: none; }
+        .faq-item summary::after { content: ""; display: inline-block; width: 20px; height: 20px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23E5E2E1' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-size: contain; transition: transform 0.3s; }
+        .faq-item details[open] summary::after { transform: rotate(180deg); }
+        .faq-item details p { margin-top: 1rem; color: #c7c6c6; line-height: 1.6; }
     </style>
 </head>
-<body class="overflow-x-hidden">
+<body class="overflow-x-hidden font-body-md">
     <nav class="flex items-center justify-between px-6 py-6 border-b border-white/10">
-        <a href="index.html" class="flex items-center gap-3 text-primary font-bold uppercase tracking-[0.25em] text-sm">
+        <a href="index.html" class="flex items-center gap-3 text-primary font-label-mono uppercase tracking-[0.25em] text-sm">
             <span class="material-symbols-outlined">arrow_back</span>
             HOME
         </a>
         <div class="flex items-center gap-5">
-            <a href="index.html#series" class="font-label-mono text-[12px] uppercase tracking-[0.35em] text-on-surface-variant hover:text-primary transition-colors">SERIES</a>
-            <a href="index.html#vault" class="font-label-mono text-[12px] uppercase tracking-[0.35em] text-on-surface-variant hover:text-primary transition-colors">VAULT</a>
             <a href="contact.html" class="font-label-mono text-[12px] uppercase tracking-[0.35em] text-primary">HELP</a>
+            <a href="policy.html" class="font-label-mono text-[12px] uppercase tracking-[0.35em] text-on-surface-variant hover:text-primary transition-colors">POLICY</a>
+            <a href="terms.html" class="font-label-mono text-[12px] uppercase tracking-[0.35em] text-on-surface-variant hover:text-primary transition-colors">TERMS</a>
         </div>
     </nav>
 
+
     <header class="max-w-6xl mx-auto px-6 py-16 text-center">
         <p class="font-label-mono text-[11px] uppercase tracking-[0.45em] text-primary mb-4">HELP & SUPPORT</p>
-        <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">Questions? Issues? We're here for you.</h1>
-        <p class="max-w-2xl mx-auto text-base text-on-surface-variant">Use the form below to submit issues or requests, and review the answers to the most common questions about orders, returns, and delivery.</p>
+        <h1 class="text-4xl md:text-5xl font-headline-lg tracking-tight text-white mb-4">We're here to help</h1>
+        <p class="max-w-2xl mx-auto text-base text-on-surface-variant font-body-md">Get in touch with our support team or find answers to common questions about orders, returns, and more.</p>
     </header>
 
     <main class="max-w-6xl mx-auto px-6 pb-24">
-        <div class="grid gap-12 lg:grid-cols-[1fr_0.95fr]">
-            <section class="space-y-10">
-                <div class="rounded-[32px] border border-white/10 bg-[#0E0E0E] p-8">
-                    <p class="font-label-mono text-[11px] uppercase tracking-[0.45em] text-primary mb-3">SUPPORT CONTACTS</p>
-                    <div class="grid gap-4 sm:grid-cols-2">
-                        <div class="rounded-3xl border border-outline-variant/20 bg-[#121212] p-6">
-                            <p class="text-xs uppercase tracking-[0.35em] text-on-surface-variant mb-2">Customer Care</p>
-                            <h2 class="text-xl font-semibold text-white mb-2">Riya Anand</h2>
-                            <p class="text-sm text-on-surface-variant leading-relaxed">riya@bllug.co<br/>+91 98765 43210</p>
-                        </div>
-                        <div class="rounded-3xl border border-outline-variant/20 bg-[#121212] p-6">
-                            <p class="text-xs uppercase tracking-[0.35em] text-on-surface-variant mb-2">Support Lead</p>
-                            <h2 class="text-xl font-semibold text-white mb-2">Aarav Mehta</h2>
-                            <p class="text-sm text-on-surface-variant leading-relaxed">aarav@bllug.co<br/>+91 91234 56789</p>
-                        </div>
-                        <div class="sm:col-span-2 rounded-3xl border border-outline-variant/20 bg-[#121212] p-6">
-                            <p class="text-xs uppercase tracking-[0.35em] text-on-surface-variant mb-2">Operations</p>
-                            <h2 class="text-xl font-semibold text-white mb-2">Nina Roy</h2>
-                            <p class="text-sm text-on-surface-variant leading-relaxed">nina@bllug.co<br/>+91 99887 66554</p>
-                        </div>
+        <!-- Contact Cards Section -->
+        <section class="mb-20">
+            <div class="mb-8">
+                <p class="font-label-mono text-[11px] uppercase tracking-[0.45em] text-primary">DIRECT CONTACTS</p>
+            </div>
+            <div class="grid gap-6 md:grid-cols-3">
+                <div class="contact-card rounded-[24px] p-8 hover:border-white/20 transition-all">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="material-symbols-outlined text-primary text-2xl">person</span>
+                        <p class="text-xs uppercase tracking-[0.35em] text-on-surface-variant font-label-mono">Customer Care</p>
                     </div>
+                    <h3 class="text-lg font-headline-lg text-white mb-3">Riya Anand</h3>
+                    <p class="text-sm text-on-surface-variant leading-relaxed mb-4">
+                        <a href="mailto:riya@bllug.co" class="hover:text-primary transition-colors">riya@bllug.co</a><br/>
+                        <a href="tel:+919876543210" class="hover:text-primary transition-colors">+91 98765 43210</a>
+                    </p>
                 </div>
 
-                <div class="rounded-[32px] border border-white/10 bg-[#0E0E0E] p-8">
-                    <p class="font-label-mono text-[11px] uppercase tracking-[0.45em] text-primary mb-3">FAQ</p>
+                <div class="contact-card rounded-[24px] p-8 hover:border-white/20 transition-all">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="material-symbols-outlined text-primary text-2xl">support_agent</span>
+                        <p class="text-xs uppercase tracking-[0.35em] text-on-surface-variant font-label-mono">Support Lead</p>
+                    </div>
+                    <h3 class="text-lg font-headline-lg text-white mb-3">Aarav Mehta</h3>
+                    <p class="text-sm text-on-surface-variant leading-relaxed mb-4">
+                        <a href="mailto:aarav@bllug.co" class="hover:text-primary transition-colors">aarav@bllug.co</a><br/>
+                        <a href="tel:+919123456789" class="hover:text-primary transition-colors">+91 91234 56789</a>
+                    </p>
+                </div>
+
+                <div class="contact-card rounded-[24px] p-8 hover:border-white/20 transition-all">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="material-symbols-outlined text-primary text-2xl">settings</span>
+                        <p class="text-xs uppercase tracking-[0.35em] text-on-surface-variant font-label-mono">Operations</p>
+                    </div>
+                    <h3 class="text-lg font-headline-lg text-white mb-3">Nina Roy</h3>
+                    <p class="text-sm text-on-surface-variant leading-relaxed mb-4">
+                        <a href="mailto:nina@bllug.co" class="hover:text-primary transition-colors">nina@bllug.co</a><br/>
+                        <a href="tel:+919988766554" class="hover:text-primary transition-colors">+91 99887 66554</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Section with Form and FAQ -->
+        <div class="grid gap-12 lg:grid-cols-[1.2fr_1fr]">
+            <!-- Form Section -->
+            <section>
+                <div class="mb-8">
+                    <p class="font-label-mono text-[11px] uppercase tracking-[0.45em] text-primary">QUICK MESSAGE</p>
+                </div>
+                <div class="contact-card rounded-[32px] p-8 md:p-10">
+                    <form id="contact-support-form" class="space-y-6">
+                        <div class="grid gap-4 sm:grid-cols-2">
+                            <div class="flex flex-col gap-2">
+                                <label for="contact-name" class="text-xs uppercase tracking-[0.3em] text-on-surface-variant font-label-mono">Name</label>
+                                <input id="contact-name" class="contact-input" type="text" placeholder="Your name" required />
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label for="contact-email" class="text-xs uppercase tracking-[0.3em] text-on-surface-variant font-label-mono">Email</label>
+                                <input id="contact-email" class="contact-input" type="email" placeholder="you@email.com" required />
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label for="contact-type" class="text-xs uppercase tracking-[0.3em] text-on-surface-variant font-label-mono">Type</label>
+                            <select id="contact-type" class="contact-input" required>
+                                <option value="">Select inquiry type</option>
+                                <option value="order">Order Issue</option>
+                                <option value="return">Return / Exchange</option>
+                                <option value="shipping">Shipping Question</option>
+                                <option value="product">Product Question</option>
+                                <option value="general">General Inquiry</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label for="contact-subject" class="text-xs uppercase tracking-[0.3em] text-on-surface-variant font-label-mono">Subject</label>
+                            <input id="contact-subject" class="contact-input" type="text" placeholder="Brief subject" required />
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label for="contact-message" class="text-xs uppercase tracking-[0.3em] text-on-surface-variant font-label-mono">Message</label>
+                            <textarea id="contact-message" rows="5" class="contact-input resize-none" placeholder="Describe your issue or request in detail" required></textarea>
+                        </div>
+                        <div class="space-y-3">
+                            <button id="contact-submit" type="submit" class="w-full bg-primary text-background font-label-mono text-xs px-8 py-4 uppercase tracking-widest hover:bg-on-surface-variant hover:text-primary transition-all rounded-lg">Send Message</button>
+                            <p id="contact-feedback" class="text-sm text-primary opacity-0 transition-all duration-300 text-center"></p>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- FAQ Section -->
+            <section>
+                <div class="mb-8">
+                    <p class="font-label-mono text-[11px] uppercase tracking-[0.45em] text-primary">FREQUENTLY ASKED</p>
+                </div>
+                <div class="contact-card rounded-[32px] p-8 md:p-10">
                     <div class="space-y-4">
-                        <details class="faq-summary rounded-3xl border border-white/10 bg-[#121212] p-6">
-                            <summary>How do I place an order?</summary>
-                            <p>Browse our series, select the product you want, choose your size, and add it to the bag. Then proceed to checkout to complete payment and delivery details.</p>
+                        <details class="faq-item">
+                            <summary class="rounded-xl px-4 py-3 hover:bg-white/5 transition-colors">How do I place an order?</summary>
+                            <p class="px-4">Browse our series, select the product you want, choose your size and color, and add it to the bag. Then proceed to checkout to complete payment and delivery details.</p>
                         </details>
-                        <details class="faq-summary rounded-3xl border border-white/10 bg-[#121212] p-6">
-                            <summary>Can I change my order after purchase?</summary>
-                            <p>Order changes are only available before the order is processed. Contact support as soon as possible with your order ID and requested changes.</p>
+
+                        <details class="faq-item">
+                            <summary class="rounded-xl px-4 py-3 hover:bg-white/5 transition-colors">Can I change my order after purchase?</summary>
+                            <p class="px-4">Order changes are only available within 1 hour of placement. Contact support immediately with your order ID and requested changes. We'll do our best to accommodate if the order hasn't been processed yet.</p>
                         </details>
-                        <details class="faq-summary rounded-3xl border border-white/10 bg-[#121212] p-6">
-                            <summary>What is your return policy?</summary>
-                            <p>We accept returns on defective or wrong items only. Reach out to support within 7 days of delivery to start a return request.</p>
+
+                        <details class="faq-item">
+                            <summary class="rounded-xl px-4 py-3 hover:bg-white/5 transition-colors">What is your return policy?</summary>
+                            <p class="px-4">We accept returns on defective or wrong items only. Reach out to support within 7 days of delivery to start a return request. Items must be in original condition with tags attached.</p>
                         </details>
-                        <details class="faq-summary rounded-3xl border border-white/10 bg-[#121212] p-6">
-                            <summary>How long does shipping take?</summary>
-                            <p>Shipping timelines depend on your location. Most orders are dispatched within 2-3 business days and delivered within 7-12 business days.</p>
+
+                        <details class="faq-item">
+                            <summary class="rounded-xl px-4 py-3 hover:bg-white/5 transition-colors">How long does shipping take?</summary>
+                            <p class="px-4">Most orders are dispatched within 2-3 business days. Delivery typically takes 5-10 business days within India, depending on your location. We'll send tracking updates via email.</p>
                         </details>
-                        <details class="faq-summary rounded-3xl border border-white/10 bg-[#121212] p-6">
-                            <summary>How do I track my order?</summary>
-                            <p>Once your order ships, we will share a tracking number via email. You can also contact support if the tracking link has not arrived.</p>
+
+                        <details class="faq-item">
+                            <summary class="rounded-xl px-4 py-3 hover:bg-white/5 transition-colors">How do I track my order?</summary>
+                            <p class="px-4">Once your order ships, we'll send a tracking number via email. Click the link in your confirmation to track in real-time. If you don't see it, check your spam folder or contact support.</p>
+                        </details>
+
+                        <details class="faq-item">
+                            <summary class="rounded-xl px-4 py-3 hover:bg-white/5 transition-colors">Do you ship internationally?</summary>
+                            <p class="px-4">Currently, we ship within India only. For international inquiries, please contact our support team and we'll explore options with you.</p>
                         </details>
                     </div>
                 </div>
             </section>
-
-            <aside class="rounded-[32px] border border-white/10 bg-[#0E0E0E] p-8">
-                <p class="font-label-mono text-[11px] uppercase tracking-[0.45em] text-primary mb-3">SUBMIT A REQUEST</p>
-                <form id="contact-support-form" class="space-y-5">
-                    <div class="grid gap-4 sm:grid-cols-2">
-                        <div class="flex flex-col gap-2">
-                            <label for="contact-name" class="text-xs uppercase tracking-[0.3em] text-on-surface-variant">Name</label>
-                            <input id="contact-name" class="checkout-input" type="text" placeholder="Your name" required />
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <label for="contact-email" class="text-xs uppercase tracking-[0.3em] text-on-surface-variant">Email</label>
-                            <input id="contact-email" class="checkout-input" type="email" placeholder="you@email.com" required />
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <label for="contact-subject" class="text-xs uppercase tracking-[0.3em] text-on-surface-variant">Subject</label>
-                        <input id="contact-subject" class="checkout-input" type="text" placeholder="Issue or request summary" required />
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <label for="contact-type" class="text-xs uppercase tracking-[0.3em] text-on-surface-variant">Type</label>
-                        <select id="contact-type" class="checkout-input bg-[#0D0D0D]" required>
-                            <option value="issue">Issue</option>
-                            <option value="request">Request</option>
-                            <option value="general">General help</option>
-                        </select>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <label for="contact-message" class="text-xs uppercase tracking-[0.3em] text-on-surface-variant">Message</label>
-                        <textarea id="contact-message" rows="6" class="checkout-input resize-none" placeholder="Describe your issue or request" required></textarea>
-                    </div>
-                    <div class="space-y-3">
-                        <button id="contact-submit" type="submit" class="w-full bg-primary text-background font-label-mono text-label-limit px-8 py-4 uppercase tracking-widest hover:bg-on-surface-variant hover:text-primary transition-all">Send Message</button>
-                        <p id="contact-feedback" class="text-sm text-primary opacity-0 transition-all duration-300"></p>
-                    </div>
-                </form>
-            </aside>
         </div>
     </main>
+
 
     <script>
         document.getElementById('contact-support-form')?.addEventListener('submit', function(event) {
@@ -137,32 +201,38 @@
             const message = document.getElementById('contact-message')?.value.trim();
             const feedback = document.getElementById('contact-feedback');
             const button = document.getElementById('contact-submit');
-            if (!name || !email || !email.includes('@') || !subject || !message) {
+
+            if (!name || !email || !email.includes('@') || !subject || !type || !message) {
                 alert('Please complete all form fields with valid values.');
                 return;
             }
+
             if (button) {
                 button.disabled = true;
                 button.classList.add('opacity-60', 'cursor-not-allowed');
                 button.innerText = 'SENDING...';
             }
+
             console.log('Support request submitted:', { name, email, subject, type, message });
+
             setTimeout(() => {
                 if (button) {
-                    button.innerText = 'MESSAGE SENT';
+                    button.innerText = 'MESSAGE SENT ✓';
                     button.classList.remove('opacity-60', 'cursor-not-allowed');
                 }
                 if (feedback) {
-                    feedback.innerText = 'Your request has been recorded. We will respond shortly.';
+                    feedback.innerText = 'Thank you! We\'ll respond within 24 hours.';
                     feedback.classList.add('opacity-100');
                 }
                 document.getElementById('contact-support-form')?.reset();
+
                 setTimeout(() => {
                     if (feedback) {
                         feedback.classList.remove('opacity-100');
                     }
                     if (button) {
                         button.innerText = 'Send Message';
+                        button.disabled = false;
                     }
                 }, 5000);
             }, 700);

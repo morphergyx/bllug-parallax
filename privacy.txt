@@ -1,0 +1,141 @@
+PRIVACY POLICY – BLLUG
+Effective Date: 26th June, 2026
+ Last Updated: 26th June, 2026
+
+1. INTRODUCTION
+This Privacy Policy describes how bllug (“we”, “us”, “our”) collects, uses, discloses, and safeguards your personal information when you visit our website, make a purchase, or interact with our services (collectively, the “Services”).
+By accessing or using our Services, you agree to the collection and use of information in accordance with this Privacy Policy.
+
+2. CHANGES TO THIS POLICY
+We reserve the right to update or modify this Privacy Policy at any time to reflect:
+Changes in legal or regulatory requirements
+Updates to our business practices
+Improvements to our services
+Any changes will be posted on this page with an updated “Last Updated” date.
+
+3. INFORMATION WE COLLECT
+We collect different types of personal information depending on how you interact with our Services.
+A. Information You Provide Directly
+Name
+Email address
+Phone number
+Billing and shipping address
+Account login details (username, password)
+Order details and purchase history
+Customer support communications
+
+B. Automatically Collected Information (Usage Data)
+We may collect:
+IP address
+Device type and browser
+Pages visited and time spent
+Interaction data (clicks, scrolls, cart activity)
+This data is collected using technologies like cookies, pixels, and analytics tools.
+
+C. Information from Third Parties
+We may receive information from:
+Payment gateways (for transaction processing)
+E-commerce platforms (e.g., Shopify or similar services)
+Marketing and analytics partners
+
+4. HOW WE USE YOUR INFORMATION
+We use your information for the following purposes:
+A. Order Fulfillment
+Process and deliver orders
+Manage payments
+Send order confirmations and updates
+B. Customer Support
+Respond to queries
+Resolve complaints
+Provide assistance
+C. Marketing & Promotions
+Send offers, updates, and promotional messages
+Personalize your shopping experience
+(You can opt out anytime via unsubscribe links.)
+
+D. Security & Fraud Prevention
+Detect fraudulent transactions
+Protect our platform and users
+
+E. Service Improvement
+Analyze user behavior
+Improve website functionality and user experience
+
+5. COOKIES & TRACKING TECHNOLOGIES
+We use cookies to:
+Enhance website functionality
+Remember user preferences
+Analyze traffic and performance
+You can control cookies through your browser settings. However, disabling cookies may affect certain features of the website.
+
+6. HOW WE SHARE YOUR INFORMATION
+We may share your information with:
+A. Service Providers
+Payment processors
+Logistics and delivery partners
+IT and cloud service providers
+Customer support tools
+
+B. Marketing & Advertising Partners
+To show relevant ads and promotions.
+
+C. Legal Authorities
+When required to:
+Comply with legal obligations
+Respond to lawful requests
+Protect rights and prevent fraud
+
+D. Business Transfers
+In case of merger, acquisition, or sale of assets.
+
+7. DATA SECURITY
+We implement reasonable security measures to protect your personal information.
+However:
+No system is 100% secure
+Data transmission over the internet carries inherent risks
+We advise users to keep login credentials confidential.
+
+8. DATA RETENTION
+We retain your personal information only as long as necessary to:
+Fulfill orders and services
+Comply with legal obligations
+Resolve disputes
+
+9. YOUR RIGHTS
+Depending on your location, you may have the right to:
+Access your personal data
+Correct inaccurate information
+Request deletion of your data
+Withdraw consent for marketing
+Opt out of targeted advertising
+To exercise these rights, contact us at support@bllug.com.
+
+10. CHILDREN’S PRIVACY
+Our Services are not intended for individuals under the age of 16.
+We do not knowingly collect personal data from children. If such data is identified, it will be deleted promptly.
+
+11. THIRD-PARTY LINKS
+Our website may contain links to external websites.
+We are not responsible for:
+Their privacy practices
+Their content or security
+Users are advised to review third-party policies separately.
+
+12. INTERNATIONAL USERS
+Your information may be processed and stored outside your country.
+By using our Services, you consent to such data transfers in accordance with this policy.
+
+13. USER-GENERATED CONTENT
+If you post reviews or content publicly:
+It may be visible to other users
+We are not responsible for misuse of publicly shared information
+
+14. COMPLAINTS
+If you have concerns about how your data is handled:
+Contact us first at support@bllug.com
+You may also approach your local data protection authority
+
+15. CONTACT INFORMATION
+For any privacy-related queries or requests:
+📧 support@bllug.co.in
+
