@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0A0A0A" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <title>BLLUG | WEAR YOUR EDGE</title>
+    <title>BLLUG | EXCLUSIVITY REDEFINED</title>
     <link rel="icon" href="images/favicon-white.png" type="image/png">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     
@@ -219,7 +219,24 @@
             }
 
             .parallax-window .absolute.left-0 {
-                display: none !important;
+                display: flex !important;
+                width: 2rem !important;
+                left: 0.25rem !important;
+                z-index: 25 !important;
+            }
+
+            .parallax-window .absolute.left-0 > div {
+                width: 75vh !important;
+            }
+
+            .parallax-window .absolute.left-0 span {
+                font-size: 10px !important;
+                line-height: 1.2 !important;
+                letter-spacing: 0.18em !important;
+                padding: 0.35rem 0.55rem !important;
+                border-radius: 0.25rem !important;
+                background: rgba(10, 10, 10, 0.28) !important;
+                text-shadow: 0 1px 5px rgba(0,0,0,0.85);
             }
 
             #hero-logo-container,
@@ -364,22 +381,70 @@
             scrollbar-width: none;
         }
 
-        #tab-panels {
+        .tab-panel {
             scrollbar-color: rgba(255,255,255,0.28) rgba(255,255,255,0.05);
         }
-        #tab-panels::-webkit-scrollbar {
+        .tab-panel::-webkit-scrollbar {
             width: 5px;
         }
-        #tab-panels::-webkit-scrollbar-track {
+        .tab-panel::-webkit-scrollbar-track {
             background: rgba(255,255,255,0.04);
             border-radius: 999px;
         }
-        #tab-panels::-webkit-scrollbar-thumb {
+        .tab-panel::-webkit-scrollbar-thumb {
             background: rgba(255,255,255,0.18);
             border-radius: 999px;
         }
-        #tab-panels::-webkit-scrollbar-thumb:hover {
+        .tab-panel::-webkit-scrollbar-thumb:hover {
             background: rgba(255,255,255,0.32);
+        }
+
+        .stock-urgency {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.34);
+            background: linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04));
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 0 26px rgba(255,255,255,0.14);
+            animation: stockPulse 1.6s ease-in-out infinite;
+        }
+
+        .stock-urgency::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent);
+            transform: translateX(-100%);
+            animation: stockSweep 2.4s ease-in-out infinite;
+        }
+
+        #size-chart-overlay > div > button:nth-of-type(2) {
+            display: none;
+        }
+
+        .stock-urgency strong,
+        .stock-urgency span {
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes stockPulse {
+            0%, 100% {
+                transform: scale(1);
+                border-color: rgba(255,255,255,0.28);
+            }
+            50% {
+                transform: scale(1.015);
+                border-color: rgba(255,255,255,0.62);
+            }
+        }
+
+        @keyframes stockSweep {
+            0%, 35% {
+                transform: translateX(-100%);
+            }
+            70%, 100% {
+                transform: translateX(100%);
+            }
         }
 
         .checkout-input {
@@ -581,48 +646,51 @@
                 </button>
                 <div id="carousel-track" class="w-full h-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth" style="-webkit-overflow-scrolling: touch;"></div>
                 <div id="carousel-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 z-40 flex gap-2.5"></div>
-                <div id="size-chart-overlay" class="absolute inset-0 z-40 hidden bg-black/90 backdrop-blur-sm p-6 flex items-center justify-center">
-                    <div class="relative w-full max-w-3xl max-h-[90%] overflow-y-auto rounded-[32px] border border-outline-variant/40 bg-[#111111] p-6 shadow-2xl">
+                <div id="size-chart-overlay" class="fixed inset-0 z-[70] hidden bg-black/90 backdrop-blur-sm p-4 md:p-6 flex items-center justify-center">
+                    <div class="relative w-full max-w-[390px] md:max-w-3xl max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-2xl md:rounded-[32px] border border-outline-variant/40 bg-[#111111] p-4 md:p-6 shadow-2xl">
+                        <button onclick="closeSizeChart()" aria-label="Close size guide" class="absolute top-3 right-3 h-10 w-10 rounded-full border border-outline-variant/40 bg-background/80 text-primary hover:bg-primary hover:text-background transition-colors flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[18px]">close</span>
+                        </button>
                         <button onclick="closeSizeChart()" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors text-[22px]">×</button>
-                        <div class="text-center mb-6">
-                            <p class="font-label-mono text-[11px] uppercase tracking-[0.35em] text-on-surface-variant mb-2">SIZE GUIDE</p>
-                            <h3 class="font-headline-lg text-[22px] uppercase tracking-tight text-primary">FITTING CHART</h3>
-                            <p class="font-body-md text-[13px] text-on-surface-variant mt-2">All dimensions are in inches. +/-1 inch considered normal.</p>
+                        <div class="text-center mb-4 md:mb-6 px-8">
+                            <p class="font-label-mono text-[10px] md:text-[11px] uppercase tracking-[0.3em] md:tracking-[0.35em] text-on-surface-variant mb-2">SIZE GUIDE</p>
+                            <h3 class="font-headline-lg text-[20px] md:text-[22px] uppercase tracking-tight text-primary">FITTING CHART</h3>
+                            <p class="font-body-md text-[12px] md:text-[13px] leading-5 text-on-surface-variant mt-2">All dimensions are in inches. +/-1 inch considered normal.</p>
                         </div>
-                        <div class="overflow-x-auto rounded-3xl border border-outline-variant/20 bg-[#0D0D0D]">
-                            <table class="w-full min-w-[420px] border-collapse text-left">
+                        <div class="overflow-hidden rounded-xl md:rounded-3xl border border-outline-variant/20 bg-[#0D0D0D]">
+                            <table class="w-full table-fixed border-collapse text-left">
                                 <thead class="bg-surface-container-high border-b border-outline-variant/30">
                                     <tr>
-                                        <th class="px-4 py-3 font-label-mono text-[11px] uppercase tracking-[0.3em] text-on-surface-variant">SIZE</th>
-                                        <th class="px-4 py-3 font-label-mono text-[11px] uppercase tracking-[0.3em] text-on-surface-variant">CHEST</th>
-                                        <th class="px-4 py-3 font-label-mono text-[11px] uppercase tracking-[0.3em] text-on-surface-variant">LENGTH</th>
+                                        <th class="w-[28%] px-3 md:px-4 py-3 font-label-mono text-[9px] md:text-[11px] uppercase tracking-[0.22em] md:tracking-[0.3em] text-on-surface-variant">SIZE</th>
+                                        <th class="w-[38%] px-3 md:px-4 py-3 font-label-mono text-[9px] md:text-[11px] uppercase tracking-[0.22em] md:tracking-[0.3em] text-on-surface-variant">CHEST</th>
+                                        <th class="w-[34%] px-3 md:px-4 py-3 font-label-mono text-[9px] md:text-[11px] uppercase tracking-[0.22em] md:tracking-[0.3em] text-on-surface-variant">LENGTH</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr class="border-b border-outline-variant/20 even:bg-white/5">
-                                        <td class="px-4 py-4 font-label-mono text-[13px] text-primary">S</td>
-                                        <td class="px-4 py-4 font-label-mono text-[13px] text-on-surface">40-42</td>
-                                        <td class="px-4 py-4 font-label-mono text-[13px] text-on-surface">24</td>
+                                        <td class="px-3 md:px-4 py-3 md:py-4 font-label-mono text-[12px] md:text-[13px] text-primary">S</td>
+                                        <td class="px-3 md:px-4 py-3 md:py-4 font-label-mono text-[12px] md:text-[13px] text-on-surface">40-42</td>
+                                        <td class="px-3 md:px-4 py-3 md:py-4 font-label-mono text-[12px] md:text-[13px] text-on-surface">24</td>
                                     </tr>
                                     <tr class="border-b border-outline-variant/20 even:bg-white/5">
-                                        <td class="px-4 py-4 font-label-mono text-[13px] text-primary">M</td>
-                                        <td class="px-4 py-4 font-label-mono text-[13px] text-on-surface">42-44</td>
-                                        <td class="px-4 py-4 font-label-mono text-[13px] text-on-surface">25</td>
+                                        <td class="px-3 md:px-4 py-3 md:py-4 font-label-mono text-[12px] md:text-[13px] text-primary">M</td>
+                                        <td class="px-3 md:px-4 py-3 md:py-4 font-label-mono text-[12px] md:text-[13px] text-on-surface">42-44</td>
+                                        <td class="px-3 md:px-4 py-3 md:py-4 font-label-mono text-[12px] md:text-[13px] text-on-surface">25</td>
                                     </tr>
                                     <tr class="border-b border-outline-variant/20 even:bg-white/5">
-                                        <td class="px-4 py-4 font-label-mono text-[13px] text-primary">L</td>
-                                        <td class="px-4 py-4 font-label-mono text-[13px] text-on-surface">44-46</td>
-                                        <td class="px-4 py-4 font-label-mono text-[13px] text-on-surface">26</td>
+                                        <td class="px-3 md:px-4 py-3 md:py-4 font-label-mono text-[12px] md:text-[13px] text-primary">L</td>
+                                        <td class="px-3 md:px-4 py-3 md:py-4 font-label-mono text-[12px] md:text-[13px] text-on-surface">44-46</td>
+                                        <td class="px-3 md:px-4 py-3 md:py-4 font-label-mono text-[12px] md:text-[13px] text-on-surface">26</td>
                                     </tr>
                                     <tr class="border-b border-outline-variant/20 even:bg-white/5">
-                                        <td class="px-4 py-4 font-label-mono text-[13px] text-primary">XL</td>
-                                        <td class="px-4 py-4 font-label-mono text-[13px] text-on-surface">46-48</td>
-                                        <td class="px-4 py-4 font-label-mono text-[13px] text-on-surface">27</td>
+                                        <td class="px-3 md:px-4 py-3 md:py-4 font-label-mono text-[12px] md:text-[13px] text-primary">XL</td>
+                                        <td class="px-3 md:px-4 py-3 md:py-4 font-label-mono text-[12px] md:text-[13px] text-on-surface">46-48</td>
+                                        <td class="px-3 md:px-4 py-3 md:py-4 font-label-mono text-[12px] md:text-[13px] text-on-surface">27</td>
                                     </tr>
                                     <tr class="even:bg-white/5">
-                                        <td class="px-4 py-4 font-label-mono text-[13px] text-primary">XXL</td>
-                                        <td class="px-4 py-4 font-label-mono text-[13px] text-on-surface">48-50</td>
-                                        <td class="px-4 py-4 font-label-mono text-[13px] text-on-surface">28</td>
+                                        <td class="px-3 md:px-4 py-3 md:py-4 font-label-mono text-[12px] md:text-[13px] text-primary">XXL</td>
+                                        <td class="px-3 md:px-4 py-3 md:py-4 font-label-mono text-[12px] md:text-[13px] text-on-surface">48-50</td>
+                                        <td class="px-3 md:px-4 py-3 md:py-4 font-label-mono text-[12px] md:text-[13px] text-on-surface">28</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -630,14 +698,14 @@
                     </div>
                 </div>
             </div>
-            <div class="col-span-1 md:col-span-5 p-8 flex flex-col justify-between h-auto md:h-full overflow-visible bg-[#0D0D0D]">
-                <div>
+            <div class="col-span-1 md:col-span-5 p-6 md:p-7 flex flex-col gap-5 h-auto md:h-full overflow-visible md:overflow-hidden bg-[#0D0D0D]">
+                <div class="flex-shrink-0">
                     <div class="flex justify-between items-start mb-2">
                         <h2 id="modal-title" class="font-headline-lg text-[28px] leading-8 tracking-tight text-primary uppercase">Skyburn Ombre T-Shirt</h2>
                     </div>
-                    <p class="font-label-mono text-body-md text-on-surface mb-8">RS. <span id="modal-price">2,049</span></p>
-                    <div class="mb-8">
-                        <div class="flex justify-between items-center mb-4">
+                    <p class="font-label-mono text-body-md text-on-surface mb-5">RS. <span id="modal-price">2,049</span></p>
+                    <div class="mb-5">
+                        <div class="flex justify-between items-center mb-3">
                             <span class="font-label-mono text-label-mono tracking-widest text-on-surface-variant uppercase">[SELECT_SIZE]</span>
                             <button onclick="openSizeChart()" class="font-label-mono text-[11px] uppercase tracking-wider border-b border-outline-variant text-on-surface-variant hover:text-primary transition-colors">Size Guide</button>
                         </div>
@@ -648,20 +716,23 @@
                             <button onclick="selectSize(this)" data-size="XL" class="size-btn py-3 border border-outline-variant/40 rounded bg-transparent font-label-mono text-label-mono text-primary hover:border-primary transition-all uppercase">XL</button>
                             <button onclick="selectSize(this)" data-size="XXL" class="size-btn py-3 border border-outline-variant/40 rounded bg-transparent font-label-mono text-label-mono text-primary hover:border-primary transition-all uppercase">XXL</button>
                         </div>
-                        <p id="modal-stock-note" class="mt-3 font-label-mono text-[12px] text-on-surface-variant uppercase tracking-[0.2em]">Only 100 pieces left out of 100</p>
+                        <div id="modal-stock-note" class="stock-urgency mt-3 rounded px-3 py-2 font-label-mono uppercase tracking-[0.14em]">
+                            <strong class="block text-[12px] text-primary">Only 100 / 100 left</strong>
+                            <span class="block mt-1 text-[9px] text-on-surface-variant">Limited drop. No restocks.</span>
+                        </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-3 mb-10">
-                        <button onclick="addSelectedToCart(true)" class="w-full bg-transparent border border-primary text-primary font-label-mono text-label-limit py-4 hover:bg-primary/10 transition-all uppercase tracking-widest">ADD TO BAG</button>
-                        <button onclick="addSelectedToCart(true)" class="w-full bg-primary text-background font-label-mono text-label-limit py-4 hover:bg-on-surface-variant hover:text-primary transition-all uppercase tracking-widest font-bold">BUY NOW</button>
+                    <div class="grid grid-cols-2 gap-3 mb-5">
+                        <button onclick="addSelectedToCart(true)" class="w-full bg-transparent border border-primary text-primary font-label-mono text-label-limit py-3 hover:bg-primary/10 transition-all uppercase tracking-widest">ADD TO BAG</button>
+                        <button onclick="addSelectedToCart(true)" class="w-full bg-primary text-background font-label-mono text-label-limit py-3 hover:bg-on-surface-variant hover:text-primary transition-all uppercase tracking-widest font-bold">BUY NOW</button>
                     </div>
                 </div>
-                <div class="border-t border-outline-variant/30 pt-6">
-                    <div class="flex border-b border-outline-variant/20 mb-4 font-label-mono text-[12px] tracking-wider">
+                <div class="border-t border-outline-variant/30 pt-4 flex min-h-0 flex-col md:flex-1">
+                    <div class="flex border-b border-outline-variant/20 mb-3 font-label-mono text-[12px] tracking-wider">
                         <button onclick="switchTab('details-content', this)" class="tab-link pb-2 border-b-2 border-primary text-primary pr-4 font-bold">Details </button>
                         <button onclick="switchTab('description-content', this)" class="tab-link pb-2 border-b-2 border-transparent text-on-surface-variant px-4 hover:text-primary transition-colors">Description</button>
                         <button onclick="switchTab('washcare-content', this)" class="tab-link pb-2 border-b-2 border-transparent text-on-surface-variant px-4 hover:text-primary transition-colors">Washcare</button>
                     </div>
-                    <div id="tab-panels" class="font-body-md text-[14px] leading-relaxed text-on-surface-variant h-[220px] min-h-[220px] overflow-hidden pr-2 overscroll-contain">
+                    <div id="tab-panels" class="font-body-md text-[14px] leading-relaxed text-on-surface-variant h-[320px] md:h-auto md:min-h-0 md:flex-1 overflow-hidden pr-2 overscroll-contain">
                         <div id="details-content" class="tab-panel block h-full overflow-y-auto pr-2 pb-2">
                             <div class="space-y-4">
                                 <ul class="list-disc list-inside space-y-1 mb-4 font-label-mono text-[12px]">
@@ -673,9 +744,9 @@
                                 </ul>
                             </div>
                         </div>
-                        <div id="description-content" class="tab-panel hidden font-label-mono h-full overflow-y-auto pr-2 pb-2">
+                        <div id="description-content" class="tab-panel hidden h-full overflow-y-auto pr-2 pb-10">
                             <div class="space-y-4">
-                                <p id="modal-description" class="text-justify text-primary text-[12px]"></p>
+                                <p id="modal-description" class="font-body-md text-left text-primary text-[11px] md:text-[12px] leading-[1.65]"></p>
                             </div>
                         </div>
                         <div id="washcare-content" class="tab-panel hidden font-label-mono h-full overflow-y-auto pr-2 pb-2">
@@ -716,7 +787,7 @@
                 </div>
                 <div class="flex justify-between text-on-surface-variant">
                     <span>SHIPPING_FEE</span>
-                    <span id="cart-shipping">RS. 0</span>
+                    <span id="cart-shipping">FREE</span>
                 </div>
                 <div class="border-t border-outline-variant/10 my-2 pt-2 flex justify-between text-primary font-bold text-[15px]">
                     <span>TOTAL_AMOUNT</span>
@@ -949,6 +1020,8 @@
         let sizePopupResizeHandler = null;
         let sizePopupDocClickHandler = null;
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyeun-1Yt9v3fVuGRKO7PHRR3ohqSP-RT7QTcCF25VQSmUCcdaKGG4WezT6yu3gBPjhWg/exec";
+        const PRODUCT_STOCK_LIMIT = 100;
+        const CONFIRMED_SOLD_STORAGE_KEY = 'bllug_confirmed_sold_count';
         let otpTimerInterval = null;
         let otpSecondsRemaining = 60;
         let pageScrollPosition = 0;
@@ -1099,13 +1172,56 @@
             activeSelectedSize = selectedBtn.getAttribute('data-size');
         }
 
+        function readConfirmedSoldCount() {
+            const storedValue = Number(localStorage.getItem(CONFIRMED_SOLD_STORAGE_KEY));
+            if (!Number.isFinite(storedValue)) return 0;
+            return Math.min(PRODUCT_STOCK_LIMIT, Math.max(0, storedValue));
+        }
+
+        function writeConfirmedSoldCount(nextValue) {
+            const cleanValue = Math.min(PRODUCT_STOCK_LIMIT, Math.max(0, Number(nextValue) || 0));
+            localStorage.setItem(CONFIRMED_SOLD_STORAGE_KEY, String(cleanValue));
+        }
+
+        function getCartReservedPieces() {
+            return globalCartStorageArray.reduce((sum, item) => sum + item.quantity, 0);
+        }
+
+        function getAvailablePieces() {
+            return Math.max(0, PRODUCT_STOCK_LIMIT - readConfirmedSoldCount() - getCartReservedPieces());
+        }
+
+        function extractVerifiedRemainingStock(payload) {
+            if (!payload || typeof payload !== 'object') return null;
+            const possibleValues = [
+                payload.remainingStock,
+                payload.remaining_stock,
+                payload.stockRemaining,
+                payload.stock_remaining,
+                payload.piecesRemaining,
+                payload.pieces_remaining
+            ];
+            const cleanValue = possibleValues.find(value => Number.isFinite(Number(value)));
+            if (cleanValue === undefined) return null;
+            return Math.min(PRODUCT_STOCK_LIMIT, Math.max(0, Number(cleanValue)));
+        }
+
+        function recordSuccessfulPurchase(purchasedQuantity, stockPayload) {
+            const verifiedRemainingStock = extractVerifiedRemainingStock(stockPayload);
+            if (verifiedRemainingStock !== null) {
+                writeConfirmedSoldCount(PRODUCT_STOCK_LIMIT - verifiedRemainingStock);
+                return;
+            }
+            writeConfirmedSoldCount(readConfirmedSoldCount() + purchasedQuantity);
+        }
+
         function updateModalStockAvailability() {
-            const totalPieces = 100;
-            const reservedPieces = globalCartStorageArray.reduce((sum, item) => sum + item.quantity, 0);
-            const piecesRemaining = Math.max(0, totalPieces - reservedPieces);
+            const piecesRemaining = getAvailablePieces();
             const stockNote = document.getElementById('modal-stock-note');
             if (stockNote) {
-                stockNote.innerText = `Only ${piecesRemaining.toLocaleString()} pieces left out of ${totalPieces}`;
+                stockNote.innerHTML = `
+                    <strong class="block text-[13px] text-primary">Only ${piecesRemaining.toLocaleString()} / ${PRODUCT_STOCK_LIMIT.toLocaleString()} left</strong>
+                    <span class="block mt-1 text-[10px] text-on-surface-variant">Limited drop. No restocks.</span>`;
             }
         }
 
@@ -1375,6 +1491,11 @@
         }
 
         function addImmediateToCart(name, price, size, imageSrc) {
+            if (getAvailablePieces() <= 0) {
+                alert("[SOLD_OUT] This limited drop is fully reserved.");
+                return;
+            }
+
             const cleanName = String(name).trim().replace(/\s+/g, ' ');
             const cleanSize = String(size).trim().toUpperCase();
             const cartKey = getCartItemKey(cleanName, cleanSize);
@@ -1427,6 +1548,11 @@
         function updateItemQuantity(itemId, quantityDelta) {
             const itemTarget = globalCartStorageArray.find(item => item.id === itemId);
             if (!itemTarget) return;
+
+            if (quantityDelta > 0 && getAvailablePieces() < quantityDelta) {
+                alert("[LIMIT_REACHED] No more pieces are available in this drop.");
+                return;
+            }
 
             itemTarget.quantity += quantityDelta;
             if (itemTarget.quantity <= 0) {
@@ -1490,11 +1616,11 @@
                 totalDrawerCountBadge.innerText = `${cumulativeItemsCount} ${cumulativeItemsCount === 1 ? 'ITEM' : 'ITEMS'}`;
             }
 
-            const shippingCalculatedFee = (subtotalPriceCounter > 0 && subtotalPriceCounter < 10000) ? 250 : 0;
+            const shippingCalculatedFee = 0;
             const netAggregateTotal = subtotalPriceCounter + shippingCalculatedFee;
 
             document.getElementById('cart-subtotal').innerText = subtotalPriceCounter.toLocaleString();
-            document.getElementById('cart-shipping').innerText = shippingCalculatedFee === 0 ? 'FREE' : `RS. ${shippingCalculatedFee}`;
+            document.getElementById('cart-shipping').innerText = 'FREE';
             document.getElementById('cart-total').innerText = netAggregateTotal.toLocaleString();
             updateModalStockAvailability();
         }
@@ -1905,6 +2031,8 @@ async function verifyOtpInput() {
                             const verifyData = await verifyRes.json();
 
                             if (verifyData.success) {
+                                const confirmedPurchaseQuantity = getCartReservedPieces();
+                                recordSuccessfulPurchase(confirmedPurchaseQuantity, verifyData);
                                 showPaymentSuccessState();
                             } else {
                                 alert("[VERIFICATION_FAILED] " + verifyData.message + "\nIf an amount was deducted, contact support with your payment ID: " + response.razorpay_payment_id);
