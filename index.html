@@ -200,14 +200,16 @@
         .launch-status-pill {
             display: inline-flex;
             align-items: center;
-            gap: 0.45rem;
-            border: 1px solid rgba(255,255,255,0.22);
-            background: rgba(255,255,255,0.07);
+            gap: 0.6rem;
+            border: 1px solid rgba(255,255,255,0.34);
+            background: rgba(255,255,255,0.12);
             color: #ffffff;
-            padding: 0.35rem 0.55rem;
+            padding: 0.55rem 0.8rem;
             border-radius: 999px;
-            box-shadow: 0 0 18px rgba(255,255,255,0.1);
+            box-shadow: 0 0 28px rgba(255,255,255,0.16);
             white-space: nowrap;
+            font-size: clamp(0.78rem, 2vw, 1rem);
+            letter-spacing: 0.18em;
         }
 
         .launch-status-dot {
@@ -217,39 +219,6 @@
             background: #ffffff;
             box-shadow: 0 0 12px rgba(255,255,255,0.95);
             animation: livePulse 1.1s ease-in-out infinite;
-        }
-
-        .launch-timer-grid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(48px, 1fr));
-            gap: 0.5rem;
-            min-width: 0;
-            grid-column: 1 / -1;
-        }
-
-        .launch-time-cell {
-            border: 1px solid rgba(255,255,255,0.16);
-            background: rgba(255,255,255,0.055);
-            padding: 0.35rem 0.45rem;
-            text-align: center;
-            border-radius: 0.25rem;
-        }
-
-        .launch-time-cell strong {
-            display: block;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.05rem;
-            line-height: 1;
-            color: #ffffff;
-        }
-
-        .launch-time-cell span {
-            display: block;
-            margin-top: 0.15rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.52rem;
-            letter-spacing: 0.18em;
-            color: rgba(229,226,225,0.7);
         }
 
         .launch-shop-btn {
@@ -285,7 +254,7 @@
         .launch-modal-title {
             margin-top: 0.85rem;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2rem, 7vw, 4.25rem);
+            font-size: clamp(2.7rem, 8vw, 5.8rem);
             line-height: 0.92;
             letter-spacing: 0;
             text-transform: uppercase;
@@ -398,35 +367,15 @@
             }
 
             .launch-status-pill {
-                font-size: 0.56rem;
-                letter-spacing: 0.1em;
-                padding: 0.28rem 0.45rem;
+                font-size: 0.72rem;
+                letter-spacing: 0.12em;
+                padding: 0.42rem 0.58rem;
             }
 
             .launch-mini-copy {
                 font-size: 0.52rem;
                 letter-spacing: 0.1em;
                 margin-top: 0.25rem;
-            }
-
-            .launch-timer-grid {
-                grid-column: 1 / -1;
-                width: 100%;
-                min-width: 0;
-                grid-template-columns: repeat(4, 1fr);
-            }
-
-            .launch-time-cell {
-                padding: 0.32rem 0.25rem;
-            }
-
-            .launch-time-cell strong {
-                font-size: 0.92rem;
-            }
-
-            .launch-time-cell span {
-                font-size: 0.46rem;
-                letter-spacing: 0.12em;
             }
 
             .launch-shop-btn {
@@ -732,32 +681,14 @@
                 <span class="material-symbols-outlined text-[18px]">close</span>
             </button>
             <div class="launch-countdown-copy">
-                <div class="launch-status-pill font-label-mono text-[10px] uppercase tracking-[0.16em]">
+                <div class="launch-status-pill font-label-mono uppercase">
                     <span class="launch-status-dot" aria-hidden="true"></span>
-                    <span id="launch-status-text">Drop 1 unlocks Jun 26, 12 PM IST</span>
+                    <span id="launch-status-text">We are live</span>
                 </div>
-                <h2 class="launch-modal-title">Drop 1 Is Loading</h2>
-                <p id="launch-subtext" class="launch-mini-copy mt-1">100 pieces. No restocks. Cart opens at launch.</p>
+                <h2 id="launch-modal-title" class="launch-modal-title">Drop 1 Is Open</h2>
+                <p id="launch-subtext" class="launch-mini-copy mt-1">Shop now before the first 100 pieces disappear.</p>
             </div>
-            <div class="launch-timer-grid" id="launch-timer-grid" aria-label="Launch countdown">
-                <div class="launch-time-cell">
-                    <strong id="launch-days">00</strong>
-                    <span>DAYS</span>
-                </div>
-                <div class="launch-time-cell">
-                    <strong id="launch-hours">00</strong>
-                    <span>HRS</span>
-                </div>
-                <div class="launch-time-cell">
-                    <strong id="launch-minutes">00</strong>
-                    <span>MIN</span>
-                </div>
-                <div class="launch-time-cell">
-                    <strong id="launch-seconds">00</strong>
-                    <span>SEC</span>
-                </div>
-            </div>
-            <button type="button" id="launch-shop-button" class="launch-shop-btn" onclick="handleLaunchCta()">Notify Me</button>
+            <button type="button" id="launch-shop-button" class="launch-shop-btn" onclick="handleLaunchCta()">Shop Now</button>
         </div>
     </div>
 
@@ -1314,14 +1245,9 @@
         const PRODUCT_STOCK_LIMIT = 100;
         const CONFIRMED_SOLD_STORAGE_KEY = 'bllug_confirmed_sold_count';
         const DROP_ONE_LAUNCH_TIME = new Date('2026-06-26T06:30:00Z').getTime();
-        let launchCountdownInterval = null;
         let otpTimerInterval = null;
         let otpSecondsRemaining = 60;
         let pageScrollPosition = 0;
-
-        function padLaunchUnit(value) {
-            return String(Math.max(0, value)).padStart(2, '0');
-        }
 
         function scrollToDropOne() {
             const targetId = Date.now() >= DROP_ONE_LAUNCH_TIME ? 'series' : 'vault';
@@ -1360,37 +1286,27 @@
             const remainingMs = DROP_ONE_LAUNCH_TIME - Date.now();
             const isLive = remainingMs <= 0;
             const statusText = document.getElementById('launch-status-text');
+            const titleText = document.getElementById('launch-modal-title');
             const subText = document.getElementById('launch-subtext');
             const shopButton = document.getElementById('launch-shop-button');
 
             if (isLive) {
-                document.getElementById('launch-days').innerText = '00';
-                document.getElementById('launch-hours').innerText = '00';
-                document.getElementById('launch-minutes').innerText = '00';
-                document.getElementById('launch-seconds').innerText = '00';
-                if (statusText) statusText.innerText = 'We are live: Drop 1 is open';
+                if (statusText) statusText.innerText = 'We are live';
+                if (titleText) titleText.innerText = 'Drop 1 Is Open';
                 if (subText) subText.innerText = 'Shop now before the first 100 pieces disappear.';
                 if (shopButton) shopButton.innerText = 'Shop Now';
-                if (launchCountdownInterval) clearInterval(launchCountdownInterval);
                 return;
             }
 
-            const totalSeconds = Math.floor(remainingMs / 1000);
-            const days = Math.floor(totalSeconds / 86400);
-            const hours = Math.floor((totalSeconds % 86400) / 3600);
-            const minutes = Math.floor((totalSeconds % 3600) / 60);
-            const seconds = totalSeconds % 60;
-
-            document.getElementById('launch-days').innerText = padLaunchUnit(days);
-            document.getElementById('launch-hours').innerText = padLaunchUnit(hours);
-            document.getElementById('launch-minutes').innerText = padLaunchUnit(minutes);
-            document.getElementById('launch-seconds').innerText = padLaunchUnit(seconds);
+            if (statusText) statusText.innerText = 'Drop 1 unlocks Jun 26, 12 PM IST';
+            if (titleText) titleText.innerText = 'Drop 1 Is Loading';
+            if (subText) subText.innerText = '100 pieces. No restocks. Cart opens at launch.';
+            if (shopButton) shopButton.innerText = 'Notify Me';
         }
 
         renderLaunchCountdown();
         openLaunchPopup();
         syncConfirmedStockFromBackend();
-        launchCountdownInterval = setInterval(renderLaunchCountdown, 1000);
 
         // Navigation Scroll Behavior Control
         const nav = document.getElementById('main-nav');
