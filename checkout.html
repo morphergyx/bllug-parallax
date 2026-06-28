@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+    <meta name="theme-color" content="#0A0A0A" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="robots" content="noindex, nofollow">
+    <title>Checkout | BLLUG</title>
+    <link rel="icon" href="images/favicon-white.png" type="image/png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <!-- Razorpay SDK only needed here, on the page that actually opens it -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
+
+    <link rel="stylesheet" href="tailwind-built.css">
+    <link rel="stylesheet" href="checkout.css">
+</head>
+
+<body class="text-on-background selection:bg-primary selection:text-background overflow-x-hidden bg-background">
+
+    <!-- Minimal top bar so the visitor always has a way back to the store -->
+    <div class="flex items-center justify-between w-full px-4 md:px-margin-desktop py-5 border-b border-outline-variant/20">
+        <a href="index.html" class="flex items-center gap-2 font-label-mono text-[12px] uppercase tracking-[0.2em] text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            <span>BACK TO STORE</span>
+        </a>
+        <img src="/images/bllug-logo-white.png" alt="BLLUG Logo" class="h-7"/>
+        <span class="font-label-mono text-[10px] uppercase tracking-[0.3em] text-on-surface-variant flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[14px]">lock</span>
+            SECURE
+        </span>
+    </div>
+
+    <div id="checkout-view" class="bg-background flex flex-col items-stretch">
+
+        <div class="w-full max-w-3xl mx-auto p-6 md:p-12 pb-20 flex flex-col justify-between flex-1 relative bg-[#0D0D0D] border-x border-[#262626]/40">
+
+            <div class="w-full mt-4 mb-12">
+                <div class="flex items-center justify-center w-full relative">
+                    <div class="absolute h-[1px] left-4 right-4 bg-[#262626] top-5 z-0"></div>
+                    <div id="wizard-progress-bar-line" class="absolute h-[1px] left-4 bg-primary top-5 z-0 transition-all duration-500" style="width: 0%;"></div>
+
+                    <div class="flex justify-between w-full relative z-10">
+                        <div class="flex flex-col items-center group cursor-pointer" onclick="jumpToWizardStepDirect(1)">
+                            <div id="step-node-1" class="w-10 h-10 flex items-center justify-center font-label-mono text-[14px] bg-primary text-background border-2 border-primary transition-all duration-300 font-bold">1</div>
+                            <span id="step-text-1" class="mt-2 font-label-mono text-[10px] tracking-wider uppercase text-primary font-bold">CONTACT</span>
+                        </div>
+                        <div class="flex flex-col items-center group cursor-pointer" onclick="jumpToWizardStepDirect(2)">
+                            <div id="step-node-2" class="w-10 h-10 flex items-center justify-center font-label-mono text-[14px] bg-[#141414] text-[#4b4b4b] border-2 border-[#262626] transition-all duration-300">2</div>
+                            <span id="step-text-2" class="mt-2 font-label-mono text-[10px] tracking-wider uppercase text-[#4b4b4b]">VERIFY</span>
+                        </div>
+                        <div class="flex flex-col items-center group cursor-pointer" onclick="jumpToWizardStepDirect(3)">
+                            <div id="step-node-3" class="w-10 h-10 flex items-center justify-center font-label-mono text-[14px] bg-[#141414] text-[#4b4b4b] border-2 border-[#262626] transition-all duration-300">3</div>
+                            <span id="step-text-3" class="mt-2 font-label-mono text-[10px] tracking-wider uppercase text-[#4b4b4b]">SHIPPING</span>
+                        </div>
+                        <div class="flex flex-col items-center group cursor-pointer" onclick="jumpToWizardStepDirect(4)">
+                            <div id="step-node-4" class="w-10 h-10 flex items-center justify-center font-label-mono text-[14px] bg-[#141414] text-[#4b4b4b] border-2 border-[#262626] transition-all duration-300">4</div>
+                            <span id="step-text-4" class="mt-2 font-label-mono text-[10px] tracking-wider uppercase text-[#4b4b4b]">SUMMARY</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-grow flex flex-col justify-center w-full mx-auto">
+
+                <div id="checkout-step-1" class="step-container space-y-6 block">
+                    <div>
+                        <h4 class="font-headline-lg text-[26px] tracking-tight uppercase text-primary mb-1">01 / ACCOUNT_AUTHENTICATION</h4>
+                        <p class="font-body-md text-on-surface-variant text-[13px]">Provide secure anchors to register order tracking profiles.</p>
+                    </div>
+                    <div class="space-y-4 pt-2">
+                        <div class="flex flex-col">
+                            <label class="font-label-mono text-[11px] text-on-surface-variant mb-2 tracking-widest">EMAIL_ADDRESS *</label>
+                            <input type="email" id="input-email" placeholder="identity@wasteland.digital" class="checkout-input">
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="font-label-mono text-[11px] text-on-surface-variant mb-2 tracking-widest">PHONE_NUMBER *</label>
+                            <input type="tel" id="input-phone" placeholder="+91 XXXXX XXXXX" class="checkout-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="checkout-step-2" class="step-container space-y-6 hidden">
+                    <div>
+                        <h4 class="font-headline-lg text-[26px] tracking-tight uppercase text-primary mb-1">02 / CRYPTO_VERIFICATION</h4>
+                        <p class="font-body-md text-on-surface-variant text-[13px]">Enter the authorization token deployed to your email endpoint.</p>
+                    </div>
+                    <div class="space-y-5 pt-2">
+
+                        <div class="flex items-start gap-3 bg-primary/[0.04] border border-primary/20 rounded p-4">
+                            <span class="material-symbols-outlined text-primary text-[20px] mt-0.5 flex-shrink-0">mark_email_read</span>
+                            <div>
+                                <p class="font-label-mono text-[12px] text-primary tracking-wider uppercase mb-0.5">OTP_DISPATCHED</p>
+                                <p class="font-sans text-[13px] text-on-surface-variant">A 6-digit verification token was sent to <span id="badge-target-email" class="text-primary font-semibold">—</span>. Check your inbox or spam folder.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-[#141414] border border-[#262626] p-5 rounded space-y-5">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-label-mono text-[12px] text-primary tracking-wider">EMAIL_TOKEN [OTP]</p>
+                                    <p class="font-label-mono text-[11px] text-on-surface-variant mt-0.5 tracking-wide">6-DIGIT VERIFICATION CODE</p>
+                                </div>
+                                <input id="otp-email-input" type="text" inputmode="numeric" maxlength="6" placeholder="000000" class="w-32 bg-[#0A0A0A] border border-[#262626] rounded py-2.5 px-3 text-center text-primary font-label-mono text-[16px] tracking-[0.3em] focus:border-primary focus:ring-0 outline-none transition-colors">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-1">
+                            <div class="flex items-center gap-2 font-label-mono text-[11px] text-on-surface-variant">
+                                <span class="material-symbols-outlined text-[14px]">timer</span>
+                                <span>RESEND_OTP_IN: <span id="otp-timer-display" class="text-primary font-bold tabular-nums">00:60</span></span>
+                            </div>
+                            <button id="otp-resend-btn" onclick="resendOtpToken()" disabled class="font-label-mono text-[11px] uppercase tracking-wider text-[#4b4b4b] border-b border-[#4b4b4b]/40 transition-colors cursor-not-allowed" style="pointer-events:none;">[RESEND_TOKEN]</button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="checkout-step-3" class="step-container space-y-6 hidden">
+                    <div>
+                        <h4 class="font-headline-lg text-[26px] tracking-tight uppercase text-primary mb-1">SHIPPING ADDRESS</h4>
+                        <p class="font-body-md text-on-surface-variant text-[13px]">Where should we deliver your order consignment?</p>
+                    </div>
+                    <div class="space-y-4 pt-2">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="flex flex-col">
+                                <label class="font-label-mono text-[11px] text-on-surface-variant mb-2 uppercase tracking-wider">First Name *</label>
+                                <input type="text" id="ship-first" placeholder="Enter first name" class="checkout-input">
+                            </div>
+                            <div class="flex flex-col">
+                                <label class="font-label-mono text-[11px] text-on-surface-variant mb-2 uppercase tracking-wider">Last Name *</label>
+                                <input type="text" id="ship-last" placeholder="Enter last name" class="checkout-input">
+                            </div>
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="font-label-mono text-[11px] text-on-surface-variant mb-2 uppercase tracking-wider">Street Address *</label>
+                            <input type="text" id="ship-street" placeholder="Flat, Suite, Apartment unit, or industrial sector coordinates" class="checkout-input">
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="flex flex-col">
+                                <label class="font-label-mono text-[11px] text-on-surface-variant mb-2 uppercase tracking-wider">City *</label>
+                                <input type="text" id="ship-city" placeholder="City" class="checkout-input">
+                            </div>
+                            <div class="flex flex-col">
+                                <label class="font-label-mono text-[11px] text-on-surface-variant mb-2 uppercase tracking-wider">State *</label>
+                                <input type="text" id="ship-state" placeholder="State" class="checkout-input">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="flex flex-col">
+                                <label class="font-label-mono text-[11px] text-on-surface-variant mb-2 uppercase tracking-wider">Postal Code *</label>
+                                <input type="text" id="ship-pin" maxlength="6" placeholder="******" class="checkout-input font-label-mono tracking-widest text-center">
+                            </div>
+                            <div class="flex flex-col">
+                                <label class="font-label-mono text-[11px] text-on-surface-variant mb-2 uppercase tracking-wider">Country *</label>
+                                <input type="text" id="ship-country" value="India" readonly class="checkout-input opacity-70 cursor-not-allowed select-none font-sans font-medium">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="checkout-step-4" class="step-container space-y-8 hidden">
+                    <div>
+                        <h4 class="font-headline-lg text-[26px] tracking-tight uppercase text-primary mb-1">04 / CHECKOUT SUMMARY</h4>
+                        <p class="font-body-md text-on-surface-variant text-[13px]">Verify delivery markers configuration parameters before closing ledger checks.</p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h5 class="font-label-mono text-[12px] tracking-[0.2em] text-[#4b4b4b] uppercase">[DELIVERY_ENDPOINT_ROUTING]</h5>
+                        <div class="border border-[#262626] p-6 rounded bg-[#141414] font-label-mono text-[13px] space-y-3.5">
+                            <div class="flex justify-between items-center border-b border-[#262626] pb-2">
+                                <span class="text-on-surface-variant">CONSIGNMENT_HOLDER:</span>
+                                <span id="summary-name" class="text-primary font-bold uppercase tracking-wide">...</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-[#262626] pb-2">
+                                <span class="text-on-surface-variant">CONTACT NUMBER:</span>
+                                <span id="summary-contact" class="text-primary">...</span>
+                            </div>
+                            <div class="flex flex-col space-y-1.5 pt-1">
+                                <span class="text-on-surface-variant">SHIPPING ADDRESS:</span>
+                                <span id="summary-address" class="text-primary font-sans normal-case leading-relaxed text-[14px]">...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h5 class="font-label-mono text-[13px] tracking-[0.2em] text-[#4b4b4b] uppercase pb-2 border-b border-[#262626]">[CONSIGNMENT ARTIFACTS]</h5>
+
+                        <div id="checkout-summary-items" class="space-y-4 max-h-[35vh] overflow-y-auto no-scrollbar pr-1">
+                            </div>
+
+                        <div class="pt-4 border-t border-[#262626] space-y-2.5 font-label-mono text-[13px]">
+                            <div class="flex justify-between text-on-surface-variant">
+                                <span>SUBTOTAL</span>
+                                <span class="text-primary font-medium">₹<span id="checkout-subtotal">0.00</span></span>
+                            </div>
+                            <div class="flex justify-between text-on-surface-variant">
+                                <span>SHIPPING</span>
+                                <span id="checkout-shipping" class="text-primary font-medium">FREE</span>
+                            </div>
+                            <div class="border-t border-[#262626] pt-3 flex justify-between text-primary font-bold text-[16px] tracking-tight">
+                                <span>TOTAL AMOUNT</span>
+                                <span class="text-[18px]">₹<span id="checkout-total">0.00</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3 border border-primary/10 bg-primary/[0.02] p-4 rounded text-primary font-label-mono text-[11px] uppercase tracking-wider">
+                        <span class="material-symbols-outlined text-[18px] text-primary animate-pulse">shield</span>
+                        <span>SCARCITY LOCK PROTOCOL ACTIVE: Products reserved under vault sequence limits.</span>
+                    </div>
+                </div>
+
+                <!-- Shown if checkout.html is ever opened directly with an empty cart (e.g. stale bookmark/refresh after order completion) -->
+                <div id="checkout-empty-state" class="hidden flex-col items-center justify-center text-center py-20">
+                    <span class="material-symbols-outlined text-[44px] mb-4 opacity-40">gpp_bad</span>
+                    <p class="font-label-mono text-[13px] tracking-widest uppercase text-on-surface-variant mb-6">YOUR VAULT IS EMPTY</p>
+                    <a href="index.html" class="bg-primary text-background font-label-mono text-label-limit px-8 py-4 uppercase tracking-widest font-bold rounded">RETURN TO BLLUG</a>
+                </div>
+
+            </div>
+
+            <div id="wizard-nav-buttons" class="mt-12 mb-4 flex gap-4 w-full z-10">
+                <button id="btn-wizard-back" onclick="navigateWizardSteps(-1)" class="w-1/3 bg-transparent border border-[#262626] text-on-surface-variant font-label-mono text-label-limit py-4 hover:text-primary hover:border-primary transition-all uppercase tracking-widest invisible">BACK</button>
+                <button id="btn-wizard-next" onclick="navigateWizardSteps(1)" class="w-full bg-primary text-background font-label-mono text-label-limit py-4 hover:bg-on-surface-variant hover:text-primary transition-all uppercase tracking-widest font-bold">PROCEED</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="checkout.js"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+/* checkout.css — styles specific to checkout.html only.
+   Extracted from the shared style.css; everything here previously applied
+   only to elements that exist exclusively inside the checkout flow. */
+
+body {
+    min-height: 100vh;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    background-color: #0A0A0A;
+    overflow-x: hidden;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.checkout-input {
+    background-color: #141414 !important;
+    border: 1px solid #262626 !important;
+    color: #ffffff !important;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    padding: 14px 16px;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+}
+.checkout-input:focus {
+    border-color: #ffffff !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+.checkout-input::placeholder {
+    color: #4b4b4b;
+}
+
+@media (max-width: 767px) {
+    #btn-wizard-back,
+    #btn-wizard-next,
+    #checkout-view button {
+        min-height: 50px;
+    }
+
+    button {
+        min-height: 48px;
+        padding: 0.85rem 1rem;
+        font-size: 0.95rem;
+        border-radius: 0.9rem;
+    }
+
+    .font-label-mono,
+    .font-label-limit {
+        letter-spacing: 0.08em;
+    }
+}

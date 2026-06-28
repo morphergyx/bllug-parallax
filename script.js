@@ -1,0 +1,817 @@
+        let globalCartStorageArray = [];
+        let currentImageIndex = 0;
+        let imagesArrayLength = 0;
+        let activeSelectedSize = 'M';
+        let sizePopupState = { name: '', price: 0, image: '', selectedSize: 'M', trigger: null };
+        let sizePopupScrollHandler = null;
+        let sizePopupResizeHandler = null;
+        let sizePopupDocClickHandler = null;
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyeun-1Yt9v3fVuGRKO7PHRR3ohqSP-RT7QTcCF25VQSmUCcdaKGG4WezT6yu3gBPjhWg/exec";
+        const PRODUCT_STOCK_LIMIT = 100; // pieces per series (not a shared pool)
+        const STOCK_CACHE_STORAGE_KEY = 'bllug_remaining_stock_by_product';
+        const CART_STORAGE_KEY = 'bllug_cart_items'; // shared with checkout.js — lets the cart survive the navigation to the checkout page
+        let currentModalProductName = null; // tracks which series is open in the details modal, for the stock badge
+        const DROP_ONE_LAUNCH_TIME = new Date('2026-06-26T06:30:00Z').getTime();
+        let pageScrollPosition = 0;
+
+        function scrollToDropOne() {
+            const targetId = Date.now() >= DROP_ONE_LAUNCH_TIME ? 'series' : 'vault';
+            const target = document.getElementById(targetId);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function handleLaunchCta() {
+            scrollToDropOne();
+            if (Date.now() < DROP_ONE_LAUNCH_TIME) {
+                setTimeout(() => {
+                    const emailInput = document.getElementById('subscriber-email');
+                    if (emailInput) emailInput.focus({ preventScroll: true });
+                }, 750);
+            }
+        }
+
+        function handleLaunchStripKeydown(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                handleLaunchCta();
+            }
+        }
+
+        function renderLaunchStatus() {
+            const remainingMs = DROP_ONE_LAUNCH_TIME - Date.now();
+            const isLive = remainingMs <= 0;
+            const statusText = document.getElementById('launch-status-text');
+
+            if (isLive) {
+                if (statusText) statusText.innerText = 'Drop 1 is live - shop now';
+                return;
+            }
+
+            if (statusText) statusText.innerText = 'Drop 1 unlocks Jun 26, 12 PM IST';
+        }
+
+        renderLaunchStatus();
+        syncConfirmedStockFromBackend();
+
+        // ---------------------------------------------------------------
+        // Cart persistence — the cart now survives navigation to
+        // checkout.html (and survives a page refresh too, as a bonus)
+        // by being written to localStorage on every mutation and read
+        // back in here on every page load.
+        // ---------------------------------------------------------------
+        function readCartFromStorage() {
+            try {
+                const raw = localStorage.getItem(CART_STORAGE_KEY);
+                const parsed = raw ? JSON.parse(raw) : [];
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (err) {
+                return [];
+            }
+        }
+
+        function writeCartToStorage() {
+            try {
+                localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(globalCartStorageArray));
+            } catch (err) {
+                // Non-fatal — cart still works in-memory for this session.
+            }
+        }
+
+        globalCartStorageArray = readCartFromStorage();
+        document.addEventListener('DOMContentLoaded', refreshCartRenderingEngine);
+
+        // Navigation Scroll Behavior Control
+        const nav = document.getElementById('main-nav');
+        let ticking = false;
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    if (window.scrollY > 100) {
+                        nav.classList.add('py-4', 'border-b', 'border-outline-variant/10');
+                        nav.classList.remove('py-8');
+                    } else {
+                        nav.classList.remove('py-4', 'border-b', 'border-outline-variant/10');
+                        nav.classList.add('py-8');
+                    }
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // Smooth Anchor Links Processing
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Configurator Details Panel View Modals triggers
+        function openDetailsModal(title, price, imageCollection, descriptionText, washcareText) {
+            const modal = document.getElementById('product-modal');
+            const container = document.getElementById('modal-container');
+            const track = document.getElementById('carousel-track');
+            const dots = document.getElementById('carousel-dots');
+
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-price').innerText = price;
+            document.getElementById('modal-description').innerText = descriptionText || 'Discover premium fabric details, fit notes, and premium aesthetic cues for this series.';
+            currentModalProductName = title;
+
+            track.innerHTML = '';
+            dots.innerHTML = '';
+            imagesArrayLength = imageCollection.length;
+            currentImageIndex = 0;
+
+            activeSelectedSize = 'M';
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                if(btn.getAttribute('data-size') === 'M') {
+                    btn.className = "size-btn py-3 border border-primary rounded bg-primary text-background font-label-mono text-label-mono hover:border-primary transition-all uppercase";
+                } else {
+                    btn.className = "size-btn py-3 border border-outline-variant/40 rounded bg-transparent font-label-mono text-label-mono text-primary hover:border-primary transition-all uppercase";
+                }
+            });
+
+            updateModalStockAvailability();
+            syncConfirmedStockFromBackend();
+
+            const defaultTabButton = document.querySelector('button[onclick*="details-content"]');
+            if (defaultTabButton) {
+                switchTab('details-content', defaultTabButton);
+            }
+
+            imageCollection.forEach((imgUrl, idx) => {
+                const imgDiv = document.createElement('div');
+                imgDiv.className = 'w-full h-full flex-shrink-0 snap-start relative';
+                imgDiv.innerHTML = `<img src="${imgUrl}" alt="${title} view" class="w-full h-full object-cover">`;
+                track.appendChild(imgDiv);
+
+                const dot = document.createElement('button');
+                dot.className = `w-2 h-2 rounded-full transition-all duration-300 ${idx === 0 ? 'bg-primary scale-125' : 'bg-primary/30'}`;
+                dot.onclick = () => jumpToSlide(idx);
+                dots.appendChild(dot);
+            });
+
+            track.addEventListener('scroll', updateDotsOnManualScroll);
+
+            modal.classList.remove('invisible');
+            modal.classList.add('opacity-100');
+            container.classList.remove('scale-95');
+            container.classList.add('scale-100');
+            pageScrollPosition = window.scrollY;
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${pageScrollPosition}px`;
+            document.body.style.width = '100%';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDetailsModal() {
+            const modal = document.getElementById('product-modal');
+            const container = document.getElementById('modal-container');
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0');
+            container.classList.remove('scale-100');
+            container.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('invisible');
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.width = '';
+                document.body.style.overflow = 'auto';
+                window.scrollTo(0, pageScrollPosition);
+            }, 500);
+        }
+
+        function slideCarousel(direction) {
+            const track = document.getElementById('carousel-track');
+            currentImageIndex = (currentImageIndex + direction + imagesArrayLength) % imagesArrayLength;
+            track.scrollTo({ left: track.clientWidth * currentImageIndex, behavior: 'smooth' });
+        }
+
+        function jumpToSlide(index) {
+            const track = document.getElementById('carousel-track');
+            currentImageIndex = index;
+            track.scrollTo({ left: track.clientWidth * index, behavior: 'smooth' });
+        }
+
+        function updateDotsOnManualScroll() {
+            const track = document.getElementById('carousel-track');
+            const dots = document.getElementById('carousel-dots').children;
+            const newIdx = Math.round(track.scrollLeft / track.clientWidth);
+            
+            if (newIdx !== currentImageIndex && newIdx >= 0 && newIdx < imagesArrayLength) {
+                currentImageIndex = newIdx;
+                Array.from(dots).forEach((dot, idx) => {
+                    if (idx === currentImageIndex) {
+                        dot.classList.add('bg-primary', 'scale-125');
+                        dot.classList.remove('bg-primary/30');
+                    } else {
+                        dot.classList.remove('bg-primary', 'scale-125');
+                        dot.classList.add('bg-primary/30');
+                    }
+                });
+            }
+        }
+
+        function selectSize(selectedBtn) {
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.classList.remove('bg-primary', 'text-background', 'border-primary');
+                btn.classList.add('bg-transparent', 'text-primary', 'border-outline-variant/40');
+            });
+            selectedBtn.classList.add('bg-primary', 'text-background', 'border-primary');
+            selectedBtn.classList.remove('bg-transparent', 'text-primary', 'border-outline-variant/40');
+            activeSelectedSize = selectedBtn.getAttribute('data-size');
+        }
+
+        function normalizeProductKey(name) {
+            return String(name || '').trim().toUpperCase();
+        }
+
+        function readRemainingStockCache() {
+            try {
+                const raw = localStorage.getItem(STOCK_CACHE_STORAGE_KEY);
+                const parsed = raw ? JSON.parse(raw) : {};
+                return (parsed && typeof parsed === 'object') ? parsed : {};
+            } catch (err) {
+                return {};
+            }
+        }
+
+        function writeRemainingStockCache(remainingMap) {
+            try {
+                localStorage.setItem(STOCK_CACHE_STORAGE_KEY, JSON.stringify(remainingMap || {}));
+            } catch (err) {
+                // localStorage write failures are non-fatal; UI just won't persist across reloads.
+            }
+        }
+
+        function mergeRemainingStockCache(remainingMap) {
+            if (!remainingMap || typeof remainingMap !== 'object') return;
+            const current = readRemainingStockCache();
+            Object.keys(remainingMap).forEach(key => {
+                const value = Number(remainingMap[key]);
+                if (Number.isFinite(value)) {
+                    current[normalizeProductKey(key)] = Math.min(PRODUCT_STOCK_LIMIT, Math.max(0, value));
+                }
+            });
+            writeRemainingStockCache(current);
+        }
+
+        function getCartReservedPiecesForProduct(productName) {
+            const key = normalizeProductKey(productName);
+            return globalCartStorageArray.reduce((sum, item) => {
+                return normalizeProductKey(item.name) === key ? sum + item.quantity : sum;
+            }, 0);
+        }
+
+        // Returns remaining pieces for a specific series, accounting for what's
+        // already sitting in this visitor's own cart (so they can't add more
+        // than what's actually left once their cart is checked out).
+        // Defaults to PRODUCT_STOCK_LIMIT if we have no server data yet (e.g. first
+        // load before syncConfirmedStockFromBackend resolves) so the UI doesn't
+        // falsely show 0 left before the first successful sync.
+        function getAvailablePieces(productName) {
+            const key = normalizeProductKey(productName);
+            const cache = readRemainingStockCache();
+            const knownRemaining = Object.prototype.hasOwnProperty.call(cache, key) ? cache[key] : PRODUCT_STOCK_LIMIT;
+            return Math.max(0, knownRemaining - getCartReservedPiecesForProduct(productName));
+        }
+
+        function getPurchasedQuantityFromItems(items) {
+            if (!Array.isArray(items)) return 0;
+            return items.reduce((sum, item) => sum + Math.max(0, Number(item.quantity) || 0), 0);
+        }
+
+        // Called right after a verified payment. The backend's verify_payment
+        // response now includes remainingStockByProduct with fresh authoritative
+        // numbers for every product — we just merge those straight into the cache.
+        function recordSuccessfulPurchase(purchasedItems, verifyResponsePayload) {
+            if (verifyResponsePayload && verifyResponsePayload.remainingStockByProduct) {
+                mergeRemainingStockCache(verifyResponsePayload.remainingStockByProduct);
+            }
+            updateModalStockAvailability();
+        }
+
+        async function syncConfirmedStockFromBackend() {
+            try {
+                const stockRes = await fetch(APPS_SCRIPT_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: JSON.stringify({ action: "get_stock" })
+                });
+                const stockData = await stockRes.json();
+                if (stockData && stockData.success && stockData.remainingStockByProduct) {
+                    mergeRemainingStockCache(stockData.remainingStockByProduct);
+                    updateModalStockAvailability();
+                }
+            } catch (err) {
+                // Stock sync is best-effort; UI falls back to last-known cached values.
+            }
+        }
+
+        function updateModalStockAvailability() {
+            const stockNote = document.getElementById('modal-stock-note');
+            const addBagBtn = document.getElementById('modal-btn-add-bag');
+            const buyNowBtn = document.getElementById('modal-btn-buy-now');
+            if (!currentModalProductName) return; // no product context yet (e.g. on initial page load before any modal opened)
+
+            const piecesRemaining = getAvailablePieces(currentModalProductName);
+            const isSoldOut = piecesRemaining <= 0;
+
+            if (stockNote) {
+                if (isSoldOut) {
+                    stockNote.innerHTML = `
+                        <strong class="block text-[13px] text-primary">SOLD OUT</strong>
+                        <span class="block mt-1 text-[10px] text-on-surface-variant">This series is fully reserved. No restocks.</span>`;
+                } else {
+                    stockNote.innerHTML = `
+                        <strong class="block text-[13px] text-primary">Only ${piecesRemaining.toLocaleString()} / ${PRODUCT_STOCK_LIMIT.toLocaleString()} left</strong>
+                        <span class="block mt-1 text-[10px] text-on-surface-variant">Limited drop. No restocks.</span>`;
+                }
+            }
+
+            [addBagBtn, buyNowBtn].forEach(btn => {
+                if (!btn) return;
+                btn.disabled = isSoldOut;
+                btn.classList.toggle('opacity-40', isSoldOut);
+                btn.classList.toggle('cursor-not-allowed', isSoldOut);
+                btn.classList.toggle('pointer-events-none', isSoldOut);
+            });
+
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.disabled = isSoldOut;
+                btn.classList.toggle('opacity-40', isSoldOut);
+                btn.classList.toggle('cursor-not-allowed', isSoldOut);
+            });
+        }
+
+        function switchTab(panelId, activeTabElement) {
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('block');
+                panel.classList.add('hidden');
+            });
+            document.querySelectorAll('.tab-link').forEach(link => {
+                link.classList.remove('border-primary', 'text-primary', 'font-bold');
+                link.classList.add('border-transparent', 'text-on-surface-variant');
+            });
+            document.getElementById(panelId).classList.remove('hidden');
+            document.getElementById(panelId).classList.add('block');
+            activeTabElement.classList.add('border-primary', 'text-primary', 'font-bold');
+            activeTabElement.classList.remove('border-transparent', 'text-on-surface-variant');
+        }
+
+        // Cart side panel processing rules mutations
+        function toggleCartDrawer(openStatus) {
+            const backdrop = document.getElementById('cart-drawer-backdrop');
+            const drawer = document.getElementById('cart-drawer');
+            if (openStatus) {
+                backdrop.classList.remove('invisible');
+                backdrop.classList.add('opacity-100');
+                drawer.classList.remove('translate-x-full');
+            } else {
+                backdrop.classList.remove('opacity-100');
+                backdrop.classList.add('invisible');
+                drawer.classList.add('translate-x-full');
+            }
+        }
+
+        function addSelectedToCart(keepOpenDrawer) {
+            const name = document.getElementById('modal-title').innerText;
+            const price = parseInt(document.getElementById('modal-price').innerText.replace(/,/g, ''));
+            const track = document.getElementById('carousel-track');
+            const firstImgElement = track.querySelector('img');
+            const imgSrc = firstImgElement ? firstImgElement.src : '/images/series-section-1.jpg';
+
+            addImmediateToCart(name, price, activeSelectedSize, imgSrc);
+            closeDetailsModal();
+            if (keepOpenDrawer) {
+                setTimeout(() => toggleCartDrawer(true), 400);
+            }
+        }
+
+        function buySeriesProductNow(name, price, imageSrc) {
+            addImmediateToCart(name, price, 'M', imageSrc);
+            toggleCartDrawer(true);
+        }
+
+        function openSizeChooserPopup(event, name, price, imageSrc) {
+            if (getAvailablePieces(name) <= 0) {
+                event.stopPropagation();
+                alert("[SOLD_OUT] " + name + " is fully reserved. No restocks.");
+                return;
+            }
+
+            const popup = document.getElementById('size-popup');
+            const buttonsContainer = document.getElementById('size-popup-buttons');
+            const trigger = event.currentTarget || event.target;
+
+            sizePopupState = {
+                name: name,
+                price: price,
+                image: imageSrc,
+                selectedSize: 'M',
+                trigger: trigger
+            };
+
+            buttonsContainer.innerHTML = '';
+            ['S', 'M', 'L', 'XL', 'XXL'].forEach(size => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.innerText = size;
+                btn.className = `py-3 rounded text-[12px] font-label-mono transition-all ${size === 'M' ? 'bg-primary text-background border border-primary' : 'bg-transparent text-primary border border-outline-variant/40 hover:border-primary hover:text-primary'}`;
+                btn.onclick = () => selectSizeInPopup(btn, size);
+                buttonsContainer.appendChild(btn);
+            });
+
+            const popupRectWidth = 288;
+            const triggerRect = trigger.getBoundingClientRect();
+            const leftPosition = Math.min(window.innerWidth - popupRectWidth - 12, Math.max(12, triggerRect.left + (triggerRect.width / 2) - (popupRectWidth / 2)));
+            const topPosition = Math.max(12, triggerRect.top - 170);
+
+            popup.style.left = `${leftPosition}px`;
+            popup.style.top = `${topPosition}px`;
+            popup.classList.remove('hidden');
+            // position and attach listeners so popup follows the trigger on scroll/resize
+            positionSizePopup();
+            addListenersForSizePopup();
+            event.stopPropagation();
+        }
+
+        function positionSizePopup() {
+            const popup = document.getElementById('size-popup');
+            const popupCard = document.getElementById('size-popup-card');
+            const trigger = sizePopupState.trigger;
+            if (!popup || !popupCard || !trigger) return;
+            const popupRectWidth = popupCard.offsetWidth || 288;
+            const popupRectHeight = popupCard.offsetHeight || 140;
+            const triggerRect = trigger.getBoundingClientRect();
+            const leftPosition = Math.min(window.innerWidth - popupRectWidth - 12, Math.max(12, triggerRect.left + (triggerRect.width / 2) - (popupRectWidth / 2)));
+            // place above the trigger; if not enough space, place below
+            let topPosition = triggerRect.top - popupRectHeight - 10;
+            if (topPosition < 8) {
+                topPosition = triggerRect.bottom + 10;
+            }
+            popup.style.left = `${leftPosition}px`;
+            popup.style.top = `${topPosition}px`;
+        }
+
+        function addListenersForSizePopup() {
+            if (sizePopupScrollHandler) return; // already added
+            sizePopupScrollHandler = () => requestAnimationFrame(positionSizePopup);
+            sizePopupResizeHandler = () => requestAnimationFrame(positionSizePopup);
+            sizePopupDocClickHandler = (e) => {
+                const popup = document.getElementById('size-popup');
+                if (!popup) return;
+                const trigger = sizePopupState.trigger;
+                if (popup.contains(e.target)) return;
+                if (trigger && (trigger === e.target || trigger.contains(e.target))) return;
+                closeSizePopup();
+            };
+
+            window.addEventListener('scroll', sizePopupScrollHandler, true);
+            window.addEventListener('resize', sizePopupResizeHandler);
+            document.addEventListener('click', sizePopupDocClickHandler);
+        }
+
+        function removeListenersForSizePopup() {
+            if (!sizePopupScrollHandler) return;
+            window.removeEventListener('scroll', sizePopupScrollHandler, true);
+            window.removeEventListener('resize', sizePopupResizeHandler);
+            document.removeEventListener('click', sizePopupDocClickHandler);
+            sizePopupScrollHandler = null;
+            sizePopupResizeHandler = null;
+            sizePopupDocClickHandler = null;
+        }
+
+        function selectSizeInPopup(button, size) {
+            sizePopupState.selectedSize = size;
+            document.querySelectorAll('#size-popup-buttons button').forEach(btn => {
+                btn.classList.remove('bg-primary', 'text-background', 'border-primary');
+                btn.classList.add('bg-transparent', 'text-primary', 'border-outline-variant/40');
+            });
+            button.classList.remove('bg-transparent', 'text-primary', 'border-outline-variant/40');
+            button.classList.add('bg-primary', 'text-background', 'border-primary');
+        }
+
+        function closeSizePopup() {
+            const popup = document.getElementById('size-popup');
+            if (popup) popup.classList.add('hidden');
+            sizePopupState.trigger = null;
+            removeListenersForSizePopup();
+        }
+
+        function openSizeChart() {
+            const overlay = document.getElementById('size-chart-overlay');
+            if (overlay) {
+                overlay.classList.remove('hidden');
+            }
+        }
+
+        function closeSizeChart() {
+            const overlay = document.getElementById('size-chart-overlay');
+            if (overlay) {
+                overlay.classList.add('hidden');
+            }
+        }
+
+        function handleSubscriberSubmit(event) {
+            event.preventDefault();
+
+            const emailInput = document.getElementById('subscriber-email');
+            if (!emailInput) return;
+
+            const email = emailInput.value.trim();
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            const googleScriptUrl = 'https://script.google.com/macros/s/AKfycbxrLCqjHageZKYq1-bAXxNaeyZmsQ2yiRndJ6ijAY3992W094aiXU9JOhtycgLlHTLeCQ/exec';
+
+            const button = document.getElementById('subscriber-button');
+            const feedback = document.getElementById('subscriber-feedback');
+
+            const payload = new URLSearchParams();
+            payload.append('email', email);
+
+            const showStatus = (message, success = true) => {
+                if (feedback) {
+                    feedback.innerText = message;
+                    feedback.classList.remove('text-red-400', 'text-on-surface-variant');
+                    feedback.classList.add(success ? 'text-primary' : 'text-red-400');
+                    feedback.classList.add('opacity-100');
+                }
+            };
+
+            const resetButton = () => {
+                if (button) {
+                    button.disabled = false;
+                    button.classList.remove('opacity-60', 'cursor-not-allowed', 'scale-105');
+                    button.innerText = 'SUBSCRIBE';
+                }
+            };
+
+            if (button) {
+                button.disabled = true;
+                button.innerText = 'SENDING...';
+                button.classList.add('opacity-60', 'cursor-not-allowed');
+            }
+
+            const submitToScript = () => fetch(googleScriptUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8'
+                },
+                body: payload.toString()
+            });
+
+            submitToScript().catch(() => {
+                // If the script does not support CORS, submit via an invisible form as fallback.
+                const fallbackForm = document.createElement('form');
+                fallbackForm.action = googleScriptUrl;
+                fallbackForm.method = 'POST';
+                fallbackForm.target = 'subscriber-hidden-frame';
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'email';
+                hiddenInput.value = email;
+                fallbackForm.appendChild(hiddenInput);
+                document.body.appendChild(fallbackForm);
+                fallbackForm.submit();
+                document.body.removeChild(fallbackForm);
+            }).then(() => {
+                if (button) {
+                    button.classList.add('scale-105', 'animate-pulse', 'shadow-[0_0_0_12px_rgba(255,255,255,0.18)]');
+                    button.innerText = 'SUBSCRIBED';
+                    setTimeout(() => {
+                        if (button) {
+                            button.classList.remove('animate-pulse', 'shadow-[0_0_0_12px_rgba(255,255,255,0.18)]');
+                        }
+                    }, 700);
+                }
+                showStatus('Email submitted successfully.', true);
+            }).catch(() => {
+                showStatus('Submission failed. Please try again.', false);
+            }).finally(() => {
+                emailInput.value = '';
+                setTimeout(() => {
+                    if (button) resetButton();
+                    if (feedback) {
+                        feedback.classList.remove('opacity-100');
+                        feedback.classList.add('opacity-0');
+                    }
+                }, 3500);
+            });
+        }
+
+        function confirmPopupSize() {
+            addImmediateToCart(sizePopupState.name, sizePopupState.price, sizePopupState.selectedSize, sizePopupState.image);
+            closeSizePopup();
+            toggleCartDrawer(true);
+        }
+
+        function getCartItemKey(name, size) {
+            const normalizedName = String(name).trim().replace(/\s+/g, ' ').toUpperCase();
+            const normalizedSize = String(size).trim().toUpperCase();
+            return `${normalizedName}__${normalizedSize}`;
+        }
+
+        function addImmediateToCart(name, price, size, imageSrc) {
+            if (getAvailablePieces(name) <= 0) {
+                alert("[SOLD_OUT] This series is fully reserved. No restocks.");
+                return;
+            }
+
+            const cleanName = String(name).trim().replace(/\s+/g, ' ');
+            const cleanSize = String(size).trim().toUpperCase();
+            const cartKey = getCartItemKey(cleanName, cleanSize);
+            const existingMatch = globalCartStorageArray.find(item => {
+                const itemKey = item.cartKey || getCartItemKey(item.name, item.size);
+                return itemKey === cartKey;
+            });
+
+            if (existingMatch) {
+                existingMatch.quantity += 1;
+                existingMatch.cartKey = cartKey;
+                existingMatch.name = cleanName;
+                existingMatch.size = cleanSize;
+            } else {
+                globalCartStorageArray.push({
+                    id: 'artfct_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+                    cartKey: cartKey,
+                    name: cleanName,
+                    price: price,
+                    size: cleanSize,
+                    image: imageSrc,
+                    quantity: 1
+                });
+            }
+            refreshCartRenderingEngine();
+        }
+
+        function consolidateDuplicateCartItems() {
+            const cartItemsByKey = new Map();
+            globalCartStorageArray.forEach(item => {
+                const cleanName = String(item.name).trim().replace(/\s+/g, ' ');
+                const cleanSize = String(item.size).trim().toUpperCase();
+                const cartKey = item.cartKey || getCartItemKey(cleanName, cleanSize);
+                const existingItem = cartItemsByKey.get(cartKey);
+
+                if (existingItem) {
+                    existingItem.quantity += item.quantity;
+                } else {
+                    cartItemsByKey.set(cartKey, {
+                        ...item,
+                        cartKey: cartKey,
+                        name: cleanName,
+                        size: cleanSize
+                    });
+                }
+            });
+            globalCartStorageArray = Array.from(cartItemsByKey.values());
+        }
+
+        function updateItemQuantity(itemId, quantityDelta) {
+            const itemTarget = globalCartStorageArray.find(item => item.id === itemId);
+            if (!itemTarget) return;
+
+            if (quantityDelta > 0 && getAvailablePieces(itemTarget.name) < quantityDelta) {
+                alert("[LIMIT_REACHED] No more pieces of this series are available in this drop.");
+                return;
+            }
+
+            itemTarget.quantity += quantityDelta;
+            if (itemTarget.quantity <= 0) {
+                globalCartStorageArray = globalCartStorageArray.filter(item => item.id !== itemId);
+            }
+            refreshCartRenderingEngine();
+        }
+
+        function refreshCartRenderingEngine() {
+            consolidateDuplicateCartItems();
+            writeCartToStorage();
+
+            const container = document.getElementById('cart-items-container');
+            const totalNavCountBadge = document.getElementById('cart-nav-badge');
+            const totalDrawerCountBadge = document.getElementById('cart-count-badge');
+            
+            let cumulativeItemsCount = 0;
+            let subtotalPriceCounter = 0;
+
+            if (globalCartStorageArray.length === 0) {
+                container.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-center opacity-30 py-20">
+                        <span class="material-symbols-outlined text-[44px] mb-3">gpp_bad</span>
+                        <p class="font-label-mono text-[12px] tracking-widest uppercase">VAULT_IS_EMPTY</p>
+                    </div>`;
+                totalNavCountBadge.classList.add('hidden');
+                totalDrawerCountBadge.innerText = "0 ITEMS";
+            } else {
+                container.innerHTML = '';
+                globalCartStorageArray.forEach(item => {
+                    cumulativeItemsCount += item.quantity;
+                    subtotalPriceCounter += (item.price * item.quantity);
+
+                    const cartItemRow = document.createElement('div');
+                    cartItemRow.className = "flex gap-4 p-4 border border-outline-variant/10 rounded bg-[#0F0F0F] relative group";
+                    cartItemRow.innerHTML = `
+                        <div class="w-20 h-24 bg-black/40 rounded overflow-hidden flex-shrink-0 border border-outline-variant/10">
+                            <img src="${item.image}" class="w-full h-full object-cover" alt="${item.name}">
+                        </div>
+                        <div class="flex-grow flex flex-col justify-between py-0.5">
+                            <div>
+                                <h4 class="font-headline-lg text-[14px] leading-tight text-primary uppercase tracking-tight mb-1 pr-6">${item.name}</h4>
+                                <p class="font-label-mono text-[11px] text-on-surface-variant uppercase">SIZE: <span class="text-primary font-bold">${item.size}</span></p>
+                            </div>
+                            <div class="flex justify-between items-center mt-2">
+                                <div class="flex items-center border border-outline-variant/30 rounded bg-background/50 overflow-hidden">
+                                    <button onclick="updateItemQuantity('${item.id}', -1)" class="px-2.5 py-1 text-on-surface-variant hover:text-primary hover:bg-white/5 transition-colors font-bold text-[14px] leading-none">-</button>
+                                    <span class="px-2 font-label-mono text-[12px] text-primary select-none min-w-[16px] text-center">${item.quantity}</span>
+                                    <button onclick="updateItemQuantity('${item.id}', 1)" class="px-2.5 py-1 text-on-surface-variant hover:text-primary hover:bg-white/5 transition-colors font-bold text-[14px] leading-none">+</button>
+                                </div>
+                                <span class="font-label-mono text-[13px] text-primary font-medium">RS. ${(item.price * item.quantity).toLocaleString()}</span>
+                            </div>
+                        </div>
+                        <button onclick="updateItemQuantity('${item.id}', -${item.quantity})" class="absolute top-4 right-4 text-outline hover:text-error transition-colors p-0.5 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[16px]">delete</span>
+                        </button>`;
+                    container.appendChild(cartItemRow);
+                });
+
+                totalNavCountBadge.innerText = cumulativeItemsCount;
+                totalNavCountBadge.classList.remove('hidden');
+                totalDrawerCountBadge.innerText = `${cumulativeItemsCount} ${cumulativeItemsCount === 1 ? 'ITEM' : 'ITEMS'}`;
+            }
+
+            const shippingCalculatedFee = 0;
+            const netAggregateTotal = subtotalPriceCounter + shippingCalculatedFee;
+
+            document.getElementById('cart-subtotal').innerText = subtotalPriceCounter.toLocaleString();
+            document.getElementById('cart-shipping').innerText = 'FREE';
+            document.getElementById('cart-total').innerText = netAggregateTotal.toLocaleString();
+            updateModalStockAvailability();
+        }
+
+        // Checkout lives on its own page (checkout.html). Navigate immediately —
+        // checkout.html re-validates stock itself the moment it loads (see
+        // initCheckoutPage in checkout.js), so there's no need to make the
+        // person wait on a network round-trip here before the button even responds.
+        function launchCheckoutFlow() {
+            if (globalCartStorageArray.length === 0) {
+                alert("Vault payload validation missing. Add artifacts to check out.");
+                return;
+            }
+
+            writeCartToStorage();
+            window.location.href = 'checkout.html';
+        }
+
+
+        function shareWebsite(event) {
+            event.preventDefault();
+            const shareUrl = 'https://www.bllug.co.in';
+            const shareData = {
+                title: 'BLLUG',
+                text: 'Check out BLLUG — premium limited-run streetwear.',
+                url: shareUrl
+            };
+
+            if (navigator.share) {
+                navigator.share(shareData).catch(() => {
+                    copyShareLink(shareUrl);
+                });
+                return;
+            }
+
+            const encodedUrl = encodeURIComponent(shareUrl);
+            const encodedText = encodeURIComponent('Check out BLLUG — premium limited-run streetwear.');
+            const fallbackLinks = [
+                `https://twitter.com/intent/tweet?text=${encodedText}%20${encodedUrl}`,
+                `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+                `https://wa.me/?text=${encodedText}%20${encodedUrl}`
+            ];
+
+            const fallbackWindow = window.open(fallbackLinks[0], '_blank', 'noopener,noreferrer');
+            if (!fallbackWindow) {
+                copyShareLink(shareUrl);
+            }
+        }
+
+        function copyShareLink(url) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('Link copied to clipboard: ' + url);
+                }).catch(() => {
+                    window.prompt('Copy this link:', url);
+                });
+                return;
+            }
+            window.prompt('Copy this link:', url);
+        }
