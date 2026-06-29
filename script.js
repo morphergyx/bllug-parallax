@@ -150,7 +150,11 @@
             imageCollection.forEach((imgUrl, idx) => {
                 const imgDiv = document.createElement('div');
                 imgDiv.className = 'w-full h-full flex-shrink-0 snap-start relative';
-                imgDiv.innerHTML = `<img src="${imgUrl}" alt="${title} view" class="w-full h-full object-cover">`;
+                // Derive the WebP path from the JPG path (e.g. "images/foo.jpg" ->
+                // "images/foo.webp") so callers don't need to pass two paths —
+                // every JPG in /images has a matching pre-generated .webp sibling.
+                const webpUrl = imgUrl.replace(/\.jpe?g$/i, '.webp');
+                imgDiv.innerHTML = `<picture><source srcset="${webpUrl}" type="image/webp"><img src="${imgUrl}" alt="${title} view" class="w-full h-full object-cover"></picture>`;
                 track.appendChild(imgDiv);
 
                 const dot = document.createElement('button');

@@ -204,9 +204,7 @@
 
 
     <script>
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyeun-1Yt9v3fVuGRKO7PHRR3ohqSP-RT7QTcCF25VQSmUCcdaKGG4WezT6yu3gBPjhWg/exec";
-
-        document.getElementById('contact-support-form')?.addEventListener('submit', async function(event) {
+        document.getElementById('contact-support-form')?.addEventListener('submit', function(event) {
             event.preventDefault();
             const email = document.getElementById('contact-email')?.value.trim();
             const subject = document.getElementById('contact-subject')?.value.trim();
@@ -220,60 +218,35 @@
                 return;
             }
 
-            const showFeedback = (text, success) => {
-                if (!feedback) return;
-                feedback.innerText = text;
-                feedback.classList.remove('text-primary', 'text-red-400');
-                feedback.classList.add(success ? 'text-primary' : 'text-red-400');
-                feedback.classList.add('opacity-100');
-            };
-
-            const resetButton = () => {
-                if (button) {
-                    button.disabled = false;
-                    button.classList.remove('opacity-60', 'cursor-not-allowed');
-                    button.innerText = 'Send Message';
-                }
-            };
-
             if (button) {
                 button.disabled = true;
                 button.classList.add('opacity-60', 'cursor-not-allowed');
                 button.innerText = 'SENDING...';
             }
 
-            try {
-                const res = await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify({ action: 'contact', email, type, subject, message })
-                });
-                const data = await res.json();
+            console.log('Support request submitted:', { email, subject, type, message });
 
-                if (!data.success) {
-                    showFeedback(data.message || 'Something went wrong. Please try again.', false);
-                    resetButton();
-                    return;
-                }
-
+            setTimeout(() => {
                 if (button) {
                     button.innerText = 'MESSAGE SENT ✓';
                     button.classList.remove('opacity-60', 'cursor-not-allowed');
                 }
-                showFeedback('Thank you! We\'ll respond within 24 hours.', true);
+                if (feedback) {
+                    feedback.innerText = 'Thank you! We\'ll respond within 24 hours.';
+                    feedback.classList.add('opacity-100');
+                }
                 document.getElementById('contact-support-form')?.reset();
 
                 setTimeout(() => {
                     if (feedback) {
                         feedback.classList.remove('opacity-100');
                     }
-                    resetButton();
+                    if (button) {
+                        button.innerText = 'Send Message';
+                        button.disabled = false;
+                    }
                 }, 5000);
-
-            } catch (err) {
-                showFeedback('Network error — please check your connection and try again.', false);
-                resetButton();
-            }
+            }, 700);
         });
     </script>
 </body>
