@@ -521,7 +521,12 @@
             }
         }
 
-        function handleSubscriberSubmit(event) {
+        // The subscriber form used to point at a separate, standalone Apps
+        // Script deployment with its own URL. That logic has been merged into
+        // the main backend (action: 'subscribe'), so this now uses the same
+        // APPS_SCRIPT_URL and JSON request format as every other call on
+        // this site, instead of a separate URL-encoded endpoint.
+        async function handleSubscriberSubmit(event) {
             event.preventDefault();
 
             const emailInput = document.getElementById('subscriber-email');
@@ -533,13 +538,8 @@
                 return;
             }
 
-            const googleScriptUrl = 'https://script.google.com/macros/s/AKfycbxrLCqjHageZKYq1-bAXxNaeyZmsQ2yiRndJ6ijAY3992W094aiXU9JOhtycgLlHTLeCQ/exec';
-
             const button = document.getElementById('subscriber-button');
             const feedback = document.getElementById('subscriber-feedback');
-
-            const payload = new URLSearchParams();
-            payload.append('email', email);
 
             const showStatus = (message, success = true) => {
                 if (feedback) {
@@ -564,42 +564,31 @@
                 button.classList.add('opacity-60', 'cursor-not-allowed');
             }
 
-            const submitToScript = () => fetch(googleScriptUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'text/plain;charset=utf-8'
-                },
-                body: payload.toString()
-            });
+            try {
+                const res = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ action: 'subscribe', email: email })
+                });
+                const data = await res.json();
 
-            submitToScript().catch(() => {
-                // If the script does not support CORS, submit via an invisible form as fallback.
-                const fallbackForm = document.createElement('form');
-                fallbackForm.action = googleScriptUrl;
-                fallbackForm.method = 'POST';
-                fallbackForm.target = 'subscriber-hidden-frame';
-                const hiddenInput = document.createElement('input');
-                hiddenInput.type = 'hidden';
-                hiddenInput.name = 'email';
-                hiddenInput.value = email;
-                fallbackForm.appendChild(hiddenInput);
-                document.body.appendChild(fallbackForm);
-                fallbackForm.submit();
-                document.body.removeChild(fallbackForm);
-            }).then(() => {
-                if (button) {
-                    button.classList.add('scale-105', 'animate-pulse', 'shadow-[0_0_0_12px_rgba(255,255,255,0.18)]');
-                    button.innerText = 'SUBSCRIBED';
-                    setTimeout(() => {
-                        if (button) {
-                            button.classList.remove('animate-pulse', 'shadow-[0_0_0_12px_rgba(255,255,255,0.18)]');
-                        }
-                    }, 700);
+                if (data.status === 'success' || data.status === 'exists') {
+                    if (button) {
+                        button.classList.add('scale-105', 'animate-pulse', 'shadow-[0_0_0_12px_rgba(255,255,255,0.18)]');
+                        button.innerText = 'SUBSCRIBED';
+                        setTimeout(() => {
+                            if (button) {
+                                button.classList.remove('animate-pulse', 'shadow-[0_0_0_12px_rgba(255,255,255,0.18)]');
+                            }
+                        }, 700);
+                    }
+                    showStatus(data.message || 'Email submitted successfully.', true);
+                } else {
+                    showStatus(data.message || 'Submission failed. Please try again.', false);
                 }
-                showStatus('Email submitted successfully.', true);
-            }).catch(() => {
+            } catch (err) {
                 showStatus('Submission failed. Please try again.', false);
-            }).finally(() => {
+            } finally {
                 emailInput.value = '';
                 setTimeout(() => {
                     if (button) resetButton();
@@ -608,8 +597,9 @@
                         feedback.classList.add('opacity-0');
                     }
                 }, 3500);
-            });
+            }
         }
+
 
         function confirmPopupSize() {
             addImmediateToCart(sizePopupState.name, sizePopupState.price, sizePopupState.selectedSize, sizePopupState.image);
