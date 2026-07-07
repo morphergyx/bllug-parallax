@@ -10,6 +10,10 @@
         const PRODUCT_STOCK_LIMIT = 100; // pieces per series (not a shared pool)
         const STOCK_CACHE_STORAGE_KEY = 'bllug_remaining_stock_by_product';
         const CART_STORAGE_KEY = 'bllug_cart_items'; // shared with checkout.js — lets the cart survive the navigation to the checkout page
+        const PROMO_STORAGE_KEY = 'bllug_applied_promo_code';
+        const CART_PROMO_CODES = ['BLLUG10', 'MSRIT10'];
+        const CART_PROMO_DISCOUNT_RATE = 0.10;
+        let appliedCartPromoCode = readAppliedPromoCode();
         let currentModalProductName = null; // tracks which series is open in the details modal, for the stock badge
         const DROP_ONE_LAUNCH_TIME = new Date('2026-06-26T06:30:00Z').getTime();
         let pageScrollPosition = 0;
@@ -76,6 +80,24 @@
                 localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(globalCartStorageArray));
             } catch (err) {
                 // Non-fatal — cart still works in-memory for this session.
+            }
+        }
+
+        function readAppliedPromoCode() {
+            try {
+                const code = String(localStorage.getItem(PROMO_STORAGE_KEY) || '').trim().toUpperCase();
+                return CART_PROMO_CODES.includes(code) ? code : '';
+            } catch (err) {
+                return '';
+            }
+        }
+
+        function writeAppliedPromoCode() {
+            try {
+                if (appliedCartPromoCode) localStorage.setItem(PROMO_STORAGE_KEY, appliedCartPromoCode);
+                else localStorage.removeItem(PROMO_STORAGE_KEY);
+            } catch (err) {
+                // Non-fatal — the code still applies for this page view.
             }
         }
 
@@ -336,7 +358,7 @@
                         <span class="block mt-1 text-[10px] text-on-surface-variant">This series is fully reserved. No restocks.</span>`;
                 } else {
                     stockNote.innerHTML = `
-                        <strong class="block text-[13px] text-primary">Only ${piecesRemaining.toLocaleString()} / ${PRODUCT_STOCK_LIMIT.toLocaleString()} left</strong>
+                        <strong class="block text-[13px] text-primary">AVAILABLE</strong>
                         <span class="block mt-1 text-[10px] text-on-surface-variant">Limited drop. No restocks.</span>`;
                 }
             }
@@ -689,6 +711,7 @@
         }
 
         function refreshCartRenderingEngine() {
+            ensureCartCouponUi();
             consolidateDuplicateCartItems();
             writeCartToStorage();
 
@@ -745,12 +768,86 @@
             }
 
             const shippingCalculatedFee = 0;
-            const netAggregateTotal = subtotalPriceCounter + shippingCalculatedFee;
+            const discountAmount = appliedCartPromoCode ? subtotalPriceCounter * CART_PROMO_DISCOUNT_RATE : 0;
+            const netAggregateTotal = subtotalPriceCounter + shippingCalculatedFee - discountAmount;
 
             document.getElementById('cart-subtotal').innerText = subtotalPriceCounter.toLocaleString();
             document.getElementById('cart-shipping').innerText = 'FREE';
-            document.getElementById('cart-total').innerText = netAggregateTotal.toLocaleString();
+            document.getElementById('cart-discount').innerText = formatCartMoney(discountAmount);
+            document.getElementById('cart-discount-row').classList.toggle('hidden', !appliedCartPromoCode);
+            document.getElementById('cart-total').innerText = formatCartMoney(netAggregateTotal);
+            syncCartCouponUi();
             updateModalStockAvailability();
+        }
+
+        function formatCartMoney(value) {
+            return Number(value).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function ensureCartCouponUi() {
+            if (document.getElementById('cart-coupon-section')) return;
+            const checkoutButton = document.querySelector('#cart-drawer button[onclick="launchCheckoutFlow()"]');
+            const totalNode = document.getElementById('cart-total');
+            if (!checkoutButton || !totalNode) return;
+
+            const couponSection = document.createElement('div');
+            couponSection.id = 'cart-coupon-section';
+            couponSection.innerHTML = `
+                <button type="button" onclick="toggleCartCouponEntry()" class="w-full text-left font-label-mono text-[11px] text-on-surface-variant hover:text-primary uppercase tracking-wider underline underline-offset-4 transition-colors">Have a coupon code?</button>
+                <div id="cart-coupon-holder" class="hidden mt-3">
+                    <div class="flex gap-2">
+                        <input id="cart-coupon-input" type="text" autocomplete="off" placeholder="ENTER COUPON CODE" class="min-w-0 flex-1 bg-[#0A0A0A] border border-outline-variant/30 rounded px-3 py-3 text-primary font-label-mono text-[11px] uppercase outline-none focus:border-primary" onkeydown="if(event.key === 'Enter'){ event.preventDefault(); applyCartCouponCode(); }">
+                        <button type="button" onclick="applyCartCouponCode()" class="border border-primary text-primary px-4 font-label-mono text-[11px] font-bold uppercase hover:bg-primary hover:text-background transition-colors">APPLY</button>
+                    </div>
+                    <p id="cart-coupon-message" class="hidden mt-2 font-label-mono text-[10px] uppercase tracking-wider" aria-live="polite"></p>
+                </div>`;
+            checkoutButton.parentNode.insertBefore(couponSection, checkoutButton);
+
+            const totalRow = totalNode.closest('div');
+            const discountRow = document.createElement('div');
+            discountRow.id = 'cart-discount-row';
+            discountRow.className = 'hidden flex justify-between text-on-surface-variant';
+            discountRow.innerHTML = '<span>DISCOUNT (10%)</span><span>-RS. <span id="cart-discount">0.00</span></span>';
+            totalRow.parentNode.insertBefore(discountRow, totalRow);
+        }
+
+        function toggleCartCouponEntry() {
+            const holder = document.getElementById('cart-coupon-holder');
+            if (!holder) return;
+            holder.classList.toggle('hidden');
+            if (!holder.classList.contains('hidden')) document.getElementById('cart-coupon-input').focus();
+        }
+
+        function applyCartCouponCode() {
+            const input = document.getElementById('cart-coupon-input');
+            const message = document.getElementById('cart-coupon-message');
+            const code = String(input.value || '').trim().toUpperCase();
+            input.value = code;
+            message.classList.remove('hidden', 'text-primary', 'text-error');
+
+            if (CART_PROMO_CODES.includes(code)) {
+                appliedCartPromoCode = code;
+                message.textContent = code + ' APPLIED — 10% DISCOUNT';
+                message.classList.add('text-primary');
+            } else {
+                appliedCartPromoCode = '';
+                message.textContent = code ? 'INVALID COUPON CODE' : 'ENTER A COUPON CODE';
+                message.classList.add('text-error');
+            }
+            writeAppliedPromoCode();
+            refreshCartRenderingEngine();
+        }
+
+        function syncCartCouponUi() {
+            const input = document.getElementById('cart-coupon-input');
+            const holder = document.getElementById('cart-coupon-holder');
+            const message = document.getElementById('cart-coupon-message');
+            if (!input || !holder || !message || !appliedCartPromoCode) return;
+            input.value = appliedCartPromoCode;
+            holder.classList.remove('hidden');
+            message.textContent = appliedCartPromoCode + ' APPLIED — 10% DISCOUNT';
+            message.classList.remove('hidden', 'text-error');
+            message.classList.add('text-primary');
         }
 
         // Checkout lives on its own page (checkout.html). Navigate immediately —

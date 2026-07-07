@@ -450,3 +450,85 @@
         .checkout-input::placeholder {
             color: #4b4b4b;
         }
+
+        /* Compact cart drawer: preserve vertical room for product rows. */
+        #cart-drawer > div:first-child {
+            padding: 14px 16px;
+        }
+        #cart-drawer > div:first-child > div {
+            gap: 8px;
+        }
+        #cart-drawer > div:first-child h3 {
+            font-size: 16px;
+        }
+        #cart-drawer > div:first-child .material-symbols-outlined {
+            font-size: 20px;
+        }
+        #cart-count-badge {
+            font-size: 9px;
+            padding: 2px 7px;
+        }
+        #cart-items-container {
+            padding: 14px 16px;
+            gap: 10px;
+        }
+        #cart-items-container > div {
+            gap: 10px;
+            padding: 10px;
+        }
+        #cart-items-container > div > div:first-child {
+            width: 58px;
+            height: 72px;
+        }
+        #cart-items-container h4 {
+            font-size: 11px;
+            margin-bottom: 2px;
+        }
+        #cart-items-container p,
+        #cart-items-container span {
+            font-size: 9px;
+        }
+        #cart-items-container button {
+            padding-top: 3px;
+            padding-bottom: 3px;
+        }
+        #cart-drawer > div:last-child {
+            padding: 12px 16px 14px;
+            gap: 9px;
+        }
+        #cart-drawer > div:last-child > div:first-child {
+            font-size: 10px;
+            line-height: 1.25;
+        }
+        #cart-drawer > div:last-child > div:first-child > div {
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+        #cart-drawer > div:last-child > div:first-child > div:last-child {
+            font-size: 12px;
+            margin-top: 3px;
+            padding-top: 7px;
+        }
+        #cart-coupon-section > button {
+            font-size: 9px;
+        }
+        #cart-coupon-holder {
+            margin-top: 7px;
+        }
+        #cart-coupon-input {
+            padding: 8px 10px;
+            font-size: 9px;
+        }
+        #cart-coupon-holder button {
+            padding: 8px 12px;
+            font-size: 9px;
+        }
+        #cart-coupon-message {
+            margin-top: 5px;
+            font-size: 8px;
+        }
+        #cart-drawer button[onclick="launchCheckoutFlow()"] {
+            padding-top: 11px;
+            padding-bottom: 11px;
+            font-size: 10px;
+        }

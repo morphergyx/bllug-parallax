@@ -12,11 +12,24 @@ const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyeun-1Yt9v3fVu
 const PRODUCT_STOCK_LIMIT = 100; // pieces per series (not a shared pool)
 const STOCK_CACHE_STORAGE_KEY = 'bllug_remaining_stock_by_product';
 const CART_STORAGE_KEY = 'bllug_cart_items'; // shared with script.js on the storefront pages
+const PROMO_STORAGE_KEY = 'bllug_applied_promo_code';
 
 let globalCartStorageArray = [];
 let currentWizardStepIndex = 1;
 let otpTimerInterval = null;
 let otpSecondsRemaining = 60;
+const PROMO_DISCOUNT_RATE = 0.10;
+const VALID_PROMO_CODES = ['BLLUG10', 'MSRIT10'];
+let appliedPromoCode = readAppliedPromoCode();
+
+function readAppliedPromoCode() {
+    try {
+        const code = String(localStorage.getItem(PROMO_STORAGE_KEY) || '').trim().toUpperCase();
+        return VALID_PROMO_CODES.includes(code) ? code : '';
+    } catch (err) {
+        return '';
+    }
+}
 
 // ---------------------------------------------------------------------
 // Cart persistence (read side). The storefront pages write to this same
@@ -204,9 +217,17 @@ function mirrorDataToSummaryGrid() {
         targetWrap.appendChild(summaryRow);
     });
 
-    document.getElementById('checkout-subtotal').innerText = subtotal.toLocaleString();
+    const discount = appliedPromoCode ? subtotal * PROMO_DISCOUNT_RATE : 0;
+    const total = subtotal - discount;
+    document.getElementById('checkout-subtotal').innerText = formatMoney(subtotal);
     document.getElementById('checkout-shipping').innerText = 'FREE';
-    document.getElementById('checkout-total').innerText = subtotal.toLocaleString();
+    document.getElementById('checkout-discount').innerText = formatMoney(discount);
+    document.getElementById('checkout-discount-row').classList.toggle('hidden', !appliedPromoCode);
+    document.getElementById('checkout-total').innerText = formatMoney(total);
+}
+
+function formatMoney(value) {
+    return Number(value).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 function jumpToWizardStepDirect(targetStepIndex) {
@@ -491,13 +512,21 @@ async function executeGatewayPaymentRedirect() {
                 action: "create_order",
                 items: cartItemsForOrder,
                 email: email,
-                phone: phone
+                phone: phone,
+                promoCode: appliedPromoCode
             })
         });
         const orderData = await orderRes.json();
 
         if (!orderData.success) {
             alert("[ORDER_ERROR] " + orderData.message);
+            nextBtn.disabled = false;
+            nextBtn.innerText = originalBtnText;
+            return;
+        }
+
+        if (appliedPromoCode && orderData.promoCode !== appliedPromoCode) {
+            alert("[PROMO_ERROR] The payment backend has not accepted this promo code. Please refresh after the updated backend is deployed.");
             nextBtn.disabled = false;
             nextBtn.innerText = originalBtnText;
             return;
@@ -537,7 +566,8 @@ async function executeGatewayPaymentRedirect() {
                                 address: fullAddress
                             },
                             items: cartItemsForOrder,
-                            amount: orderData.amount / 100
+                            amount: orderData.amount / 100,
+                            promoCode: appliedPromoCode
                         })
                     });
                     const verifyData = await verifyRes.json();
@@ -601,6 +631,7 @@ function showPaymentSuccessState() {
     // the items that were just purchased.
     try {
         localStorage.removeItem(CART_STORAGE_KEY);
+        localStorage.removeItem(PROMO_STORAGE_KEY);
     } catch (err) {
         // non-fatal
     }
