@@ -220,6 +220,33 @@
             }, 500);
         }
 
+        function isStandaloneProductDetailsPage() {
+            return Boolean(
+                document.getElementById('page-backdrop') &&
+                document.getElementById('overlay-topbar') &&
+                document.getElementById('product-modal') &&
+                /-details\.html$/i.test(window.location.pathname)
+            );
+        }
+
+        function restoreStandaloneProductDetailsView() {
+            if (!isStandaloneProductDetailsPage()) return;
+            const modal = document.getElementById('product-modal');
+            const container = document.getElementById('modal-container');
+            if (modal) {
+                modal.classList.remove('invisible', 'opacity-0');
+                modal.classList.add('opacity-100');
+            }
+            if (container) {
+                container.classList.remove('scale-95');
+                container.classList.add('scale-100');
+            }
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
+            document.body.style.overflow = '';
+        }
+
         function slideCarousel(direction) {
             const track = document.getElementById('carousel-track');
             currentImageIndex = (currentImageIndex + direction + imagesArrayLength) % imagesArrayLength;
@@ -410,6 +437,7 @@
                 backdrop.classList.remove('opacity-100');
                 backdrop.classList.add('invisible');
                 drawer.classList.add('translate-x-full');
+                restoreStandaloneProductDetailsView();
             }
         }
 
@@ -421,7 +449,11 @@
             const imgSrc = firstImgElement ? firstImgElement.src : '/images/series-section-1.jpg';
 
             addImmediateToCart(name, price, activeSelectedSize, imgSrc);
-            closeDetailsModal();
+            if (isStandaloneProductDetailsPage()) {
+                restoreStandaloneProductDetailsView();
+            } else {
+                closeDetailsModal();
+            }
             if (keepOpenDrawer) {
                 setTimeout(() => toggleCartDrawer(true), 400);
             }
