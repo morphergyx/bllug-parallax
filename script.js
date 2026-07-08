@@ -798,12 +798,26 @@
             const couponSection = document.createElement('div');
             couponSection.id = 'cart-coupon-section';
             couponSection.innerHTML = `
-                <button type="button" onclick="toggleCartCouponEntry()" class="w-full text-left font-label-mono text-[11px] text-on-surface-variant hover:text-primary uppercase tracking-wider underline underline-offset-4 transition-colors">Have a coupon code?</button>
-                <div id="cart-coupon-holder" class="hidden mt-3">
-                    <div class="flex gap-2">
-                        <input id="cart-coupon-input" type="text" autocomplete="off" placeholder="ENTER COUPON CODE" class="min-w-0 flex-1 bg-[#0A0A0A] border border-outline-variant/30 rounded px-3 py-3 text-primary font-label-mono text-[11px] uppercase outline-none focus:border-primary" onkeydown="if(event.key === 'Enter'){ event.preventDefault(); applyCartCouponCode(); }">
-                        <button type="button" onclick="applyCartCouponCode()" class="border border-primary text-primary px-4 font-label-mono text-[11px] font-bold uppercase hover:bg-primary hover:text-background transition-colors">APPLY</button>
+                <div id="cart-coupon-applied" class="hidden rounded border border-primary/20 bg-primary/[0.04] px-3 py-2.5">
+                    <div class="flex items-center justify-between gap-3">
+                        <div class="min-w-0">
+                            <p class="font-label-mono text-[9px] uppercase tracking-[0.22em] text-on-surface-variant">Coupon applied</p>
+                            <p class="font-label-mono text-[11px] uppercase tracking-widest text-primary"><span id="cart-applied-code">BLLUG10</span> · 10% off</p>
+                        </div>
+                        <button type="button" onclick="removeCartCouponCode()" class="flex-shrink-0 font-label-mono text-[9px] uppercase tracking-wider text-on-surface-variant hover:text-primary underline underline-offset-4">Remove</button>
                     </div>
+                </div>
+                <button id="cart-coupon-toggle" type="button" onclick="toggleCartCouponEntry()" class="w-full flex items-center justify-between gap-3 rounded border border-outline-variant/20 px-3 py-2.5 text-left font-label-mono text-[10px] text-on-surface-variant hover:border-primary/60 hover:text-primary uppercase tracking-wider transition-colors">
+                    <span>Have a coupon code?</span>
+                    <span class="material-symbols-outlined text-[15px]" aria-hidden="true">add</span>
+                </button>
+                <div id="cart-coupon-holder" class="hidden rounded border border-outline-variant/20 bg-[#0A0A0A] p-3">
+                    <label for="cart-coupon-input" class="block mb-2 font-label-mono text-[9px] uppercase tracking-[0.22em] text-on-surface-variant">Enter code for instant discount</label>
+                    <div class="flex gap-2">
+                        <input id="cart-coupon-input" type="text" autocomplete="off" inputmode="text" placeholder="ENTER PROMO CODE" class="min-w-0 flex-1 bg-[#050505] border border-outline-variant/30 rounded px-3 py-3 text-primary font-label-mono text-[11px] uppercase outline-none focus:border-primary" oninput="this.value = this.value.toUpperCase()" onkeydown="if(event.key === 'Enter'){ event.preventDefault(); applyCartCouponCode(); }">
+                        <button type="button" onclick="applyCartCouponCode()" class="border border-primary bg-primary text-background px-4 font-label-mono text-[11px] font-bold uppercase hover:bg-on-surface-variant transition-colors">APPLY</button>
+                    </div>
+                    <p class="mt-2 font-label-mono text-[9px] uppercase tracking-wider text-on-surface-variant">Enter your promo code to unlock a discount.</p>
                     <p id="cart-coupon-message" class="hidden mt-2 font-label-mono text-[10px] uppercase tracking-wider" aria-live="polite"></p>
                 </div>`;
             checkoutButton.parentNode.insertBefore(couponSection, checkoutButton);
@@ -820,6 +834,8 @@
             const holder = document.getElementById('cart-coupon-holder');
             if (!holder) return;
             holder.classList.toggle('hidden');
+            const toggleIcon = document.querySelector('#cart-coupon-toggle .material-symbols-outlined');
+            if (toggleIcon) toggleIcon.textContent = holder.classList.contains('hidden') ? 'add' : 'remove';
             if (!holder.classList.contains('hidden')) document.getElementById('cart-coupon-input').focus();
         }
 
@@ -832,14 +848,30 @@
 
             if (CART_PROMO_CODES.includes(code)) {
                 appliedCartPromoCode = code;
-                message.textContent = code + ' APPLIED — 10% DISCOUNT';
+                message.textContent = 'Success — 10% discount added to your vault.';
                 message.classList.add('text-primary');
             } else {
                 appliedCartPromoCode = '';
-                message.textContent = code ? 'INVALID COUPON CODE' : 'ENTER A COUPON CODE';
+                message.textContent = code ? 'That code is not valid. Check spelling and try again.' : 'Enter a coupon code to apply discount.';
                 message.classList.add('text-error');
             }
             writeAppliedPromoCode();
+            refreshCartRenderingEngine();
+        }
+
+        function removeCartCouponCode() {
+            appliedCartPromoCode = '';
+            writeAppliedPromoCode();
+            const input = document.getElementById('cart-coupon-input');
+            const message = document.getElementById('cart-coupon-message');
+            const holder = document.getElementById('cart-coupon-holder');
+            if (input) input.value = '';
+            if (message) {
+                message.textContent = 'Coupon removed. Total restored.';
+                message.classList.remove('hidden', 'text-error');
+                message.classList.add('text-primary');
+            }
+            if (holder) holder.classList.remove('hidden');
             refreshCartRenderingEngine();
         }
 
@@ -847,10 +879,23 @@
             const input = document.getElementById('cart-coupon-input');
             const holder = document.getElementById('cart-coupon-holder');
             const message = document.getElementById('cart-coupon-message');
-            if (!input || !holder || !message || !appliedCartPromoCode) return;
+            const appliedPanel = document.getElementById('cart-coupon-applied');
+            const appliedCode = document.getElementById('cart-applied-code');
+            const toggleButton = document.getElementById('cart-coupon-toggle');
+            const toggleIcon = document.querySelector('#cart-coupon-toggle .material-symbols-outlined');
+            if (!input || !holder || !message) return;
+            if (!appliedCartPromoCode) {
+                if (appliedPanel) appliedPanel.classList.add('hidden');
+                if (toggleButton) toggleButton.classList.remove('hidden');
+                if (toggleIcon) toggleIcon.textContent = holder.classList.contains('hidden') ? 'add' : 'remove';
+                return;
+            }
             input.value = appliedCartPromoCode;
-            holder.classList.remove('hidden');
-            message.textContent = appliedCartPromoCode + ' APPLIED — 10% DISCOUNT';
+            holder.classList.add('hidden');
+            if (appliedPanel) appliedPanel.classList.remove('hidden');
+            if (appliedCode) appliedCode.textContent = appliedCartPromoCode;
+            if (toggleButton) toggleButton.classList.add('hidden');
+            message.textContent = 'Success — 10% discount added to your vault.';
             message.classList.remove('hidden', 'text-error');
             message.classList.add('text-primary');
         }

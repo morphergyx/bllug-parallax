@@ -550,12 +550,39 @@
         #cart-coupon-section > button {
             font-size: 9px;
         }
+        #cart-coupon-section {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+        #cart-coupon-toggle {
+            min-height: 34px;
+        }
+        #cart-coupon-applied {
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+        }
+        #cart-coupon-applied p {
+            line-height: 1.35;
+        }
         #cart-coupon-holder {
             margin-top: 7px;
         }
+        #cart-coupon-holder.hidden {
+            display: none;
+        }
         #cart-coupon-input {
+            background-color: #050505 !important;
+            color: #ffffff !important;
             padding: 8px 10px;
             font-size: 9px;
+            caret-color: #ffffff;
+        }
+        #cart-coupon-input::placeholder {
+            color: rgba(196,199,200,0.45);
+        }
+        #cart-coupon-input:focus {
+            background-color: #050505 !important;
+            color: #ffffff !important;
         }
         #cart-coupon-holder button {
             padding: 8px 12px;
