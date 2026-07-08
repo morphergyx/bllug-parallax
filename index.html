@@ -22,11 +22,14 @@
     <title>BLLUG | EXCLUSIVITY REDEFINED</title>
     <link rel="icon" href="images/favicon-black.webp" type="image/webp">
     <link rel="icon" href="images/favicon-black.png" type="image/png">
+    <link rel="preload" as="image" href="/images/hero-portrait.webp" type="image/webp" media="(max-width: 767px)" fetchpriority="high">
+    <link rel="preload" as="image" href="/images/hero.webp" type="image/webp" media="(min-width: 768px)" fetchpriority="high">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/></noscript>
     <link rel="stylesheet" href="tailwind-built.css">
     <link rel="stylesheet" href="style.css">
     <script type="application/ld+json">
@@ -67,11 +70,8 @@
     </div>
 
     <nav class="flex justify-between items-center w-full px-4 md:px-margin-desktop py-8 fixed z-40 bg-transparent transition-all duration-500" id="main-nav">
-        <div class="text-headline-lg-mobile md:text-headline-lg font-headline-lg tracking-tighter text-primary">
-            <picture>
-                <source srcset="/images/bllug-logo-white-lossy.webp" type="image/webp">
-                <img src="/images/bllug-logo-white.png" alt="BLLUG Logo" class="h-8 md:h-10"/>
-            </picture>
+        <div class="text-primary">
+            <img src="/images/bllug-logo-white.png" alt="BLLUG Logo" class="site-logo-img site-logo-img--nav" decoding="async"/>
         </div>
         <div class="hidden md:flex items-center gap-8">
             <a class="text-primary border-b-2 border-primary pb-1 font-label-limit text-label-limit transition-all duration-300 hover:tracking-[0.2em]" href="#series">SERIES_01</a>
@@ -94,12 +94,12 @@
             <source media="(max-width: 767px)" srcset="/images/hero-portrait.webp" type="image/webp">
             <source media="(max-width: 767px)" srcset="/images/hero-portrait.jpg" type="image/jpeg">
             <source srcset="/images/hero.webp" type="image/webp">
-            <img src="/images/hero.jpg" alt="BLLUG hero background" class="w-full h-full object-cover object-top">
+            <img src="/images/hero.jpg" alt="BLLUG hero background" class="w-full h-full object-cover object-top" width="1920" height="1080" loading="eager" fetchpriority="high" decoding="async">
         </picture>
         <div class="relative z-10 text-center px-4" id="hero-logo-container">
             <picture>
                 <source srcset="/images/bllug-logo-white-lossy.webp" type="image/webp">
-                <img alt="BLLUG" class="mx-auto mb-6 w-full max-w-2xl px-4" id="hero-logo" src="/images/bllug-logo-white.png"/>
+                <img alt="BLLUG" class="mx-auto mb-6 w-full max-w-2xl px-4" id="hero-logo" src="/images/bllug-logo-white.png" width="1000" height="250" loading="eager" fetchpriority="high" decoding="async"/>
             </picture>
             <h1 class="font-label-mono text-label-mono tracking-[0.4em] text-primary uppercase m-0">BLLUG — Exclusivity Redefined</h1>
         </div>
@@ -130,7 +130,7 @@
                 <source media="(max-width: 767px)" srcset="/images/mobile-section-1.webp" type="image/webp">
                 <source media="(max-width: 767px)" srcset="/images/mobile-section-1.jpg" type="image/jpeg">
                 <source srcset="/images/series-section-1.webp" type="image/webp">
-                <img class="parallax-img" src="/images/series-section-1.jpg" alt="The Owl Series — limited edition BLLUG streetwear T-shirt with Eurasian Eagle-Owl DTF print" loading="lazy">
+                <img class="parallax-img" src="/images/series-section-1.jpg" alt="The Owl Series — limited edition BLLUG streetwear T-shirt with Eurasian Eagle-Owl DTF print" width="1920" height="1080" loading="lazy" decoding="async">
             </picture>
         </div>
         <div class="absolute left-0 top-0 bottom-0 w-20 z-20 pointer-events-none hidden sm:flex items-center justify-center select-none">
@@ -152,7 +152,7 @@
                 <source media="(max-width: 767px)" srcset="/images/mobile-section-2.webp" type="image/webp">
                 <source media="(max-width: 767px)" srcset="/images/mobile-section-2.jpg" type="image/jpeg">
                 <source srcset="/images/series-section-2.webp" type="image/webp">
-                <img class="parallax-img" src="/images/series-section-2.jpg" alt="The Tiger Series — limited edition BLLUG streetwear T-shirt with tiger DTF print" loading="lazy">
+                <img class="parallax-img" src="/images/series-section-2.jpg" alt="The Tiger Series — limited edition BLLUG streetwear T-shirt with tiger DTF print" width="1920" height="1080" loading="lazy" decoding="async">
             </picture>
         </div>
         <div class="absolute left-0 top-0 bottom-0 w-20 z-20 pointer-events-none hidden sm:flex items-center justify-center select-none">
@@ -174,7 +174,7 @@
                 <source media="(max-width: 767px)" srcset="/images/mobile-section-3.webp" type="image/webp">
                 <source media="(max-width: 767px)" srcset="/images/mobile-section-3.jpg" type="image/jpeg">
                 <source srcset="/images/series-section-3.webp" type="image/webp">
-                <img class="parallax-img" src="/images/series-section-3.jpg" alt="The Humming Series — limited edition BLLUG streetwear T-shirt with hummingbird DTF print" loading="lazy">
+                <img class="parallax-img" src="/images/series-section-3.jpg" alt="The Humming Series — limited edition BLLUG streetwear T-shirt with hummingbird DTF print" width="1920" height="1080" loading="lazy" decoding="async">
             </picture>
         </div>
         <div class="absolute left-0 top-0 bottom-0 w-20 z-20 pointer-events-none hidden sm:flex items-center justify-center select-none">
@@ -202,11 +202,8 @@
     </section>
     <footer class="flex flex-col md:flex-row justify-between items-center w-full px-4 md:px-margin-desktop py-12 border-t border-outline-variant bg-surface-container-lowest relative z-30" id="archive">
         <div class="flex flex-col items-center md:items-start mb-8 md:mb-0 text-center md:text-left">
-            <div class="text-headline-lg font-headline-lg text-primary mb-4">
-                <picture>
-                    <source srcset="/images/bllug-logo-white-lossy.webp" type="image/webp">
-                    <img src="/images/bllug-logo-white.png" alt="BLLUG Logo" class="h-8 md:h-10 mx-auto md:mx-0"/>
-                </picture>   
+            <div class="text-primary mb-4">
+                <img src="/images/bllug-logo-white.png" alt="BLLUG Logo" class="site-logo-img site-logo-img--footer mx-auto md:mx-0" loading="lazy" decoding="async"/>
             </div>
             <p class="font-label-mono text-label-mono text-on-surface-variant">© ALL RIGHTS RESERVED.</p>
         </div>
@@ -282,7 +279,7 @@
     </div>
 
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 
     <script>
         // "BUY NOW" from the homepage's size-selection popup now adds the item

@@ -116,6 +116,21 @@
             width: 100%;
         }
 
+        .site-logo-img {
+            display: block;
+            height: auto;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        .site-logo-img--nav {
+            width: clamp(7rem, 10vw, 10.5rem);
+        }
+
+        .site-logo-img--footer {
+            width: clamp(6.5rem, 10vw, 10rem);
+        }
+
         /* Pure CSS Parallax Architecture */
         .parallax-window {
             position: relative;
@@ -170,16 +185,39 @@
                 letter-spacing: 0.12em;
             }
 
+            .site-logo-img--nav {
+                width: 7rem;
+            }
+
+            .site-logo-img--footer {
+                width: 6.5rem;
+            }
+
             #hero {
-                background-image: url('/images/hero-portrait.jpg') !important;
                 background-position: center top;
                 background-attachment: scroll;
                 min-height: 100svh;
                 height: 100svh;
             }
 
+            #hero picture {
+                z-index: 0;
+            }
+
+            #hero > :not(picture) {
+                position: relative;
+                z-index: 1;
+            }
+
             .parallax-window {
                 height: 75vh;
+            }
+
+            .parallax-fixed-wrap {
+                position: absolute;
+                height: 100%;
+                transform: none;
+                will-change: auto;
             }
 
             .parallax-img {

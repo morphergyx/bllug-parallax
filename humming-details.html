@@ -26,7 +26,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/></noscript>
     <link rel="stylesheet" href="tailwind-built.css">
     <link rel="stylesheet" href="style.css">
     <script type="application/ld+json">
@@ -245,10 +246,10 @@
 
         <!-- Overlay top bar -->
         <div id="overlay-topbar">
-            <button id="back-btn" onclick="closeDetailsModal()">
+            <a id="back-btn" href="index.html">
                 <span class="material-symbols-outlined">arrow_back</span>
                 <span>BACK TO STORE</span>
-            </button>
+            </a>
             <a id="topbar-logo" href="index.html">
                 <picture><source srcset="/images/bllug-logo-white-lossy.webp" type="image/webp"><img src="/images/bllug-logo-white.png" alt="BLLUG"/></picture>
             </a>
@@ -269,9 +270,9 @@
 
     <div id="product-modal" class="relative z-10 flex items-center justify-center p-0 md:p-6">
         <div class="bg-surface-container-lowest w-full min-h-[80vh] md:h-[85vh] md:max-w-6xl md:rounded-xl border border-outline-variant/30 shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-12 relative" id="modal-container">
-            <button onclick="closeDetailsModal()" class="modal-close-btn absolute top-4 right-4 z-50 bg-background/40 hover:bg-primary hover:text-background rounded-full transition-all text-primary flex items-center justify-center">
+            <a href="index.html" class="modal-close-btn absolute top-4 right-4 z-50 bg-background/40 hover:bg-primary hover:text-background rounded-full transition-all text-primary flex items-center justify-center">
                 <span class="material-symbols-outlined text-[18px]">close</span>
-            </button>
+            </a>
             <div class="col-span-1 md:col-span-7 relative bg-black/40 h-[60vh] md:h-full flex items-center justify-center group border-b md:border-b-0 md:border-r border-outline-variant/20">
                 <button onclick="slideCarousel(-1)" class="carousel-arrow-btn absolute left-4 z-40 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-background/80 text-primary p-3 rounded-full hover:bg-primary hover:text-background flex items-center justify-center touch-none">
                     <span class="material-symbols-outlined text-[18px]">chevron_left</span>
@@ -456,7 +457,7 @@
     </div>
 
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             openDetailsModal("The Humming Series", "2,049", ["images/series-section-3.jpg", "images/product-humming-1.jpg", "images/product-humming-2.jpg"], "This piece features a custom, in-house artwork created entirely by us to embody the vibrant, graceful energy of nature's most dynamic creature. Capturing a majestic hummingbird amidst an explosion of intricately layered, multi-toned feathers, the graphic is set against a rich, deep emerald green premium fabric to anchor a striking, high-contrast look that defines luxury streetwear.We utilized an elite Direct-to-Film (DTF) technique to capture the hyper-detailed textures and rich, fluid gradients with immaculate high-fidelity precision. The result is a bold, tactile narrative of grace and presence a true reflection of bllug's uncompromising craftsmanship.", "Wash with similar vibrant colors in cold water only. Turn inside out before washing. Use eco-friendly detergent with minimal concentration. Avoid bleach, softeners, and high temperatures. Hang dry in shade to preserve gradient vibrancy. Do not tumble dry or expose to direct sunlight for extended periods.");

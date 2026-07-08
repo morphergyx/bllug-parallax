@@ -176,7 +176,12 @@
                 // "images/foo.webp") so callers don't need to pass two paths —
                 // every JPG in /images has a matching pre-generated .webp sibling.
                 const webpUrl = imgUrl.replace(/\.jpe?g$/i, '.webp');
-                imgDiv.innerHTML = `<picture><source srcset="${webpUrl}" type="image/webp"><img src="${imgUrl}" alt="${title} view" class="w-full h-full object-cover"></picture>`;
+                const imageLoading = idx === 0 ? 'eager' : 'lazy';
+                const imagePriority = idx === 0 ? 'high' : 'auto';
+                const intrinsicSize = /series-section/i.test(imgUrl)
+                    ? { width: 1920, height: 1080 }
+                    : { width: 1200, height: 1050 };
+                imgDiv.innerHTML = `<picture><source srcset="${webpUrl}" type="image/webp"><img src="${imgUrl}" alt="${title} view" class="w-full h-full object-cover" width="${intrinsicSize.width}" height="${intrinsicSize.height}" loading="${imageLoading}" fetchpriority="${imagePriority}" decoding="async"></picture>`;
                 track.appendChild(imgDiv);
 
                 const dot = document.createElement('button');
@@ -740,7 +745,7 @@
                     cartItemRow.className = "flex gap-4 p-4 border border-outline-variant/10 rounded bg-[#0F0F0F] relative group";
                     cartItemRow.innerHTML = `
                         <div class="w-20 h-24 bg-black/40 rounded overflow-hidden flex-shrink-0 border border-outline-variant/10">
-                            <img src="${item.image}" class="w-full h-full object-cover" alt="${item.name}">
+                            <img src="${item.image}" class="w-full h-full object-cover" alt="${item.name}" loading="lazy" decoding="async">
                         </div>
                         <div class="flex-grow flex flex-col justify-between py-0.5">
                             <div>
