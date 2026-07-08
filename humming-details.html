@@ -457,11 +457,11 @@
     </div>
 
 
-    <script src="script.js?v=details-cart-fix-20260708"></script>
+    <script src="script.js?v=details-cart-fix-20260708b"></script>
     <script>
         const sharedToggleCartDrawer = window.toggleCartDrawer;
 
-        function restoreDetailsPageAfterCart() {
+        window.restoreDetailsPageAfterCart = function () {
             const modal = document.getElementById('product-modal');
             const container = document.getElementById('modal-container');
             if (modal) {
@@ -476,14 +476,14 @@
             document.body.style.top = '';
             document.body.style.width = '';
             document.body.style.overflow = '';
-        }
+        };
 
-        function toggleCartDrawer(openStatus) {
+        window.toggleCartDrawer = function (openStatus) {
             if (typeof sharedToggleCartDrawer === 'function') {
                 sharedToggleCartDrawer(openStatus);
             }
-            if (!openStatus) restoreDetailsPageAfterCart();
-        }
+            if (!openStatus) window.restoreDetailsPageAfterCart();
+        };
 
         document.addEventListener('DOMContentLoaded', function () {
             openDetailsModal("The Humming Series", "2,049", ["images/series-section-3.jpg", "images/product-humming-1.jpg", "images/product-humming-2.jpg"], "This piece features a custom, in-house artwork created entirely by us to embody the vibrant, graceful energy of nature's most dynamic creature. Capturing a majestic hummingbird amidst an explosion of intricately layered, multi-toned feathers, the graphic is set against a rich, deep emerald green premium fabric to anchor a striking, high-contrast look that defines luxury streetwear.We utilized an elite Direct-to-Film (DTF) technique to capture the hyper-detailed textures and rich, fluid gradients with immaculate high-fidelity precision. The result is a bold, tactile narrative of grace and presence a true reflection of bllug's uncompromising craftsmanship.", "Wash with similar vibrant colors in cold water only. Turn inside out before washing. Use eco-friendly detergent with minimal concentration. Avoid bleach, softeners, and high temperatures. Hang dry in shade to preserve gradient vibrancy. Do not tumble dry or expose to direct sunlight for extended periods.");
@@ -495,7 +495,7 @@
             document.body.style.top = '';
             document.body.style.width = '';
             document.body.style.overflow = '';
-            restoreDetailsPageAfterCart();
+            window.restoreDetailsPageAfterCart();
         });
 
         // On this standalone details page the product section IS the page, not a

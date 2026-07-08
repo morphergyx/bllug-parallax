@@ -491,61 +491,60 @@
 
         /* Compact cart drawer: preserve vertical room for product rows. */
         #cart-drawer > div:first-child {
-            padding: 14px 16px;
+            padding: 13px 16px;
         }
         #cart-drawer > div:first-child > div {
             gap: 8px;
         }
         #cart-drawer > div:first-child h3 {
-            font-size: 16px;
+            font-size: 17px;
         }
         #cart-drawer > div:first-child .material-symbols-outlined {
             font-size: 20px;
         }
         #cart-count-badge {
-            font-size: 9px;
+            font-size: 10px;
             padding: 2px 7px;
         }
         #cart-items-container {
-            padding: 14px 16px;
-            gap: 10px;
+            padding: 12px 14px;
+            gap: 9px;
         }
         #cart-items-container > div {
-            gap: 10px;
-            padding: 10px;
+            gap: 11px;
+            padding: 9px 10px;
         }
         #cart-items-container > div > div:first-child {
-            width: 58px;
-            height: 72px;
+            width: 64px;
+            height: 78px;
         }
         #cart-items-container h4 {
-            font-size: 11px;
+            font-size: 12px;
             margin-bottom: 2px;
         }
         #cart-items-container p,
         #cart-items-container span {
-            font-size: 9px;
+            font-size: 10px;
         }
         #cart-items-container button {
-            padding-top: 3px;
-            padding-bottom: 3px;
+            padding: 4px 7px;
         }
         #cart-drawer > div:last-child {
-            padding: 12px 16px 14px;
-            gap: 9px;
+            padding: 11px 14px 13px;
+            gap: 8px;
         }
         #cart-drawer > div:last-child > div:first-child {
-            font-size: 10px;
-            line-height: 1.25;
+            font-size: 11px;
+            line-height: 1.28;
         }
         #cart-drawer > div:last-child > div:first-child > div {
-            padding-top: 2px;
-            padding-bottom: 2px;
+            padding-top: 1px;
+            padding-bottom: 1px;
         }
         #cart-drawer > div:last-child > div:first-child > div:last-child {
-            font-size: 12px;
+            font-size: 13px;
             margin-top: 3px;
-            padding-top: 7px;
+            padding-top: 6px;
         }
         #cart-coupon-section > button {
             font-size: 9px;
@@ -553,7 +552,7 @@
         #cart-coupon-section {
             display: flex;
             flex-direction: column;
-            gap: 7px;
+            gap: 6px;
         }
         #cart-coupon-toggle {
             min-height: 34px;
@@ -574,7 +573,7 @@
             background-color: #050505 !important;
             color: #ffffff !important;
             padding: 8px 10px;
-            font-size: 9px;
+            font-size: 10px;
             caret-color: #ffffff;
         }
         #cart-coupon-input::placeholder {
@@ -586,14 +585,36 @@
         }
         #cart-coupon-holder button {
             padding: 8px 12px;
-            font-size: 9px;
+            font-size: 10px;
         }
         #cart-coupon-message {
             margin-top: 5px;
-            font-size: 8px;
+            font-size: 9px;
         }
         #cart-drawer button[onclick="launchCheckoutFlow()"] {
-            padding-top: 11px;
-            padding-bottom: 11px;
-            font-size: 10px;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            font-size: 11px;
+        }
+
+        @media (max-width: 420px) {
+            #cart-items-container {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+            #cart-items-container > div {
+                gap: 9px;
+                padding: 8px 9px;
+            }
+            #cart-items-container > div > div:first-child {
+                width: 58px;
+                height: 72px;
+            }
+            #cart-items-container h4 {
+                font-size: 11.5px;
+            }
+            #cart-items-container p,
+            #cart-items-container span {
+                font-size: 9.5px;
+            }
         }

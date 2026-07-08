@@ -457,11 +457,11 @@
     </div>
 
 
-    <script src="script.js?v=details-cart-fix-20260708"></script>
+    <script src="script.js?v=details-cart-fix-20260708b"></script>
     <script>
         const sharedToggleCartDrawer = window.toggleCartDrawer;
 
-        function restoreDetailsPageAfterCart() {
+        window.restoreDetailsPageAfterCart = function () {
             const modal = document.getElementById('product-modal');
             const container = document.getElementById('modal-container');
             if (modal) {
@@ -476,14 +476,14 @@
             document.body.style.top = '';
             document.body.style.width = '';
             document.body.style.overflow = '';
-        }
+        };
 
-        function toggleCartDrawer(openStatus) {
+        window.toggleCartDrawer = function (openStatus) {
             if (typeof sharedToggleCartDrawer === 'function') {
                 sharedToggleCartDrawer(openStatus);
             }
-            if (!openStatus) restoreDetailsPageAfterCart();
-        }
+            if (!openStatus) window.restoreDetailsPageAfterCart();
+        };
 
         document.addEventListener('DOMContentLoaded', function () {
             openDetailsModal("The Tiger Series", "2,049", ["images/series-section-2.jpg", "images/product-tiger-1.jpg", "images/product-tiger-2.jpg"], "This piece features a custom, in-house artwork created entirely by us to embody the raw, untamed power of the apex predator. Capturing a fierce tiger's piercing gaze over a dark, mysterious reflection, the graphic is set against a deep black premium fabric to anchor a striking, high-contrast look that defines streetwear dominance.Every intricate strand of fur and sharp detail is brought to life using an ultra-premium Direct-to-Film (DTF) technique, achieving a high-definition, high-fidelity finish with rich, seamless tonal depth. It is a wearable story of strength, dominance, and meticulous bllug craftsmanship.", "Gentle wash cycle in cold water with dark colors only. Turn inside out before washing. Use minimal detergent. Never bleach or dry clean. Lay flat to air dry to maintain structural integrity. Iron on low heat (if needed) only on reverse side using a protective cloth.");
@@ -495,7 +495,7 @@
             document.body.style.top = '';
             document.body.style.width = '';
             document.body.style.overflow = '';
-            restoreDetailsPageAfterCart();
+            window.restoreDetailsPageAfterCart();
         });
 
         // On this standalone details page the product section IS the page, not a
